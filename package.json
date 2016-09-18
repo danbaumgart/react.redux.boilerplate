@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Boilerplate react redux project with some added dev dependencies for better developer tools",
   "scripts":{
+    "prestart":"babel-node tools/startMessage.js",
     "start": "babel-node tools/srcServer.js"
   },
   "author": "Dan Baumgart",
