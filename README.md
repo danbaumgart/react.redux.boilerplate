@@ -1,4 +1,4 @@
-#React.Redux.Boilerplate
+React.Redux.Boilerplate
 ========================
 ## Prerequisites
 
