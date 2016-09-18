@@ -1,4 +1,4 @@
-#React.Redux.Boilerplate
+> #React.Redux.Boilerplate
 
 ##Prerequisites
 >- Npm 3.9.5
