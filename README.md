@@ -6,5 +6,6 @@
 
 
 ##Setup
+>- Pull the initial commit
 >- Run `npm install` at root directory.
 >- And then.....
