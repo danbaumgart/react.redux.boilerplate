@@ -10,5 +10,5 @@ Prerequisites
 
 Setup
 -----
-*1.* Run `npm install` on the root directory of the project
-*1.* Something next.
+  1. Run `npm install` on the root directory of the project
+  2. Something next.
