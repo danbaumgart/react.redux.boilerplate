@@ -2,6 +2,7 @@
   "name": "react-redux-boilerplate",
   "version": "1.0.0",
   "description": "Boilerplate react redux project with some added dev dependencies for better developer tools",
+  "scripts":{},
   "author": "Dan Baumgart",
   "dependencies": {
     "babel-polyfill": "6.8.0",
