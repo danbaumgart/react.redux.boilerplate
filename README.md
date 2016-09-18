@@ -6,6 +6,6 @@
 
 
 ##Setup
->- Pull the initial commit (package.json without "Scripts":{})
+>- Pull the initial commit (first version of package.json)
 >- Run `npm install` at root directory.
 >- And then.....
