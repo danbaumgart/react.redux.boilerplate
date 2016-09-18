@@ -12,6 +12,7 @@
     "test:watch": "npm run test -- --watch"
   },
   "author": "Dan Baumgart",
+  "license": "MIT",
   "dependencies": {
     "babel-polyfill": "6.8.0",
     "bootstrap": "3.3.6",
