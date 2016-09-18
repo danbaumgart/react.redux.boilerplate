@@ -10,6 +10,6 @@ Prerequisites
 
 Setup
 -----
-  >__1__ .  Run `npm install` at the project root directory.
+  >__1__ .  Run `npm install` at root directory.
   
-  >__2__ .  Something next.
+  >__2__ .  And then.....
