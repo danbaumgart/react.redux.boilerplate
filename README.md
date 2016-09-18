@@ -8,6 +8,6 @@
 
 ## Setup
 
-  >__1__  \.    Run `npm install` at root directory.
+  >__1.__    \Run `npm install` at root directory.
   
-  >__2__. \.   And then.....
+  >__2.__    \And then.....
