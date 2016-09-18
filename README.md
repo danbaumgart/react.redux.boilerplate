@@ -7,6 +7,5 @@ React.Redux.Boilerplate
 
 
 ###Setup
------
 >- Run `npm install` at root directory.
 >- And then.....
