@@ -3,10 +3,15 @@
   "version": "1.0.0",
   "description": "Boilerplate react redux project with some added dev dependencies for better developer tools",
   "scripts":{
-    "start": "babel-node tools/srcServer.js"
+    "prestart":"babel-node tools/startMessage.js",
+    "start": "npm-run-all --parallel open:src lint:watch test:watch",
+    "open:src": "babel-node tools/srcServer.js",
+    "lint": "node_modules/.bin/esw webpack.config.* src tools",
+    "lint:watch": "npm run lint -- --watch",
+    "test": "mocha --reporter progress tools/testSetup.js \"src/**/*.test.js\"",
+    "test:watch": "npm run test -- --watch"
   },
   "author": "Dan Baumgart",
-  "license": "MIT",
   "dependencies": {
     "babel-polyfill": "6.8.0",
     "bootstrap": "3.3.6",
