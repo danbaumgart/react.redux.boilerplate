@@ -19,13 +19,16 @@ class LoadingDots extends React.Component {
   }
   
   render() {
+    const dotStyle = {color:"black"};
+    if(this.props.inverse)
+      dotStyle.color = "white";
     let dots = this.state.frame % (this.props.dots + 1);
     let text = '';
     while(dots > 0){
       text += '.';
       dots --;
     }
-    return <span {...this.props}>{text}&nbsp;</span>;
+    return <span style={dotStyle} {...this.props}>{text}&nbsp;</span>;
   }
 }
 
@@ -36,7 +39,8 @@ LoadingDots.defaultProps = {
 
 LoadingDots.propTypes = {
   interval: PropTypes.number,
-  dots: PropTypes.number
+  dots: PropTypes.number,
+  inverse:PropTypes.bool
 };
 
 export default LoadingDots;
