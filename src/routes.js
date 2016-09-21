@@ -4,6 +4,7 @@ import App from './components/App';
 import HomePage from './components/home/HomePage';
 import AboutPage from './components/about/AboutPage';
 import LogPage from './components/log/LogPage';
+import LogDetailsPage from './components/log/LogDetailsPage';
 import CoursesPage from './components/courses/CoursesPage';
 import ManageCoursePage from './components/courses/ManageCoursePage';
 
@@ -15,5 +16,6 @@ export default (
     <Route path="course" component={ManageCoursePage} />
     <Route path="course/:id" component={ManageCoursePage} />
     <Route path="log" component={LogPage}/>
+    <Route path="log/:id" component={LogDetailsPage}/>
   </Route>
 );

@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react';
+import {Link} from 'react-router';
 
 const LogListRow = ({entry}) => {
   
@@ -21,7 +22,7 @@ const LogListRow = ({entry}) => {
     <tr>
       <td><i className={displayProps.glyph} style={displayProps.style}/></td>
       <td>{entry.id}</td>
-      <td>{entry.type}</td>
+      <td><Link to={'/log/'+entry.id}>{entry.type}</Link></td>
       <td>{entry.timestamp.date}</td>
       <td>{entry.timestamp.time}</td>
     </tr>
