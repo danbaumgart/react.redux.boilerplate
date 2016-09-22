@@ -18,9 +18,14 @@ class App extends React.Component{
   }
   render(){
     const title = "SPA";
+    console.log(this.props.currentLocation);
     return (
       <div>
-        <TopNavbar title={title} loading={this.props.loading} toggle={this.toggleNavbar} collapsed={this.props.collapsed} />
+        <TopNavbar title={title}
+                   loading={this.props.loading}
+                   toggle={this.toggleNavbar}
+                   currentLocation={this.props.currentLocation}
+                   collapsed={this.props.collapsed} />
         <div className="container-fluid">{this.props.children}</div>
       </div>
     );
@@ -31,15 +36,19 @@ App.propTypes = {
   children: PropTypes.object.isRequired,
   collapsed:PropTypes.bool.isRequired,
   loading:PropTypes.bool.isRequired,
-  actions:PropTypes.object.isRequired
+  actions:PropTypes.object.isRequired,
+  currentLocation:PropTypes.string
 };
 App.contextTypes = {
   router: PropTypes.object
 };
 function mapStateToProps(state,ownProps){
+  let current = ownProps.routes[1].path || '';
+  current = '/' + current;
   return {
     loading: state.ajaxCallsInProgress > 0,
-    collapsed:state.navbarCollapsed
+    collapsed:state.navbarCollapsed,
+    currentLocation:current
   };
 }
 function mapDispatchToProps(dispatch){

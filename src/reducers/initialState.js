@@ -3,5 +3,6 @@ export default {
   courses:[],
   ajaxCallsInProgress:0,
   log:[],
-  navbarCollapsed:true
+  navbarCollapsed:true,
+  account:{}
 };
