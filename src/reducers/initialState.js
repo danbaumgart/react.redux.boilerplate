@@ -1,8 +1,19 @@
 export default {
   authors:[],
   courses:[],
-  ajaxCallsInProgress:0,
   log:[],
+  ajaxCallsInProgress:0,
   navbarCollapsed:true,
-  account:{}
+  schema:{
+    account:{}
+  },
+  errors:{
+    account:{}
+  },
+  account:{
+    username:null,
+    password:null,
+    first:null,
+    last:null
+  }
 };

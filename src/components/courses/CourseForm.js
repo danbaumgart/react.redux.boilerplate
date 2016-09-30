@@ -1,18 +1,18 @@
 import React, {PropTypes} from 'react';
 import TextInput from '../common/TextInput';
+import FormInput from '../common/FormInput';
 import SelectInput from '../common/SelectInput';
 import SubmitButton from '../common/SubmitButton';
 
 const CourseForm = ({course, allAuthors, onSave, onChange, saving, errors}) => {
   return (
-    <form>
+    <form className="form-horizontal">
       <h1>Manage Course</h1>
-      <TextInput
-        name="title"
-        label="Title"
-        value={course.title}
-        onChange={onChange}
-        error={errors.title} />
+      <FormInput label="Title"
+                 name="title"
+                 onChange={onChange}
+                 value={course.title}
+                 errors={['you messed up']} />
       <SelectInput
         name="authorId"
         label="Author"

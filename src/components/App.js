@@ -18,7 +18,6 @@ class App extends React.Component{
   }
   render(){
     const title = "SPA";
-    console.log(this.props.currentLocation);
     return (
       <div>
         <TopNavbar title={title}

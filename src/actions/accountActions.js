@@ -1,25 +1,42 @@
 import * as types from './actionTypes';
 import accountApi from '../api/mockAccountApi';
+import {ajaxCallError} from './ajaxStatusActions';
 
-export function loginSuccess(account){
-  return {type:types.LOGIN_SUCCESS,payload:account};
+export function loadAccountSchema(schema){
+  return {type:types.LOAD_ACCOUNT_SCHEMA,payload:schema};
 }
-export function registrationSuccess(account){
-  return {type:types.REGISTRATION_SUCCESS,payload:account};
+export function loadAccountSuccess(account){
+  return {type:types.LOAD_ACCOUNT_SUCCESS,payload:account};
 }
-export function loginError(account){
-  return {type:types.LOGIN_ERROR,payload:account};
+export function createAccountSuccess(account){
+  return {type:types.CREATE_ACCOUNT_SUCCESS,payload:account};
 }
-export function registrationError(account){
-  return {type:types.REGISTRATION_ERROR,payload:account};
+export function loadAccountError(account){
+  return {type:types.LOAD_ACCOUNT_ERROR,payload:account};
 }
-export function login(user,pass) {
-  return accountApi.login(user,pass)
-    .then((res)=>dispatch(loginSuccess(res)))
-    .catch((err)=>dispatch(loginError(user)));
+export function createAccountError(account){
+  return {type:types.CREATE_ACCOUNT_ERROR,payload:account};
 }
-export function register(user,pass) {
-  return accountApi.registerAccount(user,pass)
-    .then((res)=>dispatch(registrationSuccess(res)))
-    .catch((err)=>dispatch(registrationError(user)));
+
+
+export function loadAccount(user, pass) {
+  return function(dispatch){
+    return accountApi.loadAccount(user,pass)
+      .then((res)=>dispatch(loadAccountSuccess(res)))
+      .catch((err)=>dispatch(loadAccountError(user)));
+  };
+}
+export function getAccountSchema(){
+  return function(dispatch){
+    return accountApi.loadSchema()
+      .then(res => dispatch(loadAccountSchema(res)))
+      .catch(err => dispatch(ajaxCallError(err)));
+  };
+}
+export function createAccount(user, pass) {
+  return function(dispatch){
+    return accountApi.createAccount(user,pass)
+      .then((res)=>dispatch(createAccountSuccess(res)))
+      .catch((err)=>dispatch(createAccountError(user)));
+  };
 }

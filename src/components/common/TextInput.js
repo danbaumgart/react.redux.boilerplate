@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 
 const TextInput = ({name, label, onChange, placeholder, value, error}) => {
-  let wrapperClass = 'form-group';
+  let wrapperClass = 'schema-group';
   if(error && error.length > 0) {
     wrapperClass += " " + 'has-error';
   }

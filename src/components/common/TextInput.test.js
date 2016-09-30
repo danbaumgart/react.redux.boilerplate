@@ -19,11 +19,11 @@ const getTestProps = ({name = 'textInput', label = 'Text Input', value, error, p
 };
 
 describe('TextInput via Enzyme', () => {
-  it('renders inside of a form-group', () => {
+  it('renders inside of a schema-group', () => {
     let testProps = getTestProps({});
     const wrapper = setup(testProps);
     expect(wrapper.node.type).toBe('div');
-    expect(wrapper.node.props.className).toContain('form-group');
+    expect(wrapper.node.props.className).toContain('schema-group');
   });
   it('renders the label', () => {
     let testProps = getTestProps({});

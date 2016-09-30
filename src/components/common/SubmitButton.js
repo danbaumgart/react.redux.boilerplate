@@ -7,7 +7,6 @@ const SubmitButton = ({label,idle,onSave, btn}) => {
   buttonType += index !== -1 ? btn : 'primary';
   return (
     <input className={buttonType}
-           type="submit"
            onClick={onSave}
            disabled={!idle}
            value={label} />

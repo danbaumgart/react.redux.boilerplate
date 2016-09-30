@@ -7,6 +7,7 @@ import {Router, browserHistory} from 'react-router';
 import routes from './routes';
 import {loadAuthors} from './actions/authorActions';
 import {loadCourses} from './actions/courseActions';
+import {getAccountSchema} from './actions/accountActions';
 import './styles/styles.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/toastr/build/toastr.min.css';
@@ -14,6 +15,7 @@ import '../node_modules/toastr/build/toastr.min.css';
 const store = configureStore();
 store.dispatch(loadAuthors());
 store.dispatch(loadCourses());
+store.dispatch(getAccountSchema());
 render(
   <Provider store={store}>
     <Router history={browserHistory} routes={routes}/>

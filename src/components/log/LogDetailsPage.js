@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
-import keyValuePairs from '../../utils/dataHelper';
+import keyValuePairs from '../../utils/keyValueMapper';
 /* eslint-disable no-case-declarations */
 
 class LogDetails extends React.Component {
@@ -12,7 +12,7 @@ class LogDetails extends React.Component {
   }
   componentWillReceiveProps(nextProps){
     if(this.props.entry.id != nextProps.entry.id){
-      //Necessary to populate form when existing log entry is loaded directly.
+      //Necessary to populate schema when existing log entry is loaded directly.
       this.setState({
         entry:Object.assign({},nextProps.entry),
       });
