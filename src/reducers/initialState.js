@@ -4,16 +4,6 @@ export default {
   log:[],
   ajaxCallsInProgress:0,
   navbarCollapsed:true,
-  schema:{
-    account:{}
-  },
-  errors:{
-    account:{}
-  },
-  account:{
-    username:null,
-    password:null,
-    first:null,
-    last:null
-  }
+  schema:{},
+  account: {}
 };

@@ -3,145 +3,113 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import FormInput from '../common/FormInput';
 import * as accountActions from '../../actions/accountActions';
-import * as Condition from '../../actions/validTypes';
+import Validator from '../../utils/validate';
+import * as types from '../../utils/enums/validation';
+import {schema} from '../../mock/db/accounts';
 
 class AccountPage extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      account: {
-        username: '',
-        password: '',
-        first: '',
-        last: ''
-      },
       loading: false,
-      submitted: false,
-      errors: {
-        username: [],
-        password: [],
-        first: [],
-        last: []
-      }
+      submitted: false
     };
     this.updateField = this.updateField.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
-    this.validateForm = this.validateForm.bind(this);
-    this.validate = this.validate.bind(this);
-  }
-  onSubmitForm(){
-    this.setState({
-      submitted:true
-    });
-  }
-  updateField(event){
-    let input = {[event.target.name]: event.target.value};
-    console.log(input);
-    this.validate(event.target.name, event.target.value);
-    this.setState({
-      account: Object.assign({},this.state.account,input)
-    });
-  }
-  validate(key,input){
-    let condition = Condition.Validator(input);
-    let err = [];
-    Object.keys(this.props.schema[key]).forEach(k=>{
-      let requirement = k.toUpperCase();
-      let result;
-      console.log("CONDITION", condition);
-      switch(requirement){
-        case Condition.MINIMUM:
-          console.log(requirement);
-          break;
-        case Condition.MAXIMUM:
-          console.log(requirement);
-          break;
-        case Condition.RESTRICT:
-          console.log(requirement);
-          break;
-        default:
-          result = condition[requirement]();
-          console.log(requirement,result);
-          if(!result) err.push(requirement);
-          break;
-      }
-    });
-    console.log("ERRORS", err);
-    this.setState({
-      errors:Object.assign({},this.state.errors,{[key]:err})
-    });
-  }
-  validateForm(key){
-    const input = this.state.account[key];
-    let errors = [];
-    switch(key){
-      case 'email':
-        if(input === '')
-          errors.push('required field.');
-        if(input.indexOf('@') === -1)
-          errors.push('invalid email.');
-        break;
-      case 'last':
-        if(input === '')
-          errors.push('required field.');
-        if(input.length < 6)
-          errors.push('must be at least 6 characters long');
-        break;
-      default:
-        break;
-    }
-    return errors;
   }
   
-  render(){
-    console.log("ACCOUNT",this.state.account);
-    console.log("ERRORS",this.state.errors);
+  onSubmitForm() {
+    this.setState({
+      submitted: true
+    });
+  }
+  
+  updateField(event) {
+    let {name, value} = event.target;
+    this.props.actions.updateAccountField({[event.target.name]: event.target.value});
+    //let errors = this.props.validation.validateField(name, value);
+  }
+  
+  render() {
+    let errors = this.props.validation.validateForm(this.props.dirty);
     return (
       <form className="form-horizontal">
         <FormInput label="Email Address"
                    name="username"
                    placeholder="Enter your email address"
-                   value={this.state.account.username}
+                   value={this.props.account.username}
                    type="email"
-                   errors={this.state.errors.username}
-                   onChange={this.updateField} />
+                   errors={errors.username}
+                   onChange={this.updateField}/>
         <FormInput label="First Name"
                    name="first"
                    placeholder="Enter your first name"
-                   value={this.state.account.first}
-                   errors={this.state.errors.first}
-                   onChange={this.updateField} />
+                   value={this.props.account.first}
+                   errors={errors.first}
+                   onChange={this.updateField}/>
         <FormInput label="Last Name"
                    name="last"
                    placeholder="Enter your last name"
-                   value={this.state.account.last}
-                   errors={this.state.errors.last}
-                   onChange={this.updateField} />
+                   value={this.props.account.last}
+                   errors={errors.last}
+                   onChange={this.updateField}/>
         <FormInput label="Password"
                    name="password"
                    placeholder="Enter your password"
-                   value={this.state.account.password}
+                   value={this.props.account.password}
                    type="password"
-                   errors={this.state.errors.password}
-                   onChange={this.updateField} />
+                   errors={errors.password}
+                   onChange={this.updateField}/>
+        <FormInput label="Confirm Password"
+                   name="confirmPassword"
+                   placeholder="Enter your password"
+                   value={this.props.account.confirmPassword}
+                   type="password"
+                   errors={errors.confirmPassword}
+                   onChange={this.updateField}/>
       </form>
     );
   }
 }
 
+
 AccountPage.propTypes = {
-  schema: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired
+  account: PropTypes.object.isRequired,
+  dirty: PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired,
+  validation: PropTypes.object,
 };
 
 
 function mapStateToProps(state, ownProps) {
+  const accountForm = {
+    username: '',
+    last: '',
+    first: '',
+    password: '',
+    confirmPassword: ''
+  };
   const schema = {};
-  if(state.schema.account) {
-    Object.assign(schema, state.schema.account);
-  }
+  // Object.keys(state.account).forEach(key => {
+  //   accountForm[key] = state.account[key];
+  // });
+  Object.assign(accountForm,state.account);
+  if(state.schema.hasOwnProperty('account'))
+    Object.assign(schema,
+      state.schema.account,
+      {
+        confirmPassword:{
+          restrict:{
+            value: accountForm.password
+          }
+        }
+      }
+    );
+  let validation = new Validator(schema);
   return {
-    schema: schema
+    dirty: state.account,
+    account: accountForm,
+    validation: validation
   };
 }
 

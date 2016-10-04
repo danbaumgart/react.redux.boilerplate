@@ -1,5 +1,5 @@
 import delay from './delay';
-import {accounts} from '../mock/db/accounts';
+import {accounts, schema} from '../mock/db/accounts';
 
 // This file mocks a web API by working with the hard-coded data below.
 // It uses setTimeout to simulate the delay of an AJAX call.
@@ -19,18 +19,15 @@ const generateId = ()=>{
 const register = (account) => {
   return new Promise((resolve,reject)=>{
     setTimeout(() => {
-      // Simulate server-side validation
-      const validation= {
-        minId: 5,
-        minPassword: 6
-      };
+      // Simulate server-side enums
       
-      if (account.id.length < validation.minId) {
-        reject(`Username must be at least ${validation.minId} characters.`);
+      
+      if (account.username.length < schema.username.minimum.length) {
+        reject(`Username must be at least ${schema.username.minimum.length} characters.`);
       }
       
-      if (account.last.length < account.minPassword) {
-        reject(`Password must be at least ${validation.minPassword} characters.`);
+      if (account.last.length < schema.last.minimum.length) {
+        reject(`Password must be at least ${schema.last.minimum.length} characters.`);
       }
       accounts.push(Object.assign(account,{id : generateId()}));
       resolve(account);
@@ -38,14 +35,10 @@ const register = (account) => {
   });
 };
 class AccountApi {
-  constructor(){
-  }
   static loadSchema(){
-    return new Promise((resolve,reject)=>{
+    return new Promise((resolve)=>{
       setTimeout(()=>{
-        if(accounts.schema)
-          resolve(accounts.schema);
-        reject('Error loading account schema');
+        resolve(schema);
       }, delay);
     });
   }
@@ -57,10 +50,10 @@ class AccountApi {
   static loadAccount(username, password) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        const loggedIn = accounts.find(acct => acct.first.toLowerCase() === username.toLowerCase() && acct.last === password);
+        const loggedIn = accounts.find(acct => acct.username.toLowerCase() === username.toLowerCase() && acct.password === password);
         if(loggedIn)
           resolve(loggedIn);
-        reject({first,last});
+        reject(loggedIn);
       }, delay);
     });
   }

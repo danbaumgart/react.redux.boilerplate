@@ -1,0 +1,17 @@
+export const REQUIRED = 'REQUIRED';
+export const EMAIL = 'EMAIL';
+export const NUMBER = 'NUMBER';
+export const INTEGER = 'INTEGER';
+export const DATE = 'DATE';
+export const TIME = 'TIME';
+export const ALPHA = 'ALPHA';
+export const NUMERIC = 'NUMERIC';
+export const ALPHANUMERIC = 'ALPHANUMERIC';
+export const SPECIAL = 'SPECIAL';
+export const UPPERCASE = 'UPPERCASE';
+export const LOWERCASE = 'LOWERCASE';
+export const MAXIMUM = 'MAXIMUM';
+export const MINIMUM = 'MINIMUM';
+export const LENGTH = 'LENGTH';
+export const VALUE = 'VALUE';
+export const RESTRICT = 'RESTRICT';

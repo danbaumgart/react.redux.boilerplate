@@ -12,7 +12,7 @@
  hot module reloading code) doesn't apply for tests.
  But also, we don't want to set it to production here for
  two reasons:
- 1. You won't see any PropType validation warnings when
+ 1. You won't see any PropType enums warnings when
  code is running in prod mode.
  2. Tests will not display detailed error messages
  when running against production version code

@@ -42,7 +42,7 @@ class AuthorApi {
     author = Object.assign({}, author); // to avoid manipulating object passed in.
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        // Simulate server-side validation
+        // Simulate server-side enums
         const minAuthorNameLength = 3;
         if (author.firstName.length < minAuthorNameLength) {
           reject(`First Name must be at least ${minAuthorNameLength} characters.`);

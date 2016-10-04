@@ -69,13 +69,12 @@ function mapStateToProps(state, ownProps) {
   if(logId && state.log.length > 0) {
     let found = getLogById(state.log, logId);
     if (found) {
-      let subkeys = Object.keys(found).filter(key => standardkeys.indexOf(key.toLowerCase()) == -1);
-      let formattedData = [];
+      let payload = Object.keys(found).filter(key => standardkeys.indexOf(key.toLowerCase()) === -1);
       Object.assign(entry,
         {id: found.id},
         {type: found.type},
         {timestamp: found.timestamp},
-        {data:subkeys.map(k => keyValuePairs(k, found[k]))[0]}
+        {data: payload.map(k => keyValuePairs(k, found[k]))[0]}
       );
     }
   }
