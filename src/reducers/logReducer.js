@@ -8,7 +8,7 @@ const log = {
 
 const getLogType = (type) => {
   let suffix = type.lastIndexOf('_');
-  if(type == types.AJAX_CALL_ERROR) return 'CALL';
+  if(type === types.AJAX_CALL_ERROR) return 'CALL';
   return type.slice(suffix+1);
 };
 
@@ -19,15 +19,15 @@ export default function logReducer(state = initialState.log, action) {
       log.id++;
       return [
         ...state,
-        Object.assign({},{id:'S'+log.id},action)
+        Object.assign({},{id:log.id},action)
       ];
     case 'error':
       log.id++;
       return [
         ...state,
-        Object.assign({},{id:'E'+log.id},action)
+        Object.assign({},{id:log.id},action)
       ];
     default:
-      return state;
+      return [...state];
   }
 }

@@ -4,13 +4,14 @@ import {Link} from 'react-router';
 const LogListRow = ({entry}) => {
   
   const displayProps = {glyph: 'glyphicon glyphicon-',style:{color:'black'}};
-  switch(entry.id.charAt(0))
+  let entryType = entry.type.slice(entry.type.lastIndexOf('_')+1);
+  switch(entryType)
   {
-    case 'S':
+    case 'SUCCESS':
       displayProps.glyph += 'ok-circle';
       displayProps.style.color = 'green';
       break;
-    case 'E':
+    case 'ERROR':
       displayProps.glyph += 'ban-circle';
       displayProps.style.color = 'red';
       break;

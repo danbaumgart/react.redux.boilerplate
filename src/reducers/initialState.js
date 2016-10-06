@@ -5,5 +5,6 @@ export default {
   ajaxCallsInProgress:0,
   navbarCollapsed:true,
   schema:{},
-  account: {}
+  account: {},
+  accounts:[]
 };

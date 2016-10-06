@@ -1,73 +1,70 @@
 import React, {PropTypes} from 'react';
+import RegistrationForm from './RegistrationForm';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import FormInput from '../common/FormInput';
 import * as accountActions from '../../actions/accountActions';
 import Validator from '../../utils/validate';
-import * as types from '../../utils/enums/validation';
-import {schema} from '../../mock/db/accounts';
+import toastr from 'toastr';
 
 class AccountPage extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
       loading: false,
-      submitted: false
+      saving: false,
+      submitted: false,
+      touched: []
     };
     this.updateField = this.updateField.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
   }
   
-  onSubmitForm() {
+  onSubmitForm(event) {
+    event.preventDefault();
     this.setState({
+      saving: true,
       submitted: true
     });
+    this.props.actions.createAccount(this.props.account)
+      .then((result)=> {
+      this.setState({saving:false});
+      toastr.success("Registration Success" + result);
+    }).catch((errors)=>{
+      this.setState({saving:false});
+      let err = Object.keys(errors).map(i=>{return {field: i, errors: errors[i]};});
+      console.log("ERRORS", err);
+      err.forEach(e=>{
+        if(e.errors && Array.isArray(e.errors)) {
+          let message = e.errors[0];
+          e.errors.slice(1).forEach(m => message += '<br/>' + m);
+          toastr.error(message, e.field);
+        }
+      });
+    });
+    
   }
   
   updateField(event) {
     let {name, value} = event.target;
-    this.props.actions.updateAccountField({[event.target.name]: event.target.value});
-    //let errors = this.props.validation.validateField(name, value);
+    let dirty = Object.keys(this.props.account).filter(i=>this.props.account[i] !== '');
+    let fieldIsAlreadyDirty = dirty.indexOf(name) !== -1;
+    
+    this.setState({
+      touched: fieldIsAlreadyDirty ? dirty : [...dirty, name]
+    });
+    let payload = Object.assign({}, this.props.account, {[name]: value});
+    this.props.actions.updateAccountForm(payload);
   }
-  
   render() {
-    let errors = this.props.validation.validateForm(this.props.dirty);
+    let fieldsToValidate = {};
+    this.state.touched.forEach(field => fieldsToValidate[field] = this.props.account[field]);
+    let errors = this.props.validateOn !== 'submit' || this.state.submitted ?
+      this.props.validation.validateForm(fieldsToValidate) : {};
     return (
-      <form className="form-horizontal">
-        <FormInput label="Email Address"
-                   name="username"
-                   placeholder="Enter your email address"
-                   value={this.props.account.username}
-                   type="email"
-                   errors={errors.username}
-                   onChange={this.updateField}/>
-        <FormInput label="First Name"
-                   name="first"
-                   placeholder="Enter your first name"
-                   value={this.props.account.first}
-                   errors={errors.first}
-                   onChange={this.updateField}/>
-        <FormInput label="Last Name"
-                   name="last"
-                   placeholder="Enter your last name"
-                   value={this.props.account.last}
-                   errors={errors.last}
-                   onChange={this.updateField}/>
-        <FormInput label="Password"
-                   name="password"
-                   placeholder="Enter your password"
-                   value={this.props.account.password}
-                   type="password"
-                   errors={errors.password}
-                   onChange={this.updateField}/>
-        <FormInput label="Confirm Password"
-                   name="confirmPassword"
-                   placeholder="Enter your password"
-                   value={this.props.account.confirmPassword}
-                   type="password"
-                   errors={errors.confirmPassword}
-                   onChange={this.updateField}/>
-      </form>
+      <div>
+        <RegistrationForm account={this.props.account} errors={errors} update={this.updateField} save={this.onSubmitForm} saving={this.state.saving} />
+      </div>
     );
   }
 }
@@ -78,9 +75,14 @@ AccountPage.propTypes = {
   dirty: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
   validation: PropTypes.object,
+  validateOn: PropTypes.oneOf(['submit','change'])
+  //touched: PropTypes.array
 };
 
-
+AccountPage.defaultProps = {
+  validation: {}//,
+  //touched: []
+}
 function mapStateToProps(state, ownProps) {
   const accountForm = {
     username: '',
@@ -90,26 +92,30 @@ function mapStateToProps(state, ownProps) {
     confirmPassword: ''
   };
   const schema = {};
-  // Object.keys(state.account).forEach(key => {
-  //   accountForm[key] = state.account[key];
-  // });
   Object.assign(accountForm,state.account);
   if(state.schema.hasOwnProperty('account'))
     Object.assign(schema,
       state.schema.account,
       {
         confirmPassword:{
+          required: true,
           restrict:{
             value: accountForm.password
           }
         }
       }
     );
+  // let fieldsToUpdate = Object.keys(accountForm).map(i=>{
+  //   if(accountForm[i] !== '')
+  //     return i;
+  // });
   let validation = new Validator(schema);
   return {
     dirty: state.account,
     account: accountForm,
-    validation: validation
+    validation: validation,
+    validateOn: 'submit'
+    //touched: fieldsToUpdate
   };
 }
 

@@ -6,13 +6,13 @@ import SubmitButton from '../common/SubmitButton';
 
 const CourseForm = ({course, allAuthors, onSave, onChange, saving, errors}) => {
   return (
-    <form className="form-horizontal">
+    <form>
       <h1>Manage Course</h1>
-      <FormInput label="Title"
+      <TextInput label="Title"
                  name="title"
                  onChange={onChange}
                  value={course.title}
-                 errors={['you messed up']} />
+                 errors={errors.title} />
       <SelectInput
         name="authorId"
         label="Author"

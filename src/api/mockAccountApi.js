@@ -1,5 +1,6 @@
 import delay from './delay';
 import {accounts, schema} from '../mock/db/accounts';
+import Validator from '../utils/validate';
 
 // This file mocks a web API by working with the hard-coded data below.
 // It uses setTimeout to simulate the delay of an AJAX call.
@@ -16,24 +17,6 @@ const generateId = ()=>{
   return accts.slice(-1).id+1;
 };
 
-const register = (account) => {
-  return new Promise((resolve,reject)=>{
-    setTimeout(() => {
-      // Simulate server-side enums
-      
-      
-      if (account.username.length < schema.username.minimum.length) {
-        reject(`Username must be at least ${schema.username.minimum.length} characters.`);
-      }
-      
-      if (account.last.length < schema.last.minimum.length) {
-        reject(`Password must be at least ${schema.last.minimum.length} characters.`);
-      }
-      accounts.push(Object.assign(account,{id : generateId()}));
-      resolve(account);
-    }, delay);
-  });
-};
 class AccountApi {
   static loadSchema(){
     return new Promise((resolve)=>{
@@ -42,10 +25,26 @@ class AccountApi {
       }, delay);
     });
   }
-  static createAccount(account) {
-    account = Object.assign({}, account); // to avoid manipulating object passed in.
-    return register(account);
+  static createAccount(account) { // to avoid manipulating object passed in.
+    account = Object.assign({},account);
+    return new Promise((resolve,reject)=>{
+      setTimeout(() => {
+        let validation = new Validator(schema);
+        let errors = validation.validateForm(account);
+        console.log("ERRORS SERVER SIDE", errors);
+        let hasErrors = false;
+        Object.keys(errors).forEach(i=>{
+          if(errors[i] && errors[i].length)
+            hasErrors = true;
+        });
+        if(hasErrors)
+          reject(errors);
+        resolve(account);
+        accounts.push(Object.assign({}, account));
+      }, delay);
+    });
   }
+  
   
   static loadAccount(username, password) {
     return new Promise((resolve, reject) => {

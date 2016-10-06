@@ -1,22 +1,22 @@
 import * as types from './actionTypes';
 import accountApi from '../api/mockAccountApi';
 import {ajaxCallError} from './ajaxStatusActions';
-import Validator from '../utils/validate';
+import Timestamp from '../api/timestampApi';
 
 export function loadAccountSchema(schema) {
   return {type: types.LOAD_ACCOUNT_SCHEMA, payload: schema};
 }
 export function loadAccountSuccess(account) {
-  return {type: types.LOAD_ACCOUNT_SUCCESS, payload: account};
+  return {type: types.LOAD_ACCOUNT_SUCCESS, payload: account, timestamp:Timestamp()};
 }
 export function createAccountSuccess(account) {
-  return {type: types.CREATE_ACCOUNT_SUCCESS, payload: account};
+  return {type: types.CREATE_ACCOUNT_SUCCESS, payload: account, timestamp:Timestamp()};
 }
 export function loadAccountError(account) {
-  return {type: types.LOAD_ACCOUNT_ERROR, payload: account};
+  return {type: types.LOAD_ACCOUNT_ERROR, payload: account, timestamp:Timestamp()};
 }
 export function createAccountError(account) {
-  return {type: types.CREATE_ACCOUNT_ERROR, payload: account};
+  return {type: types.CREATE_ACCOUNT_ERROR, payload: account, timestamp:Timestamp()};
 }
 export function updateAccount(accountField) {
   return {type: types.UPDATE_ACCOUNT, payload: accountField};
@@ -36,14 +36,23 @@ export function getAccountSchema() {
       .catch(err => dispatch(ajaxCallError(err)));
   };
 }
-export function createAccount(user, pass) {
+export function createAccount(account) {
   return function (dispatch) {
-    return accountApi.createAccount(user, pass)
-      .then((res)=>dispatch(createAccountSuccess(res)))
-      .catch((err)=>dispatch(createAccountError(user)));
+    return accountApi.createAccount(account)
+      .then((res)=>{
+        console.log("RES", res);
+        dispatch(createAccountSuccess(account));
+      })
+      .catch((err)=>{
+        console.log("ERR", err);
+        dispatch(ajaxCallError(err));
+        dispatch(createAccountError(account));
+        throw(err);
+        
+      });
   };
 }
-export function updateAccountField(field) {
+export function updateAccountForm(field) {
   return function (dispatch) {
     dispatch(updateAccount(field));
   };

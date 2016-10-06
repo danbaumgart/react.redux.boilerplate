@@ -68,7 +68,7 @@ const _validateField = (input, schema) => {
   if (keys) {
     if(keys.find(i=>i.toUpperCase() === vtypes.REQUIRED && !valid.REQUIRED()))
         return [vtypes.REQUIRED];
-    else if(input !== '') {
+    //else if(input !== '') {
         keys.forEach(key=> {
           let REQUIREMENT = key.toUpperCase();
           switch (REQUIREMENT) {
@@ -134,7 +134,7 @@ const _validateField = (input, schema) => {
               break;
           }
         });
-      }
+      //}
   }
   return err;
 };
@@ -148,12 +148,17 @@ class Validator{
   validateForm(form){
     const errors = {};
     Object.keys(form).forEach(field => {
-      errors[field] = this.validateField(field, form[field]);
+      let fieldValidation = this.validateField(field, form[field]);
+      if(fieldValidation && fieldValidation.length)
+        errors[field] = fieldValidation;
     });
     return errors;
   }
   validateField(name,value){
-    return _validateField(value,this.schema[name]);
+    let fieldSchema = this.schema[name];
+    if(fieldSchema)
+      return _validateField(value,this.schema[name]);
+    return null;
   }
 }
 export default Validator;

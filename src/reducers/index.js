@@ -6,6 +6,9 @@ import account from './accountReducer';
 import courses from './courseReducer';
 import authors from './authorReducer';
 import navbarCollapsed from './navbarReducer';
+import accounts from './accountsReducer';
+
+
 const reducer = combineReducers({
   ajaxCallsInProgress,
   log,
@@ -13,7 +16,8 @@ const reducer = combineReducers({
   authors,
   navbarCollapsed,
   schema,
-  account
+  account,
+  accounts
 });
 
 export default reducer;

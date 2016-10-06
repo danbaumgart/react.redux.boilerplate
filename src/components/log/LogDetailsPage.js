@@ -7,14 +7,14 @@ class LogDetails extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      entry:Object.assign({},props.entry),
+      entry:Object.assign({},props.entry)
     };
   }
   componentWillReceiveProps(nextProps){
     if(this.props.entry.id != nextProps.entry.id){
       //Necessary to populate schema when existing log entry is loaded directly.
       this.setState({
-        entry:Object.assign({},nextProps.entry),
+        entry:Object.assign({},nextProps.entry)
       });
     }
   }
@@ -22,7 +22,6 @@ class LogDetails extends React.Component {
     this.context.router.push('/log');
   }
   render() {
-    console.log(this.state);
     const rows = this.state.entry.data.map((d,i)=>{
       return <tr key={d.key}><td>{d.key}</td><td>{d.value}</td></tr>;
     });
@@ -78,7 +77,6 @@ function mapStateToProps(state, ownProps) {
       );
     }
   }
-  console.log(entry.data);
   return {
     entry:entry
   };
