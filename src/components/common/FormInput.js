@@ -11,7 +11,8 @@ const FormInput = ({label, onChange, name, value, type, placeholder, errors}) =>
       {group: form.group + ' has-error'},
       {errors: <ul>{errors.map((error,idx) => <li key={name + '.error[' + idx + ']'}>{error}</li>)}</ul>}
     );
-  
+  if(label.slice(-1) !== ':')
+    label += ':';
   return (
     <div className={form.group} noValidate>
       <label className="control-label col-sm-3" htmlFor={name}>{label}</label>
@@ -31,17 +32,16 @@ const FormInput = ({label, onChange, name, value, type, placeholder, errors}) =>
 };
 
 FormInput.propTypes = {
-  label: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  name:PropTypes.string,
+  name:PropTypes.string.isRequired,
+  label: PropTypes.string,
   value: PropTypes.string,
-  type:PropTypes.string,
+  type:PropTypes.oneOf(['text','number','email']),
   placeholder: PropTypes.string,
   errors: PropTypes.array
 };
 
 FormInput.defaultProps = {
-  name:'',
   value: '',
   type:'text',
   placeholder: '',

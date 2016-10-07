@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react';
 import FormInput from '../common/FormInput';
 import SubmitButton from '../common/SubmitButton';
 
-const RegistrationForm = ({account, update, save, errors, saving}) => {
+const RegistrationForm = ({account, update, save, errors, saving}) => {``
   return (
     <form className="form-horizontal">
       <FormInput label="Email Address"
@@ -38,10 +38,12 @@ const RegistrationForm = ({account, update, save, errors, saving}) => {
                  type="password"
                  errors={errors.confirmPassword}
                  onChange={update}/>
-      <SubmitButton
+      <div className="control-group">
+        <SubmitButton
         onSave={save}
-        idle={!saving}
+        disable={saving}
         label={!saving ? "Register" : "Register..."} />
+      </div>
     </form>
   );
 };

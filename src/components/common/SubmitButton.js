@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 
-const SubmitButton = ({label, idle, onSave, btn}) => {
+const SubmitButton = ({label, disable, onSave, btn}) => {
   const validButtons = ['default', 'warning', 'danger', 'success', 'info'];
   let index = validButtons.findIndex(b => b.toLowerCase() === btn.toLowerCase());
   let buttonType = 'btn btn-';
@@ -10,7 +10,7 @@ const SubmitButton = ({label, idle, onSave, btn}) => {
       <input className={buttonType}
              type="button"
              onClick={onSave}
-             disabled={!idle}
+             disabled={disable}
              value={label}/>
     </div>
   );
@@ -18,12 +18,12 @@ const SubmitButton = ({label, idle, onSave, btn}) => {
 
 SubmitButton.propTypes = {
   onSave: PropTypes.func.isRequired,
-  idle: PropTypes.bool,
+  disable: PropTypes.bool,
   label: PropTypes.string,
   btn: PropTypes.string
 };
 SubmitButton.defaultProps = {
-  idle: true,
+  disable: false,
   label: 'Submit',
   btn: 'primary'
 };

@@ -36,7 +36,7 @@ const CourseForm = ({course, allAuthors, onSave, onChange, saving, errors}) => {
       <SubmitButton
         onSave={onSave}
         label={saving ? 'Saving...' : 'Save'}
-        idle={!saving}/>
+        disable={saving}/>
     </form>
   );
 };

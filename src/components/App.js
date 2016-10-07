@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react';
 import TopNavbar from './navigation/TopNavbar';
+import MdlNavbar from './navigation/MdlNavbar';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as navbarActions from '../actions/navbarActions';
@@ -20,12 +21,13 @@ class App extends React.Component{
     const title = "SPA";
     return (
       <div>
-        <TopNavbar title={title}
+        <MdlNavbar title={title}
                    loading={this.props.loading}
                    toggle={this.toggleNavbar}
                    currentLocation={this.props.currentLocation}
-                   collapsed={this.props.collapsed} />
-        <div className="container-fluid">{this.props.children}</div>
+                   collapsed={this.props.collapsed}>
+          {this.props.children}
+        </MdlNavbar>
       </div>
     );
   }

@@ -59,7 +59,7 @@ class AccountPage extends React.Component {
   render() {
     let fieldsToValidate = {};
     this.state.touched.forEach(field => fieldsToValidate[field] = this.props.account[field]);
-    let errors = this.props.validateOn !== 'submit' || this.state.submitted ?
+    let errors = (this.props.validateOn !== 'submit' || this.state.submitted) ?
       this.props.validation.validateForm(fieldsToValidate) : {};
     return (
       <div>
@@ -76,12 +76,10 @@ AccountPage.propTypes = {
   actions: PropTypes.object.isRequired,
   validation: PropTypes.object,
   validateOn: PropTypes.oneOf(['submit','change'])
-  //touched: PropTypes.array
 };
 
 AccountPage.defaultProps = {
-  validation: {}//,
-  //touched: []
+  validation: {}
 }
 function mapStateToProps(state, ownProps) {
   const accountForm = {

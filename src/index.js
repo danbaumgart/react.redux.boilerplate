@@ -8,8 +8,11 @@ import routes from './routes';
 import {loadAuthors} from './actions/authorActions';
 import {loadCourses} from './actions/courseActions';
 import {getAccountSchema} from './actions/accountActions';
-import './styles/styles.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
+import '../node_modules/material-design-lite/material.min.js';
+import './styles/styles.css';
+import "../node_modules/material-design-lite/material.min.css";
 import '../node_modules/toastr/build/toastr.min.css';
 
 const store = configureStore();
