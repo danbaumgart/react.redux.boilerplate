@@ -1,14 +1,13 @@
 import React, {PropTypes} from 'react';
-import RegistrationForm from './RegistrationForm';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import FormInput from '../common/FormInput';
 import PageTitle from '../common/PageTitle';
 import * as accountActions from '../../actions/accountActions';
 import Validator from '../../utils/validate';
 import toastr from 'toastr';
+import LoginForm from './LoginForm';
 
-class AccountPage extends React.Component {
+class LoginPage extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -27,10 +26,10 @@ class AccountPage extends React.Component {
       saving: true,
       submitted: true
     });
-    this.props.actions.createAccount(this.props.account)
+    this.props.actions.loginAccount(this.props.user)
       .then((result)=> {
       this.setState({saving:false});
-      toastr.success("Registration Success" + result);
+      toastr.success("Login Success" + result);
     }).catch((errors)=>{
       this.setState({saving:false});
       let err = Object.keys(errors).map(i=>{return {field: i, errors: errors[i]};});
@@ -48,72 +47,51 @@ class AccountPage extends React.Component {
   
   updateField(event) {
     let {name, value} = event.target;
-    let dirty = Object.keys(this.props.account).filter(i=>this.props.account[i] !== '');
+    let dirty = Object.keys(this.props.user).filter(i=>this.props.user[i] !== '');
     let fieldIsAlreadyDirty = dirty.indexOf(name) !== -1;
     
     this.setState({
       touched: fieldIsAlreadyDirty ? dirty : [...dirty, name]
     });
     let payload = Object.assign({}, this.props.account, {[name]: value});
-    this.props.actions.updateAccountForm(payload);
+    this.props.actions.updateLoginForm(payload);
   }
   render() {
     let fieldsToValidate = {};
-    this.state.touched.forEach(field => fieldsToValidate[field] = this.props.account[field]);
+    this.state.touched.forEach(field => fieldsToValidate[field] = this.props.user[field]);
     const fieldErrors = this.props.validation.validateForm(fieldsToValidate);
     const errors = {};
-    if((this.props.validateOn === 'submit' && this.state.submitted) || this.props.validateOn === 'change')
+    if(this.state.submitted)
       Object.assign(errors, fieldErrors);
     return (
       <div>
-        <PageTitle title="Registration" />
-        <RegistrationForm account={this.props.account} errors={errors} update={this.updateField} save={this.onSubmitForm} saving={this.state.saving} />
+        <PageTitle title="Login" />
+        <LoginForm user={this.props.user} errors={errors} update={this.updateField} save={this.onSubmitForm} saving={this.state.saving} />
       </div>
     );
   }
 }
 
 
-AccountPage.propTypes = {
-  account: PropTypes.object.isRequired,
-  dirty: PropTypes.object.isRequired,
+LoginPage.propTypes = {
+  user: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
-  validation: PropTypes.object,
-  validateOn: PropTypes.oneOf(['submit','change'])
+  validation: PropTypes.object
 };
-
-AccountPage.defaultProps = {
+LoginPage.defaultProps = {
   validation: {}
 }
 function mapStateToProps(state, ownProps) {
-  const accountForm = {
+  const userForm = {
     username: '',
-    last: '',
-    first: '',
     password: '',
-    confirmPassword: ''
+    rememberMe: false
   };
-  const schema = {};
-  Object.assign(accountForm,state.account);
-  if(state.schema.hasOwnProperty('account'))
-    Object.assign(schema,
-      state.schema.account,
-      {
-        confirmPassword:{
-          required: true,
-          restrict:{
-            value: accountForm.password
-          }
-        }
-      }
-    );
-  let validation = new Validator(schema);
+  let validation = new Validator({username:{required:true}},{password:{required:true}});
+  Object.assign(userForm,state.user);
   return {
-    dirty: state.account,
-    account: accountForm,
-    validation: validation,
-    validateOn: 'change'
-    //touched: fieldsToUpdate
+    user: userForm,
+    validation: validation
   };
 }
 
@@ -123,4 +101,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AccountPage);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

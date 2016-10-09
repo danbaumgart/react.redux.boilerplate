@@ -21,8 +21,11 @@ export function createAccountError(account) {
 export function updateAccount(accountField) {
   return {type: types.UPDATE_ACCOUNT, payload: accountField};
 }
+export function updateLoginForm(loginField) {
+  return {type: types.UPDATE_LOGIN_FORM, payload: loginField};
+}
 
-export function loadAccount(user, pass) {
+export function loadAccount({user, pass}) {
   return function (dispatch) {
     return accountApi.loadAccount(user, pass)
       .then((res)=>dispatch(loadAccountSuccess(res)))

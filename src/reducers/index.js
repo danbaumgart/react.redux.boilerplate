@@ -7,6 +7,7 @@ import courses from './courseReducer';
 import authors from './authorReducer';
 import navbarCollapsed from './navbarReducer';
 import accounts from './accountsReducer';
+import login from './loginReducer';
 
 
 const reducer = combineReducers({
@@ -17,7 +18,8 @@ const reducer = combineReducers({
   navbarCollapsed,
   schema,
   account,
-  accounts
+  accounts,
+  login
 });
 
 export default reducer;

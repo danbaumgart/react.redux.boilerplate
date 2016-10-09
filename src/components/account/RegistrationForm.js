@@ -42,7 +42,7 @@ const RegistrationForm = ({account, update, save, errors, saving}) => {``
         <SubmitButton
         onSave={save}
         disable={saving}
-        label={!saving ? "Register" : "Register..."} />
+        label={!saving ? "Register" : "Register"} />
       </div>
     </form>
   );

@@ -7,9 +7,10 @@ const SubmitButton = ({label, disable, onSave, btn}) => {
   let buttonType = 'btn btn-';
   buttonType += index !== -1 ? btn : 'primary';
   return (
-    <div className="col-xs-12" style={{textAlign: "right"}}>
+    <div className="col-xs-12" style={{textAlign: "right", paddingTop: "20px"}}>
       <RaisedButton onClick={onSave}
                     label={label}
+                    disabledBackgroundColor="rgba(169, 197, 190, 0.74)"
                     primary
                     backgroundColor='#427994'
                     labelColor='white'

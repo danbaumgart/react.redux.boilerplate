@@ -5,9 +5,10 @@ import HomePage from './components/home/HomePage';
 import AboutPage from './components/about/AboutPage';
 import LogPage from './components/log/LogPage';
 import LogDetailsPage from './components/log/LogDetailsPage';
-import AccountPage from './components/account/AccountPage';
 import CoursesPage from './components/courses/CoursesPage';
 import ManageCoursePage from './components/courses/ManageCoursePage';
+import AccountPage from './components/account/AccountPage';
+import LoginPage from './components/account/LoginPage';
 
 export default (
   <Route path="/" component={App}>
@@ -19,5 +20,6 @@ export default (
     <Route path="log" component={LogPage}/>
     <Route path="log/:id" component={LogDetailsPage}/>
     <Route path="account" component={AccountPage}/>
+    <Route path="account/login" component={LoginPage}/>
   </Route>
 );
