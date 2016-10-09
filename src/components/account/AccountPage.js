@@ -3,6 +3,7 @@ import RegistrationForm from './RegistrationForm';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import FormInput from '../common/FormInput';
+import PageTitle from '../common/PageTitle';
 import * as accountActions from '../../actions/accountActions';
 import Validator from '../../utils/validate';
 import toastr from 'toastr';
@@ -59,10 +60,13 @@ class AccountPage extends React.Component {
   render() {
     let fieldsToValidate = {};
     this.state.touched.forEach(field => fieldsToValidate[field] = this.props.account[field]);
-    let errors = (this.props.validateOn !== 'submit' || this.state.submitted) ?
-      this.props.validation.validateForm(fieldsToValidate) : {};
+    const fieldErrors = this.props.validation.validateForm(fieldsToValidate);
+    const errors = {};
+    if((this.props.validateOn === 'submit' && this.state.submitted) || this.props.validateOn === 'change')
+      Object.assign(errors, fieldErrors);
     return (
       <div>
+        <PageTitle title="Registration" />
         <RegistrationForm account={this.props.account} errors={errors} update={this.updateField} save={this.onSubmitForm} saving={this.state.saving} />
       </div>
     );
@@ -112,7 +116,7 @@ function mapStateToProps(state, ownProps) {
     dirty: state.account,
     account: accountForm,
     validation: validation,
-    validateOn: 'submit'
+    validateOn: 'change'
     //touched: fieldsToUpdate
   };
 }

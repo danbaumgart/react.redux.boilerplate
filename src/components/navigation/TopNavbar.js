@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react';
 import {Link, IndexLink} from 'react-router';
 import LoadingDots from '../common/LoadingDots';
 
+
 const TopNavbar = ({title, loading, toggle,collapsed, currentLocation})=> {
   const Links = [
     {path: '/', name:'Home'},
@@ -23,7 +24,7 @@ const TopNavbar = ({title, loading, toggle,collapsed, currentLocation})=> {
       return <li {...indexProps}><Link {...linkProps}>{l.name}</Link></li>;
     });
   return (<div>
-    <nav className="navbar navbar-inverse">
+    <nav className="navbar navbar-inverse navbar-fixed-top" style={{borderRadius:"0px"}}>
       <div className="container-fluid">
         <div className="navbar-header">
           <button type="button" className="navbar-toggle collapsed" onClick={toggle}>
@@ -44,6 +45,9 @@ const TopNavbar = ({title, loading, toggle,collapsed, currentLocation})=> {
         </div>
       </div>
     </nav>
+    <main className="container-fluid mdl-layout__content">
+      <PageContent>{children}</PageContent>
+    </main>
   </div>);
 };
 

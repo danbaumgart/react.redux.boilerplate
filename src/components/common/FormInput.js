@@ -36,7 +36,7 @@ FormInput.propTypes = {
   name:PropTypes.string.isRequired,
   label: PropTypes.string,
   value: PropTypes.string,
-  type:PropTypes.oneOf(['text','number','email']),
+  type:PropTypes.oneOf(['text','number','email','password']),
   placeholder: PropTypes.string,
   errors: PropTypes.array
 };

@@ -1,10 +1,10 @@
 
-
 a.delete-link{
   cursor:pointer;
 }
-a.mdl-layout__tab:hover, a
-.mdl-layout__tab:focus{
+a.mdl-layout__tab:hover,
+a.mdl-layout__tab:focus
+{
   color: #dbdfe2;
   text-decoration: none;
 }

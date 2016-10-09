@@ -25,7 +25,10 @@
     "redux": "3.5.2",
     "redux-thunk": "2.0.1",
     "toastr": "2.1.2",
-    "material-design-lite": "^1.2.0"
+    "material-design-lite": "^1.2.0",
+    "mdbootstrap": "^4.1.1",
+    "material-ui": "^0.16",
+    "react-tap-event-plugin": "^1.0.0"
   },
   "devDependencies": {
     "babel-cli": "6.8.0",

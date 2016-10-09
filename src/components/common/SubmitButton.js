@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react';
+import RaisedButton from 'material-ui/RaisedButton';
 
 const SubmitButton = ({label, disable, onSave, btn}) => {
   const validButtons = ['default', 'warning', 'danger', 'success', 'info'];
@@ -7,11 +8,12 @@ const SubmitButton = ({label, disable, onSave, btn}) => {
   buttonType += index !== -1 ? btn : 'primary';
   return (
     <div className="col-xs-12" style={{textAlign: "right"}}>
-      <input className={buttonType}
-             type="button"
-             onClick={onSave}
-             disabled={disable}
-             value={label}/>
+      <RaisedButton onClick={onSave}
+                    label={label}
+                    primary
+                    backgroundColor='#427994'
+                    labelColor='white'
+                    disabled={disable}/>
     </div>
   );
 };
