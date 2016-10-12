@@ -9,7 +9,8 @@ const InputField = ({name, onChange, label, placeholder, value, error}) => {
       hintText={placeholder}
       value={value}
       errorText={error}
-      autocomplete="false"/>
+      fullWidth={true}
+      autoComplete="off"/>
   );
 };
 
