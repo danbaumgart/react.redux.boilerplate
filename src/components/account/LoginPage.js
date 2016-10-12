@@ -53,7 +53,7 @@ class LoginPage extends React.Component {
     this.setState({
       touched: fieldIsAlreadyDirty ? dirty : [...dirty, name]
     });
-    let payload = Object.assign({}, this.props.account, {[name]: value});
+    let payload = Object.assign({}, this.props.user, {[name]: value});
     this.props.actions.updateLoginForm(payload);
   }
   render() {
@@ -80,7 +80,7 @@ LoginPage.propTypes = {
 };
 LoginPage.defaultProps = {
   validation: {}
-}
+};
 function mapStateToProps(state, ownProps) {
   const userForm = {
     username: '',
@@ -88,7 +88,7 @@ function mapStateToProps(state, ownProps) {
     rememberMe: false
   };
   let validation = new Validator({username:{required:true}},{password:{required:true}});
-  Object.assign(userForm,state.user);
+  Object.assign(userForm,state.login);
   return {
     user: userForm,
     validation: validation
