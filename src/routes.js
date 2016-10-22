@@ -7,7 +7,7 @@ import LogPage from './components/log/LogPage';
 import LogDetailsPage from './components/log/LogDetailsPage';
 import CoursesPage from './components/courses/CoursesPage';
 import ManageCoursePage from './components/courses/ManageCoursePage';
-import AccountPage from './components/account/AccountPage';
+import RegistrationPage from './components/account/RegistrationPage';
 import LoginPage from './components/account/LoginPage';
 
 export default (
@@ -19,7 +19,7 @@ export default (
     <Route path="course/:id" component={ManageCoursePage} />
     <Route path="log" component={LogPage}/>
     <Route path="log/:id" component={LogDetailsPage}/>
-    <Route path="account" component={AccountPage}/>
+    <Route path="account" component={RegistrationPage}/>
     <Route path="account/login" component={LoginPage}/>
   </Route>
 );

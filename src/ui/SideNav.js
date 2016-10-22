@@ -1,9 +1,8 @@
 import React, {PropTypes} from 'react';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
-import {Link, IndexLink} from 'react-router';
 
-const SideNav = ({title, handleToggle, collapsed, links, changeRoute, handleClose}) => {
+const SideNavigation = ({title, handleToggle, collapsed, links, changeRoute, handleClose}) => {
   let sideLinks = links.map(link => <MenuItem key={link.path} onTouchTap={()=>changeRoute(link['path'])}>{link.name}</MenuItem>);
   return (
     <div onClick={handleClose}>
@@ -15,7 +14,7 @@ const SideNav = ({title, handleToggle, collapsed, links, changeRoute, handleClos
     </div>
   );
 };
-SideNav.propTypes = {
+SideNavigation.propTypes = {
   title: PropTypes.string.isRequired,
   handleToggle: PropTypes.func.isRequired,
   collapsed: PropTypes.bool.isRequired,
@@ -23,4 +22,4 @@ SideNav.propTypes = {
   changeRoute: PropTypes.func.isRequired,
   handleClose: PropTypes.func.isRequired
 };
-export default SideNav;
+export default SideNavigation;

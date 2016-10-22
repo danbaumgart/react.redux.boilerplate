@@ -18,8 +18,8 @@ export function loadAccountError(account) {
 export function createAccountError(account) {
   return {type: types.CREATE_ACCOUNT_ERROR, payload: account, timestamp:Timestamp()};
 }
-export function updateAccount(accountField) {
-  return {type: types.UPDATE_ACCOUNT, payload: accountField};
+export function updateAccount(registrationForm) {
+  return {type: types.UPDATE_ACCOUNT, payload: registrationForm};
 }
 export function updateLoginForm(loginField) {
   return {type: types.UPDATE_LOGIN_FORM, payload: loginField};
@@ -42,22 +42,17 @@ export function getAccountSchema() {
 export function createAccount(account) {
   return function (dispatch) {
     return accountApi.createAccount(account)
-      .then((res)=>{
-        console.log("RES", res);
-        dispatch(createAccountSuccess(account));
-      })
-      .catch((err)=>{
-        console.log("ERR", err);
+      .then(res => dispatch(createAccountSuccess(res)))
+      .catch(err=>{
         dispatch(ajaxCallError(err));
         dispatch(createAccountError(account));
         throw(err);
-        
       });
   };
 }
-export function updateAccountForm(field) {
+export function updateAccountForm(form) {
   return function (dispatch) {
-    dispatch(updateAccount(field));
+    dispatch(updateAccount(form));
   };
 }
 

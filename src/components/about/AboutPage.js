@@ -1,10 +1,10 @@
 import React from 'react';
-
+import PageTitle from '../common/PageTitle';
 class AboutPage extends React.Component{
   render(){
     return (
       <div>
-        <h1>About</h1>
+        <PageTitle title="About" />
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sagittis dignissim sapien, id mollis ante lobortis nec. Mauris ac blandit lectus, eget condimentum lacus. Phasellus sem ligula, volutpat eu elit volutpat, auctor pharetra justo. Phasellus tincidunt consequat turpis et ornare. Fusce porta justo quis elit lobortis vulputate. Duis ac lectus sed mi scelerisque venenatis non vel ligula. Phasellus velit purus, congue sit amet orci ut, euismod bibendum lectus. Phasellus sit amet dui luctus, dictum sapien nec, sagittis lorem. Pellentesque viverra massa vel eros fringilla, ut cursus arcu sollicitudin. Integer sit amet nisi neque. Vestibulum est mi, porttitor sit amet ante nec, rutrum mollis lectus. Praesent interdum est tellus, vel mattis lacus viverra at. Maecenas eu nisl vel nunc sagittis pharetra.
         </p>

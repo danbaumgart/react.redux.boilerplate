@@ -11,9 +11,9 @@ const LoginForm = ({user, update, save, errors, saving}) => {
       <InputField label="Usermame"
                   name="username"
                   placeholder="Enter your email address"
-                  value={user.username}
+                  value={user.emailAddress}
                   type="email"
-                  errors={errors.username}
+                  errors={errors.emailAddress}
                   onChange={update}/>
       <br/>
       <InputField label="Password"

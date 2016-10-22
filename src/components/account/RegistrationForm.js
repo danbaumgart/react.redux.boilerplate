@@ -1,54 +1,48 @@
 import React, {PropTypes} from 'react';
 import SubmitButton from '../common/SubmitButton';
 import InputField from '../../ui/InputField';
+import Paper from 'material-ui/Paper';
 
-const RegistrationForm = ({account, update, save, errors, saving}) => {
-  const formStyle = {
-    paddingLeft: "10px",
-    paddingRight: "10px"
-  };
+const RegistrationForm = ({account, update, save, errors, loading}) => {
+  let passwordHasValue = account.password && account.password !== '';
+  let passwordHasErrors = errors && errors.password && errors.password.length > 0;
+  let enableConfirmPassword = !!(passwordHasValue && !passwordHasErrors);
+  let hasFormErrors = Object.keys(errors).filter(field => errors[field].length).length > 0;
   return (
-    <form className="form-horizontal" style={formStyle}>
-      <InputField label="Email Address"
-                  name="username"
+    <Paper zDepth={1} style={{display: "inline-block", width: "100%", padding: "10px"}}>
+      <InputField name="emailAddress"
                   placeholder="Enter your email address"
-                  value={account.username}
-                  type="email"
-                  errors={errors.username}
+                  value={account.emailAddress}
+                  errors={errors.emailAddress}
                   onChange={update}/>
-      <InputField label="First Name"
-                  name="first"
+      <InputField name="firstName"
                   placeholder="Enter your first name"
-                  value={account.first}
-                  errors={errors.first}
+                  value={account.firstName}
+                  errors={errors.firstName}
                   onChange={update}/>
-      <InputField label="Last Name"
-                  name="last"
+      <InputField name="lastName"
                   placeholder="Enter your last name"
-                  value={account.last}
-                  errors={errors.last}
+                  value={account.lastName}
+                  errors={errors.lastName}
                   onChange={update}/>
-      <InputField label="Password"
-                  name="password"
+      <InputField name="password"
                   placeholder="Enter your password"
                   value={account.password}
                   type="password"
                   errors={errors.password}
                   onChange={update}/>
-      <InputField label="Confirm Password"
-                  name="confirmPassword"
-                  placeholder="Enter your password"
-                  value={account.confirmPassword}
-                  type="password"
-                  errors={errors.confirmPassword}
-                  onChange={update}/>
-      <div className="control-group">
-        <SubmitButton
-          onSave={save}
-          disable={saving}
-          label={!saving ? "Register" : "Register"}/>
-      </div>
-    </form>
+      {enableConfirmPassword && <InputField name="confirmPassword"
+                                            placeholder="Enter your password"
+                                            value={account.confirmPassword}
+                                            type="password"
+                                            disabled={!enableConfirmPassword}
+                                            errors={errors.confirmPassword}
+                                            onChange={update}/>}
+      <SubmitButton
+        onSave={save}
+        disable={loading || hasFormErrors}
+        label="Register"/>
+    </Paper>
   );
 };
 
@@ -56,12 +50,12 @@ RegistrationForm.propTypes = {
   account: React.PropTypes.object.isRequired,
   update: React.PropTypes.func.isRequired,
   save: React.PropTypes.func.isRequired,
-  saving: React.PropTypes.bool.isRequired,
+  loading: React.PropTypes.bool.isRequired,
   errors: React.PropTypes.object
 };
 RegistrationForm.defaultProps = {
   errors: {}
-}
+};
 
 
 export default RegistrationForm;

@@ -30,14 +30,15 @@ class AccountApi {
     return new Promise((resolve,reject)=>{
       setTimeout(() => {
         let validation = new Validator(schema);
-        let errors = validation.validateForm(account);
-        console.log("ERRORS SERVER SIDE", errors);
-        let hasErrors = false;
-        Object.keys(errors).forEach(i=>{
-          if(errors[i] && errors[i].length)
-            hasErrors = true;
-        });
-        if(hasErrors)
+        const errors = validation.validateForm(account);
+        let existingAccountError = accounts.find(acct => acct.emailAddress.toLowerCase() === account.emailAddress.toLowerCase()) ? ["EMAIL EXISTS"] : null;
+          if(existingAccountError){
+            if(errors.emailAddress && Array.isArray(errors.emailAddress))
+              errors.emailAddress = [...errors.emailAddress, ...existingAccountError];
+            else
+              errors.emailAddress = [...existingAccountError];
+        }
+        if(Object.keys(errors).length)
           reject(errors);
         resolve(account);
         accounts.push(Object.assign({}, account));
@@ -46,10 +47,10 @@ class AccountApi {
   }
   
   
-  static loadAccount(username, password) {
+  static loadAccount(emailAddress, password) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        const loggedIn = accounts.find(acct => acct.username.toLowerCase() === username.toLowerCase() && acct.password === password);
+        const loggedIn = accounts.find(acct => acct.emailAddress.toLowerCase() === emailAddress.toLowerCase() && acct.password === password);
         if(loggedIn)
           resolve(loggedIn);
         reject(loggedIn);

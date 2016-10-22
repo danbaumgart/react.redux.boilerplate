@@ -1,62 +1,50 @@
+import {validationTypes as types} from '../../utils/validate';
 export let schema = {
-  username: {
-    required: true,
-    email: true,
-    minimum: {
-      length: 8
-    }
-  },
-  password: {
-    required: true,
-    minimum: {
-      length: 8,
-      special: 1,
-      uppercase: 2,
-      numeric: 4,
-      lowercase: 1
-    }
-  },
-  first: {
-    restrict: {
-      alpha: true
-    }
-  },
-  last: {
-    required: true,
-    restrict: {
-      alpha: true
-    },
-    minimum: {
-      length: 2
-    },
-    maximum: {
-      length: 30
-    }
-  }
+  emailAddress: Object.assign({},
+    {[types.REQUIRED]: true},
+    {[types.MINIMUM_LENGTH]: 8},
+    {[types.EMAIL]: true}
+  ),
+  password: Object.assign({},
+    {[types.REQUIRED]: true},
+    {[types.MINIMUM_LENGTH]: 1},
+    {[types.MINIMUM_SPECIAL]: 1},
+    {[types.MINIMUM_UPPERCASE]: 1},
+    {[types.MINIMUM_NUMERIC]: 1},
+    {[types.MINIMUM_LOWERCASE]: 1}
+  ),
+  firstName: Object.assign({},
+    {[types.RESTRICT_ALPHA]: true}
+  ),
+  lastName: Object.assign({},
+    {[types.REQUIRED]: true},
+    {[types.MINIMUM_LENGTH]: 4},
+    {[types.MAXIMUM_LENGTH]: 6}
+  )
 };
 export let accounts = [
   {
-    username: "danbaumgart@gmail.com",
+    emailAddress: "danbaumgart@gmail.com",
     password: "baumgart",
-    first: "Dan",
-    last: "Baumgart"
+    firstName: "Dan",
+    lastName: "Baumgart"
   },
   {
-    username: "willstampley@gmail.com",
+    emailAddress: "willstampley@gmail.com",
     password: "stampley",
-    first: "Will",
-    last: "Stampley"
+    firstName: "Will",
+    lastName: "Stampley"
   },
   {
-    username: "joeshehata@gmail.com",
+    emailAddress: "joeshehata@gmail.com",
     password: "shehata",
-    first: "Joe",
-    last: "Shehata"
+    firstName: "Joe",
+    lastName: "Shehata"
   },
   {
-    username: "enriquesarranovalle@gmail.com",
+    emailAddress: "enriquesarranovalle@gmail.com",
     password: "sarranovalle",
-    first: "Enrique",
-    last: "Sarrano Valle"
+    firstName: "Enrique",
+    lastName: "Sarrano Valle"
   }
 ];

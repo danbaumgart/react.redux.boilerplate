@@ -25,8 +25,6 @@ const MdlNavbar = ({children, title, loading, toggle, collapsed, currentLocation
     backgroundColor: '#33374c'
   };
   let [tabsLink, navLink] = [getLinks('mdl-layout__tab'), getLinks('mdl-navigation__link')];
-  console.log("TAB LINK", tabsLink);
-  console.log("NAV LINK", navLink);
   return (
     <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
       <header className="mdl-layout__header" style={styleTheme}>

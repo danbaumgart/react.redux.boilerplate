@@ -3,8 +3,10 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as courseActions from '../../actions/courseActions';
 import CourseList from './CourseList';
+import List from '../../ui/DataTable';
 import {browserHistory} from 'react-router';
 import toastr from 'toastr';
+import PageTitle from '../common/PageTitle';
 
 class CoursesPage extends React.Component{
   constructor(props,context) {
@@ -25,7 +27,7 @@ class CoursesPage extends React.Component{
     const {courses} = this.props;
     return (
       <div>
-        <h1>Courses</h1>
+        <PageTitle title="Courses" />
         <input type="submit" value="Add Course" className="btn btn-primary" onClick={this.redirectToAddCoursePage}/>
         <CourseList courses={courses} deleteRow={this.deleteRow} />
       </div>

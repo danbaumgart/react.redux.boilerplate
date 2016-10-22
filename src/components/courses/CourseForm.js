@@ -7,7 +7,6 @@ import SubmitButton from '../common/SubmitButton';
 const CourseForm = ({course, allAuthors, onSave, onChange, saving, errors}) => {
   return (
     <form>
-      <h1>Manage Course</h1>
       <TextInput label="Title"
                  name="title"
                  onChange={onChange}

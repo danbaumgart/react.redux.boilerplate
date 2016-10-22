@@ -8,6 +8,7 @@ import authors from './authorReducer';
 import navbarCollapsed from './navbarReducer';
 import accounts from './accountsReducer';
 import login from './loginReducer';
+import {reducer as form} from 'redux-form';
 
 
 const reducer = combineReducers({
@@ -19,7 +20,8 @@ const reducer = combineReducers({
   schema,
   account,
   accounts,
-  login
+  login,
+  form
 });
 
 export default reducer;

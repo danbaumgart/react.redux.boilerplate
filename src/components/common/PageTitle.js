@@ -1,8 +1,11 @@
 import React, {PropTypes} from 'react';
-
+import Divider from 'material-ui/Divider';
 const PageTitle = ({title}) => {
   return (
-  <h1>{title}</h1>
+    <div>
+      <h1 style={{color: "rgba(107, 177, 151, 0.97)"}}>{title}</h1>
+      <Divider />
+    </div>
   );
 };
 
