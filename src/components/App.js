@@ -19,19 +19,19 @@ class App extends React.Component {
     this.isActive = this.isActive.bind(this);
     this.toggleNavbar = this.toggleNavbar.bind(this);
   }
-  
+
   toggleNavbar() {
     this.props.actions.toggleNavbar();
   }
-  
+
   closeNavbar() {
     this.props.actions.closeNavbar();
   }
-  
+
   isActive(route) {
     return this.context.router.isActive(route) ? 'active' : 'active';
   }
-  
+
   render() {
     const title = "SPA";
     const goHome = ()=>{
@@ -73,18 +73,15 @@ function mapStateToProps(state, ownProps) {
   current = '/' + current;
   let links = [
     {path: '/', name: 'Home'},
-    {path: '/about', name: 'About'},
-    {path: '/courses', name: 'Courses'},
-    {path: '/log', name: 'Log'},
-    {path: '/account', name: 'Account'}
+    {path: '/volunteer', name: 'Volunteer'}
   ];
   let accountLinks = [
     {path: '/account', name: 'Register'},
     {path: '/account/login', name: 'Sign in'},
     {path: '/account/logoff', name: 'Sign out'}
   ];
-  
-  
+
+
   return {
     loading: state.ajaxCallsInProgress > 0,
     collapsed: state.navbarCollapsed,
