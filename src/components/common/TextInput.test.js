@@ -14,7 +14,7 @@ const getTestProps = ({name = 'textInput', label = 'Text Input', value, error, p
     onChange:()=>{},
     value: value || null,
     placeholder: placeholder || null,
-    error: error || null
+    error: error || null,
   };
 };
 

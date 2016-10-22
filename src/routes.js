@@ -9,6 +9,7 @@ import CoursesPage from './components/courses/CoursesPage';
 import ManageCoursePage from './components/courses/ManageCoursePage';
 import RegistrationPage from './components/account/RegistrationPage';
 import LoginPage from './components/account/LoginPage';
+import VolunteerPage from './components/volunteer/VolunteerPage';
 
 export default (
   <Route path="/" component={App}>
@@ -21,5 +22,6 @@ export default (
     <Route path="log/:id" component={LogDetailsPage}/>
     <Route path="account" component={RegistrationPage}/>
     <Route path="account/login" component={LoginPage}/>
+    <Route path="volunteer" component={VolunteerPage}/>
   </Route>
 );
