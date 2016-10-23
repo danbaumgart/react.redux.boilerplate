@@ -1,10 +1,10 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux'
+import {bindActionCreators} from 'redux';
 import ActionButton from '../../ui/ActionButton';
 import * as actions from '../../actions/accountActions';
 
-class ServicesPage extends React.Component {
+class ShelterPage extends React.Component {
     constructor(props, context) {
         super(props, context);
     }
@@ -18,12 +18,12 @@ class ServicesPage extends React.Component {
     }
 }
 
-ServicesPage.propTypes = {
+ShelterPage.propTypes = {
     //title: PropTypes.string.isRequired
 };
 
-ServicesPage.defaultProps = {
-    //title: SeekingHelpPage
+ShelterPage.defaultProps = {
+    //title: ShelterPage
 };
 
 function mapStateToProps(state, ownProps) {
@@ -38,4 +38,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ServicesPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ShelterPage);

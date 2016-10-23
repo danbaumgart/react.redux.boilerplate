@@ -1,3 +1,4 @@
+
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -8,10 +9,10 @@ class VolunteerPage extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      
+
     };
   }
-  
+
   render() {
     return (
       <div>
