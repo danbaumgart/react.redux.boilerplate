@@ -71,23 +71,17 @@ App.contextTypes = {
 function mapStateToProps(state, ownProps) {
   let current = ownProps.routes[1].path || '';
   current = '/' + current;
-  let links = [
-    {path: '/', name: 'Home'},
-    {path: '/volunteer', name: 'Volunteer'}
-  ];
-  let accountLinks = [
-    {path: '/account', name: 'Register'},
-    {path: '/account/login', name: 'Sign in'},
-    {path: '/account/logoff', name: 'Sign out'}
-  ];
+  console.log(state.links);
+  let homeLinks = state.links.homeLinks;
+  let userLinks = state.links.userLinks;
 
 
   return {
     loading: state.ajaxCallsInProgress > 0,
     collapsed: state.navbarCollapsed,
-    links: links,
+    links: homeLinks,
     currentLocation: current,
-    accountLinks: accountLinks
+    accountLinks: userLinks
   };
 }
 function mapDispatchToProps(dispatch) {

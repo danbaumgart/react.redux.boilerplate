@@ -8,25 +8,22 @@ import routes from './routes';
 import {loadAuthors} from './actions/authorActions';
 import {loadCourses} from './actions/courseActions';
 import {getAccountSchema} from './actions/accountActions';
+import {getHomeLinks, getUserLinks} from './actions/linksActions';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-// import '../node_modules/material-design-lite/material.min.js';
-// import "../node_modules/material-design-lite/material.min.css";
 import '../node_modules/toastr/build/toastr.min.css';
 import './styles/styles.css';
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
-import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import muiCustom from './styles/muiCustom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
-//rgb(27, 70, 27)
-//rgb(66, 101, 66)
 const store = configureStore();
 store.dispatch(loadAuthors());
 store.dispatch(loadCourses());
 store.dispatch(getAccountSchema());
+store.dispatch(getHomeLinks());
+store.dispatch(getUserLinks());
 render(
   <Provider store={store}>
     <MuiThemeProvider muiTheme={getMuiTheme(muiCustom)}>

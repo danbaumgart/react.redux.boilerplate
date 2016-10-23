@@ -8,6 +8,8 @@ import authors from './authorReducer';
 import navbarCollapsed from './navbarReducer';
 import accounts from './accountsReducer';
 import login from './loginReducer';
+import links from './linksReducers';
+import userLinks from './userLinksReducer';
 
 const reducer = combineReducers({
   ajaxCallsInProgress,
@@ -18,7 +20,8 @@ const reducer = combineReducers({
   schema,
   account,
   accounts,
-  login
+  login,
+  links
 });
 
 export default reducer;

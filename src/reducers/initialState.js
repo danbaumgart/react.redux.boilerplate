@@ -7,5 +7,6 @@ export default {
   schema: {},
   account: {},
   accounts: [],
-  login: {}
+  login: {},
+  links: {}
 };
