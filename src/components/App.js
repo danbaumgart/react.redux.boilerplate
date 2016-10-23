@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as navbarActions from '../actions/navbarActions';
 import AppBar from 'material-ui/AppBar';
-import SideNav from '../ui/SideNav';
+import SideNavigation from '../ui/SideNavigation';
 import {browserHistory} from 'react-router';
 import Paper from 'material-ui/Paper';
 import NavbarDropdown from '../ui/NavbarDropdown';
@@ -16,7 +16,6 @@ class App extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.closeNavbar = this.closeNavbar.bind(this);
-    this.isActive = this.isActive.bind(this);
     this.toggleNavbar = this.toggleNavbar.bind(this);
   }
 
@@ -26,10 +25,6 @@ class App extends React.Component {
 
   closeNavbar() {
     this.props.actions.closeNavbar();
-  }
-
-  isActive(route) {
-    return this.context.router.isActive(route) ? 'active' : 'active';
   }
 
   render() {
@@ -47,7 +42,7 @@ class App extends React.Component {
                 style={{position:"fixed", top:"0px"}}
                 onLeftIconButtonTouchTap={this.toggleNavbar}/>
         <Paper style={{marginTop:"64px", paddingBottom: "20px", display: "inline-block", width: "100%"}} zDepth={2}>{this.props.children}</Paper>
-        <SideNav title={title} changeRoute={changeRoute} handleToggle={this.toggleNavbar} handleClose={this.closeNavbar}
+        <SideNavigation title={title} changeRoute={changeRoute} handleToggle={this.toggleNavbar} handleClose={this.closeNavbar}
                  collapsed={this.props.collapsed} links={this.props.links} />
         </div>
     );
@@ -71,7 +66,7 @@ App.contextTypes = {
 function mapStateToProps(state, ownProps) {
   let current = ownProps.routes[1].path || '';
   current = '/' + current;
-  console.log(state.links);
+  console.log(current);
   let homeLinks = state.links.homeLinks;
   let userLinks = state.links.userLinks;
 

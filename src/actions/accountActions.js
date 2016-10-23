@@ -3,9 +3,6 @@ import accountApi from '../api/mockAccountApi';
 import {ajaxCallError} from './ajaxStatusActions';
 import Timestamp from '../api/timestampApi';
 
-export function loadAccountSchema(schema) {
-  return {type: types.LOAD_ACCOUNT_SCHEMA, payload: schema};
-}
 export function loadAccountSuccess(account) {
   return {type: types.LOAD_ACCOUNT_SUCCESS, payload: account, timestamp:Timestamp()};
 }
@@ -18,8 +15,8 @@ export function loadAccountError(account) {
 export function createAccountError(account) {
   return {type: types.CREATE_ACCOUNT_ERROR, payload: account, timestamp:Timestamp()};
 }
-export function updateAccount(registrationForm) {
-  return {type: types.UPDATE_ACCOUNT, payload: registrationForm};
+export function updateRegistrationForm(registrationForm) {
+  return {type: types.UPDATE_REGISTRATION_FORM, payload: registrationForm};
 }
 export function updateLoginForm(loginField) {
   return {type: types.UPDATE_LOGIN_FORM, payload: loginField};
@@ -30,13 +27,6 @@ export function loadAccount({user, pass}) {
     return accountApi.loadAccount(user, pass)
       .then((res)=>dispatch(loadAccountSuccess(res)))
       .catch((err)=>dispatch(loadAccountError(user)));
-  };
-}
-export function getAccountSchema() {
-  return function (dispatch) {
-    return accountApi.loadSchema()
-      .then(res => dispatch(loadAccountSchema(res)))
-      .catch(err => dispatch(ajaxCallError(err)));
   };
 }
 export function createAccount(account) {
@@ -50,9 +40,9 @@ export function createAccount(account) {
       });
   };
 }
-export function updateAccountForm(form) {
+export function changeRegistrationForm(form) {
   return function (dispatch) {
-    dispatch(updateAccount(form));
+    dispatch(updateRegistrationForm(form));
   };
 }
 

@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import * as accountActions from '../../actions/accountActions';
 import {connect} from 'react-redux';
-import {schema} from '../../mock/db/accounts';
+import schema from './registrationSchema';
 import PageTitle from '../common/PageTitle';
 import {bindActionCreators} from 'redux';
 import RegistrationForm from './RegistrationForm';
@@ -39,7 +39,7 @@ class RegistrationPage extends React.Component {
   updateField(event) {
     let {name, value} = event.target;
     let payload = Object.assign({}, this.props.account, {[name]: value});
-    this.props.actions.updateAccountForm(payload);
+    this.props.actions.changeRegistrationForm(payload);
     let validationErrors = this.props.validation.validateField(name, value);
     this.setState({
       touched: Object.assign({}, this.state.touched, {[name]: true}),
@@ -93,10 +93,8 @@ class RegistrationPage extends React.Component {
   }
   render() {
     const errors = {};
-    console.log("SNACK", this.state);
     if (this.state.submitted)
       Object.assign(errors, this.state.errors);
-    console.log("SNACKBAR", this.state.snackbarMessage);
     return (
       <div>
         <PageTitle title="Registration"/>
@@ -114,10 +112,7 @@ class RegistrationPage extends React.Component {
 RegistrationPage.propTypes = {
   account: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
-  validation: PropTypes.object
-};
-RegistrationPage.defaultProps = {
-  validation: {}
+  validation: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
@@ -127,14 +122,12 @@ function mapStateToProps(state) {
     firstName: '',
     password: '',
     confirmPassword: ''
-  }, state.account);
+  }, state.registration);
   const criteria = Object.assign({},
     schema,
-    {
-      confirmPassword: Object.assign({},
+    {confirmPassword: Object.assign({},
         {[types.REQUIRED]: true},
-        {[types.RESTRICT_VALUE]: state.account.password})
-    });
+        {[types.RESTRICT_VALUE]: state.registration.password})});
   
   return {
     account: registration,

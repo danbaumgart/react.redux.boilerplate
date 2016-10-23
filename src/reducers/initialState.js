@@ -4,9 +4,7 @@ export default {
   log: [],
   ajaxCallsInProgress: 0,
   navbarCollapsed: true,
-  schema: {},
-  account: {},
-  accounts: [],
+  registration: {},
   login: {},
   links: {}
 };

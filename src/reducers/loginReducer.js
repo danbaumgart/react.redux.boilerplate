@@ -5,7 +5,7 @@ export default function loginReducer(state = initialState.login, action) {
   switch(action.type){
     case types.UPDATE_LOGIN_FORM:
       return Object.assign({}, state, action.payload);
-    case types.LOAD_ACCOUNT_SUCCESS:
+    case types.LOGIN_USER_SUCCESS:
       let {username, first, last} = action.payload;
       return Object.assign({}, username, first, last);
     default:

@@ -23,41 +23,6 @@ const minCharacter = (input, requirement, mincount = 1)=> {
   return matches.length >= mincount;
 };
 
-const validate = (input) => {
-  input = input || '';
-  return {
-    REQUIRED: ()=> input && input !== '',
-    EMAIL: ()=>/^([\w.-]+[^\W])(@[\w.-]+)(\.[^\W_]+)$/.test(input),
-    NUMBER: ()=>!Number.isNaN(Number(input)),
-    INTEGER: ()=>input % 1 === 0,
-    DATE: ()=>/^(0?\d|1[0-2])\/(0?\d|1\d|2\d|3[01])\/(19|20)\d{2}$/.test(input),
-    TIME: ()=>/^(0?[1-9]|1[0-2])(\s?:\s?)([0-5]\d)(\s?[pPaA][mM])$/.test(input),
-    ALPHA: ()=>/[a-zA-Z]/.test(input),
-    NUMERIC: ()=>/[\d]/.test(input),
-    SPECIAL: ()=>/([^\w\s]|_)/.test(input),
-    UPPERCASE: ()=>/[A-Z]/.test(input),
-    LOWERCASE: ()=>/[a-z]/.test(input),
-    MINIMUM: {
-      LENGTH: (minlength)=>input && input.length >= minlength,
-      VALUE: (minvalue)=>input && input >= minvalue,
-      ALPHA: (mincount)=>minCharacter(input, types.ALPHA, mincount),
-      NUMERIC: (mincount)=>minCharacter(input, types.NUMERIC, mincount),
-      SPECIAL: (mincount)=>minCharacter(input, types.SPECIAL, mincount),
-      UPPERCASE: (mincount)=>minCharacter(input, types.UPPERCASE, mincount),
-      LOWERCASE: (mincount)=>minCharacter(input, types.LOWERCASE, mincount)
-    },
-    MAXIMUM: {
-      LENGTH: (maxlength)=>input && input.length <= maxlength,
-      VALUE: (maxvalue)=>input && input <= maxvalue
-    },
-    RESTRICT: {
-      ALPHA: ()=>/^[a-zA-Z]+$/.test(input),
-      NUMERIC: ()=>/^[\d]+$/.test(input),
-      ALPHANUMERIC: ()=>/^[^_\W\s]+$/.test(input),
-      VALUE: (value)=>new RegExp('^' + value + '$').test(input)
-    }
-  }
-};
 export const evaluate = (input)=> {
   return {
     REQUIRED: ()=> input && input !== '',
