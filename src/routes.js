@@ -10,6 +10,12 @@ import ManageCoursePage from './components/courses/ManageCoursePage';
 import RegistrationPage from './components/account/RegistrationPage';
 import LoginPage from './components/account/LoginPage';
 import VolunteerPage from './components/volunteer/VolunteerPage';
+import TrainingPage from './components/training/TrainingPage';
+import DonatePage  from './components/donate/DonatePage';
+import PartnerPage from './components/partner/PartnerPage';
+import ServicesPage from './components/services/ServicesPage'
+import TechnicalTrainingPage from './components/training/TechnicalTrainingPage';
+import AdministrativeTrainingPage from './components/training/TechnicalTrainingPage';
 
 export default (
   <Route path="/" component={App}>
@@ -23,5 +29,15 @@ export default (
     <Route path="account" component={RegistrationPage}/>
     <Route path="account/login" component={LoginPage}/>
     <Route path="volunteer" component={VolunteerPage}/>
+    <Route path="training" component={TrainingPage}/>
+    <Route path="donate" component={DonatePage}/>
+    <Route path="partner" component={PartnerPage}/>
+    <Route path="services" component={ServicesPage}/>
+    <Route path="technicaltraining" component={TechnicalTrainingPage}/>
+    <Route path="administrativetraining" component={AdministrativeTrainingPage}/>
+
+
+
+
   </Route>
 );

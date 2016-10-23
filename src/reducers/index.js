@@ -8,8 +8,6 @@ import authors from './authorReducer';
 import navbarCollapsed from './navbarReducer';
 import accounts from './accountsReducer';
 import login from './loginReducer';
-import {reducer as form} from 'redux-form';
-
 
 const reducer = combineReducers({
   ajaxCallsInProgress,
@@ -20,8 +18,7 @@ const reducer = combineReducers({
   schema,
   account,
   accounts,
-  login,
-  form
+  login
 });
 
 export default reducer;
