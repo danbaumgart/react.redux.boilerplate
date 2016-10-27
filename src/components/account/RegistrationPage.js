@@ -12,8 +12,6 @@ class RegistrationPage extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      errors: this.props.errors,
-      touched: {},
       submitted: false,
       loading: false
     };
@@ -30,10 +28,13 @@ class RegistrationPage extends React.Component {
     let validation = this.props.validation.validateField(name, value);
     const errors = Object.assign({}, this.props.errors, {[name]: validation});
     if(name === 'emailAddress') this.props.actions.changeRegistrationForm(form)
-      .then(res => res === types.UNAVAILABLE
-          ? this.props.actions.changeRegistrationErrors(Object.assign(errors, {emailAddress: [types.UNAVAILABLE]}))
-          : this.props.actions.changeRegistrationErrors(Object.assign(errors, {emailAddress: [types.UNAVAILABLE]}))
-      ); else this.props.actions.changeRegistrationErrors(errors);
+      .then(res =>
+        res === types.UNAVAILABLE
+        ? this.props.actions.changeRegistrationErrors(Object.assign(
+          errors, {emailAddress: types.UNAVAILABLE})
+      ) : this.props.actions.changeRegistrationErrors(errors));
+    else
+      this.props.actions.changeRegistrationForm(form);
   }
   handleSuccess() {
     this.setState({
