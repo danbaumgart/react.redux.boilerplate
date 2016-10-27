@@ -1,4 +1,4 @@
-import {validationTypes as types} from '../../utils/validate';
+import types from '../../utils/enums/validation';
 export default {
   emailAddress: Object.assign({},
     {[types.REQUIRED]: true},
@@ -18,7 +18,7 @@ export default {
   ),
   lastName: Object.assign({},
     {[types.REQUIRED]: true},
-    {[types.MINIMUM_LENGTH]: 4},
+    {[types.MINIMUM_LENGTH]: 2},
     {[types.MAXIMUM_LENGTH]: 6}
   )
 };

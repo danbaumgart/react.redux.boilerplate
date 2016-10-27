@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import PageTitle from '../common/PageTitle';
-import * as accountActions from '../../actions/accountActions';
+import * as accountActions from '../../actions/loginActions';
 import Validator from '../../utils/validate';
 import toastr from 'toastr';
 import LoginForm from './LoginForm';

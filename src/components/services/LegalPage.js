@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import ActionButton from '../../ui/ActionButton';
-import * as actions from '../../actions/accountActions';
+import * as actions from '../../actions/loginActions';
 
 class LegalPage extends React.Component {
     constructor(props, context) {

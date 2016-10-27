@@ -6,8 +6,10 @@ import Paper from 'material-ui/Paper';
 const RegistrationForm = ({account, update, save, errors, loading}) => {
   let passwordHasValue = account.password && account.password !== '';
   let passwordHasErrors = errors && errors.password && errors.password.length > 0;
-  let enableConfirmPassword = !!(passwordHasValue && !passwordHasErrors);
-  let hasFormErrors = Object.keys(errors).filter(field => errors[field].length).length > 0;
+  let enableConfirmPassword = !!(passwordHasValue) && (!passwordHasErrors);
+  let formErrors = Object.keys(errors).filter(field => errors[field] && errors[field].length > 0);
+  console.log("REGISTRATION FORM", formErrors);
+  let hasFormErrors = formErrors.length > 0;
   return (
     <Paper zDepth={1} style={{display: "inline-block", width: "100%", padding: "10px"}}>
       <InputField name="emailAddress"

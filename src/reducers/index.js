@@ -1,22 +1,19 @@
 import {combineReducers} from 'redux';
 import ajaxCallsInProgress from './ajaxStatusReducer';
-import log from './logReducer';
-import registration from './accountReducer';
-import courses from './courseReducer';
-import authors from './authorReducer';
+import registration from './registrationReducer';
 import navbarCollapsed from './navbarReducer';
 import login from './loginReducer';
 import links from './linksReducers';
+import alerts from './alertsReducer';
+
 
 const reducer = combineReducers({
   ajaxCallsInProgress,
-  log,
-  courses,
-  authors,
   navbarCollapsed,
   registration,
   login,
-  links
+  links,
+  alerts
 });
 
 export default reducer;

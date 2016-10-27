@@ -1,12 +1,12 @@
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
 
-export default function accountReducer(state = initialState.accounts, action) {
+export default function alertsReducer(state = initialState.alerts, action) {
   switch(action.type){
-    case types.CREATE_ACCOUNT_SUCCESS:
+    case types.LAUNCH_TOAST_MESSAGE:
       return [
         ...state,
-        Object.assign({}, {account:action.payload})
+        ...action.payload
       ];
     default:
       return state;
