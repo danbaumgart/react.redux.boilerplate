@@ -21,8 +21,8 @@ class SnackbarManager extends React.Component {
   }
   
   componentWillReceiveProps(nextProps) {
-    let alerts = nextProps.alertsReducer.slice(0);
-    if (this.props.alerts.length < nextProps.alertsReducer.length)
+    let alerts = nextProps.alerts.slice(0);
+    if (this.props.alerts.length < nextProps.alerts.length)
       this.setState({
         messages: alerts
       });
@@ -75,7 +75,7 @@ SnackbarManager.defaultProps = {
 };
 function mapStateToProps(state, ownProps) {
   return {
-    alerts: state.alertsReducer
+    alerts: state.alerts
   };
 }
 // function mapDispatchToProps(dispatch) {

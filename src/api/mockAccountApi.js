@@ -16,12 +16,14 @@ class AccountApi {
         res(schema);
       }, delay));
   }
-  static checkAvailability(emailAddress){
-    return new Promise((resolve) =>{
+  static checkAvailability({emailAddress = ''}){
+    return new Promise((resolve) => {
       setTimeout(()=>
+        emailAddress && emailAddress !== '' &&
         accounts.find(acct => acct.emailAddress.toLowerCase() === emailAddress.toLowerCase())
-        ? resolve(invalid.UNAVAILABLE)
-        : resolve(null), delay)});
+          ? resolve(invalid.UNAVAILABLE)
+          : resolve(null), delay)
+    })
   }
   static createAccount(account) { // to avoid manipulating object passed in.
     return new Promise((resolve,reject)=>{

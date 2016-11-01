@@ -25,6 +25,7 @@ const minCharacter = (input, requirement, mincount = 1)=> {
 };
 
 const evaluate = (input)=> {
+  //A CALL THAT RETURNS TRUE MEANS THAT THE INPUT VALUE IS VALID WITH RESPECT TO THAT PARTICULAR CONDITION.
   return {
     REQUIRED: ()=> input && input !== '',
     EMAIL: ()=>/^([\w.-]+[^\W])(@[\w.-]+)(\.[^\W_]+)$/.test(input),
@@ -54,21 +55,17 @@ const evaluate = (input)=> {
   };
 };
 
-const _validateField = (input = '', schema) => {
+const _validateField = (input = '', schema = {}) => {
   let valid = evaluate(input);
-  let keys = Object.keys(schema);
+  const isOptional = Object.keys(schema).findIndex(i => i === types.REQUIRED) === -1;
   let err = [];
-  if (Array.isArray(keys) && keys.length) {
-    if (keys.findIndex(i => i === types.REQUIRED) > -1)
-      if (!valid.REQUIRED())
-        return [types.REQUIRED];
-    else if (!input || input == '')
-        return [];
-    keys.forEach(requirement => {
-      if (!valid[requirement](schema[requirement]))
-        err.push(types[requirement]);
-    });
-  } return err;
+  if (isOptional && !valid.REQUIRED())
+    err = [];
+  else if(!isOptional && !valid.REQUIRED())
+    err =[types.REQUIRED];
+  else
+    Object.keys(schema).forEach(condition => !valid[condition](schema[condition]) && err.push(types[condition]));
+  return err;
 };
 
 class Validator {

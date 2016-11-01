@@ -2,7 +2,6 @@ import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as navbarActions from '../actions/navbarActions';
-import {removeToast} from '../actions/alertsActions';
 import AppBar from 'material-ui/AppBar';
 import SideNavigation from '../ui/SideNavigation';
 import {browserHistory} from 'react-router';
@@ -127,7 +126,7 @@ function mapStateToProps(state, ownProps) {
 }
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(Object.assign({}, navbarActions, {removeToast}), dispatch)
+    actions: bindActionCreators(Object.assign({}, navbarActions), dispatch)
   };
 }
 

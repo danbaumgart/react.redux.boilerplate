@@ -2,10 +2,10 @@ import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {createAccount, changeRegistrationForm, checkAvailability, changeRegistrationErrors} from '../../actions/registrationActions';
-import {toastError, toastSuccess} from '../../actions/alertsActions';
 import Validator from '../../utils/validate';
 import types from '../../utils/enums/validation';
 import PageTitle from '../common/PageTitle';
+import {initializeForm} from '../../utils/forms';
 import RegistrationForm from './RegistrationForm';
 
 class RegistrationPage extends React.Component {
@@ -18,43 +18,45 @@ class RegistrationPage extends React.Component {
     this.updateField = this.updateField.bind(this);
     this.submitForm = this.submitForm.bind(this);
     this.register = this.register.bind(this);
-    this.handleErrors = this.handleErrors.bind(this);
-    this.handleSuccess = this.handleSuccess.bind(this);
   }
-  
-  updateField(event) {
-    let {name, value = ''} = event.target;
+  updateField({target:{name, value}}) {
     const form = Object.assign({}, this.props.form, {[name]: value});
-    const errors = Object.assign({}, this.props.errors, {
-      [name]: this.props.validation.validateField(name, value)});
-    if(name === 'emailAddress') this.props.actions.changeRegistrationForm(form)
-      .then(res => res === types.UNAVAILABLE
-        ? this.props.actions.changeRegistrationErrors(Object.assign(
-          errors, {emailAddress: types.UNAVAILABLE})
-      ) : this.props.actions.changeRegistrationErrors(errors));
-    else
-      this.props.actions.changeRegistrationForm(form);
+    const errors = this.props.validation.validateForm(form);
+    const updateFormPromise = this.props.actions.changeRegistrationForm(form);
+    if(name !== 'emailAddress') {
+      if(this.props.errors.emailAddress.find(error => error === types.UNAVAILABLE))
+        errors.emailAddress.push(types.UNAVAILABLE);
+      this.props.actions.changeRegistrationErrors(errors);
+    } else {
+      Promise.all([
+        checkAvailability(form),
+        this.props.actions.changeRegistrationErrors(errors),
+        updateFormPromise
+      ]).then(response => {
+        if(response[0] === types.UNAVAILABLE && !errors.emailAddress.includes(types.UNAVAILABLE))
+          this.props.actions.changeRegistrationErrors(Object.assign({}, errors, {emailAddress: [...errors.emailAddress,types.UNAVAILABLE]}))});
+    }
   }
   
   register() {
-    this.setState({loading: true});
-    this.props.actions.createAccount(this.props.form)
-      .then(() => this.props.actions.toastSuccess({emailAddress: ["REGISTERED"]}))
-      .catch(() => this.props.actions.toastError(this.props.actions.toastError('hello valid')));
+    Promise.all([
+      Promise.resolve(this.setState({loading: true})),
+      this.props.actions.createAccount(Object.assign({},this.props.form))
+    ]).then(result => this.setState({loading: false, submitted: true}));
   }
-  
+    
   submitForm() {
-    Object.keys(this.props.errors).find(field =>
-      Array.isArray(this.props.errors[field]) &&
-      this.props.errors[field].length > 0)
-    ? this.register()
-    : this.setState({submitted: true, loading: false});
+    const errors = Object.assign({}, this.props.errors);
+    console.log("ERRORS PROPS", errors);
+    let combined = Object.assign({}, errors, this.props.validation.validateForm(this.props.form));
+    console.log("ERRORS MERGED", combined);
+    let formHasErrors = Object.keys(this.props.form).find(field => Array.isArray(errors[field]) && errors[field].length > 0);
+    if(!formHasErrors) this.register();
+    else this.setState({submitted: true});
   }
   
   render() {
-    const errors = {};
-    if (this.state.submitted)
-      Object.assign(errors, this.props.errors);
+    const errors = this.state.submitted ? this.props.errors : {};
     return (
       <div>
         <PageTitle title="Registration"/>
@@ -62,58 +64,40 @@ class RegistrationPage extends React.Component {
                           errors={errors}
                           update={this.updateField}
                           save={this.submitForm}
-                          loading={this.state.loading}/>
-      </div>
+                          loading={this.state.loading}/></div>
     );
   }
-}
-
-
-function initializeForm(...keys){
-  const form = {}, errors = {}, schema = {};
-  keys.forEach(key => {
-    Object.assign(form, {[key]: ''});
-    Object.assign(errors, {[key]: []});
-    Object.assign(schema, {[key]: {}});
-  });
-  return Object.assign({}, {form}, {errors}, {schema});
 }
 
 RegistrationPage.propTypes = {
   form: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
   validation: PropTypes.object.isRequired,
-  errors: PropTypes.object
+  errors: PropTypes.object.isRequired
 };
-RegistrationPage.defaultProps = {
-  errors: {}
-};
+
 RegistrationPage.contextTypes = {
   router: PropTypes.object
 };
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state, ownProps){
   const registration = initializeForm('emailAddress', 'lastName', 'firstName', 'password', 'confirmPassword');
   let {form, errors, schema} = state.registration;
-  if (form) Object.assign(registration, {form});
-  if (errors) Object.assign(registration, {errors});
-  if (schema) Object.assign(registration, {schema});
+  Object.assign(registration.form, form);
+  Object.assign(registration.errors, errors);
+  Object.assign(registration.schema, schema, {
+    confirmPassword: {
+      [types.RESTRICT_VALUE]: registration.form.password,
+      [types.REQUIRED]: true}});
   Object.assign(registration, {
-    validation: new Validator(
-      Object.assign({}, registration.schema, {
-        confirmPassword: {
-          [types.REQUIRED]: true,
-          [types.RESTRICT_VALUE]: registration.form.password}
-      })
-    )
-  })}
+    validation: new Validator(registration.schema)});
+  return registration;
+}
+
 function mapDispatchToProps(dispatch) {
   const actions = Object.assign({},
-    {checkAvailability},
     {changeRegistrationForm},
     {createAccount},
-    {toastSuccess},
-    {toastError},
     {changeRegistrationErrors});
   return {
     actions: bindActionCreators(actions, dispatch)
