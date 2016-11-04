@@ -41,7 +41,6 @@ const ActionButton = ({actionType, handleClick, buttonType, href}) => {
     }
   };
   let IconComponent = getIconComponent();
-  console.log(props);
   return buttonType === 'flat'
     ? <FlatButton onTouchStart={handleClick}
                   icon={IconComponent}

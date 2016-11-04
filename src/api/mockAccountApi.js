@@ -16,12 +16,11 @@ class AccountApi {
         res(schema);
       }, delay));
   }
-  static checkAvailability({emailAddress = ''}){
+  static checkAvailability(emailAddress = ''){
     return new Promise((resolve) => {
       setTimeout(()=>
-        emailAddress && emailAddress !== '' &&
         accounts.find(acct => acct.emailAddress.toLowerCase() === emailAddress.toLowerCase())
-          ? resolve(invalid.UNAVAILABLE)
+          ? resolve([invalid.UNAVAILABLE])
           : resolve(null), delay)
     })
   }
@@ -39,7 +38,6 @@ class AccountApi {
           if(Array.isArray(errors[key]) && errors[key].length > 0)
             hasErrors = true;
         });
-        console.log("ERRORS", errors);
         if(hasErrors)
           reject(errors);
         else{

@@ -1,7 +1,12 @@
 export default {
   ajaxCallsInProgress: 0,
   navbarCollapsed: true,
-  registration: {},
+  registration: {
+    submitted: false,
+    saving: false,
+    form:{},
+    errors:{}
+  },
   login: {},
   links: {},
   alerts: [],

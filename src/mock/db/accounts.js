@@ -19,7 +19,10 @@ export const schema = {
   lastName: {
     [types.REQUIRED]: true,
     [types.MINIMUM_LENGTH]: 4,
-    [types.MAXIMUM_LENGTH]: 6
+    [types.MAXIMUM_LENGTH]: 6,
+  },
+  confirmPassword: {
+    [types.REQUIRED]: true
   }
 };
 export const accounts = [{

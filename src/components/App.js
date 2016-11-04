@@ -108,7 +108,7 @@ App.contextTypes = {
 function mapStateToProps(state, ownProps) {
   let current = ownProps.routes[1].path || '';
   current = '/' + current;
-  console.log(current);
+  //console.log(current);
   let homeLinks = state.links.homeLinks;
   let userLinks = state.links.userLinks;
   // const alerts = Object.assign({},

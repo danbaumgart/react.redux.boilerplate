@@ -36,7 +36,6 @@ class SnackbarManager extends React.Component {
   }
   
   render() {
-    console.log("SNACKBAR MANAGER STATE", this.state);
     let showSnackbar = this.state.messages.length > this.state.messageNumber;
     const style = Object.assign({}, {
       textAlign: 'center',
@@ -44,7 +43,6 @@ class SnackbarManager extends React.Component {
       color: 'white'
     });
     let alert = showSnackbar && this.state.messages[this.state.messageNumber];
-    console.log("MESSAGE", alert);
     if(alert)
       switch(alert.result) {
         case 'success':
