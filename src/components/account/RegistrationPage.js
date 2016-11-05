@@ -1,13 +1,15 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {
-  createAccount,
-  checkAvailability,
-updateRegistrationErrors,
-updateRegistrationForm,
-  updateRegistrationField
-} from '../../actions/registrationActions';
+// import {
+//   createAccount,
+//   checkAvailability,
+// updateRegistrationErrors,
+// updateRegistrationForm,
+// addRegistrationErrors,
+// removeRegistrationErrors,
+//   updateRegistrationField
+import * as actions from '../../actions/registrationActions';
 import Validator from '../../utils/validate';
 import types from '../../utils/enums/validation';
 import PageTitle from '../common/PageTitle';
@@ -21,37 +23,39 @@ class RegistrationPage extends React.Component {
     super(props, context);
     this.state = {
       submitted: false,
-      loading: false
+      loading: false,
+      errors: {}
     };
     this.updateField = this.updateField.bind(this);
     this.submitForm = this.submitForm.bind(this);
-    this.validateAsync = debounce(this.validateAsync, 1000)
+    this.validateAsync = debounce(this.validateAsync, 500);
   }
-  
-  validateAsync(value) {
-    checkAvailability(value).then(result => {
-      if (result) {
-          Object.assign({}, this.state.errors);
-        this.setState({})
-      }
+  validateAsync(){
+    if(Object.keys(this.state.errors).length)
+      this.setState({errors:{}});
+    actions.validateAsync(this.props.form).then(result => {
+      if(result)
+        this.setState({errors: Object.assign({}, this.state.errors, result)});
+      else if(this.state.errors.emailAddress)
+        this.setState({errors: {}});
     });
   }
-  
   updateField({target:{name, value}}) {
-    this.props.actions.updateRegistrationField({name, value});
-    this.props.actions.updateRegistrationErrors({name, value, validator: new Validator(this.props.schema)});
+    this.props.actions.changeRegistrationField({name, value});
+    if(name === 'emailAddress'){
+      if(Array.isArray(this.state.errors.emailAddress))
+        this.setState({errors: {}});
+      this.validateAsync();
+    }
   }
   
   submitForm() {
-    // if (Object.keys(this.state.errors).find(key => this.state.errors[key].length > 0)) Promise.all([
-    //   Promise.resolve(this.setState({loading: true, submitted: true})),
-    //   this.props.actions.createAccount(this.props.form)
-    // ]).then(res => console.log(res));
     this.setState({submitted: true});
   }
   
   render() {
-    const errors = this.props.errors;
+    console.log('render');
+    const errors = Object.assign({}, new Validator(this.props.schema).validateForm(this.props.form), this.state.errors);
     return (
       <div>
         <PageTitle title="Registration"/>
@@ -79,12 +83,6 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  const actions = Object.assign({},
-    {updateRegistrationField},
-    {updateRegistrationForm},
-    {updateRegistrationErrors},
-    {checkAvailability},
-    {createAccount});
   return {
     actions: bindActionCreators(actions, dispatch)
   };

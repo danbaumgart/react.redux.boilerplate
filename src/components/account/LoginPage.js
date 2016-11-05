@@ -33,7 +33,6 @@ class LoginPage extends React.Component {
     }).catch((errors)=>{
       this.setState({saving:false});
       let err = Object.keys(errors).map(i=>{return {field: i, errors: errors[i]};});
-      console.log("ERRORS", err);
       err.forEach(e=>{
         if(e.errors && Array.isArray(e.errors)) {
           let message = e.errors[0];

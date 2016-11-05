@@ -31,19 +31,19 @@ export const accounts = [{
     firstName: "Dan",
     lastName: "Baumgart"
   }, {
-    emailAddress: "willstampley@gmail.com",
-    password: "stampley",
-    firstName: "Will",
-    lastName: "Stampley"
+    emailAddress: "kerrinenelson@email.com",
+    password: "kerrine",
+    firstName: "Kerrine",
+    lastName: "Nelson"
   }, {
-    emailAddress: "joeshehata@gmail.com",
-    password: "shehata",
-    firstName: "Joe",
-    lastName: "Shehata"
+    emailAddress: "johnndungu@email.com",
+    password: "ndungu",
+    firstName: "John",
+    lastName: "Ndungu"
   }, {
-    emailAddress: "enriquesarranovalle@gmail.com",
-    password: "sarranovalle",
-    firstName: "Enrique",
-    lastName: "Sarrano Valle"
+    emailAddress: "donnyschroeter@email.com",
+    password: "schroeter",
+    firstName: "Donnell",
+    lastName: "Schroeter"
   }
 ];

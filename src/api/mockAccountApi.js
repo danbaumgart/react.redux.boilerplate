@@ -16,8 +16,9 @@ class AccountApi {
         res(schema);
       }, delay));
   }
-  static checkAvailability(emailAddress = ''){
+  static checkAvailability(emailAddress){
     return new Promise((resolve) => {
+      console.log(emailAddress);
       setTimeout(()=>
         accounts.find(acct => acct.emailAddress.toLowerCase() === emailAddress.toLowerCase())
           ? resolve([invalid.UNAVAILABLE])
