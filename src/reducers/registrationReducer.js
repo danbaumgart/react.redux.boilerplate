@@ -26,6 +26,7 @@ export default function registrationReducer(state = initialState.registration, a
         [action.field]: addRegistrationError(state.errors[action.field], action.errors)
       })});
     case types.INITIALIZE_REGISTRATION:
+      console.log(action.payload);
       return action.payload;
     default:
       return state;

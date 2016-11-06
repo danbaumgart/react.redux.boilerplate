@@ -30,8 +30,8 @@ function initializeRegistration({form, errors}){
 }
 export function initializeRegistrationStore(){
   return function(dispatch){
-    let {form, schema, errors} = initializeForm('emailAddress', 'lastName', 'firstName', 'password', 'confirmPassword');
-    dispatch(initializeRegistration(Object.assign({}, {form, schema, errors})));
+    let {form, errors} = initializeForm('emailAddress', 'lastName', 'firstName', 'password', 'confirmPassword');
+    dispatch(initializeRegistration({form, errors, schema}));
   }
 }
 
@@ -54,8 +54,7 @@ export function createAccount(account) {
         Promise.reject(err)])));
   }
 }
-export const validateAsync =({emailAddress=''})=>
-    Promise.all([
+export const validateAsync =({emailAddress=''})=> Promise.all([
       accountApi.checkAvailability(emailAddress)
   ]).then(result => result[0] ? {emailAddress: result} : null);
 

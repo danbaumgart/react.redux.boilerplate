@@ -1,20 +1,10 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-// import {
-//   createAccount,
-//   checkAvailability,
-// updateRegistrationErrors,
-// updateRegistrationForm,
-// addRegistrationErrors,
-// removeRegistrationErrors,
-//   updateRegistrationField
-import * as actions from '../../actions/registrationActions';
+import {changeRegistrationField, createAccount, validateAsync} from '../../actions/registrationActions';
 import Validator from '../../utils/validate';
 import types from '../../utils/enums/validation';
 import PageTitle from '../common/PageTitle';
-import {initializeForm} from '../../utils/forms';
-import {schema} from '../../mock/db/accounts';
 import RegistrationForm from './RegistrationForm';
 import debounce from '../../utils/debounce';
 
@@ -33,7 +23,7 @@ class RegistrationPage extends React.Component {
   validateAsync(){
     if(Object.keys(this.state.errors).length)
       this.setState({errors:{}});
-    actions.validateAsync(this.props.form).then(result => {
+    validateAsync(this.props.form).then(result => {
       if(result)
         this.setState({errors: Object.assign({}, this.state.errors, result)});
       else if(this.state.errors.emailAddress)
@@ -54,8 +44,7 @@ class RegistrationPage extends React.Component {
   }
   
   render() {
-    console.log('render');
-    const errors = Object.assign({}, new Validator(this.props.schema).validateForm(this.props.form), this.state.errors);
+    const errors = Object.assign(this.props.validation.validateForm(this.props.form), this.state.errors);
     return (
       <div>
         <PageTitle title="Registration"/>
@@ -70,7 +59,7 @@ class RegistrationPage extends React.Component {
 
 RegistrationPage.propTypes = {
   form: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired,
+  validation: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
 };
 
@@ -79,12 +68,17 @@ RegistrationPage.contextTypes = {
 };
 
 function mapStateToProps(state, ownProps) {
-  return state.registration;
+  const {form, schema} = state.registration;
+  const validation = new Validator(Object.assign({}, schema, {
+    confirmPassword:  Object.assign({}, schema.confirmPassword, {
+      [types.RESTRICT_VALUE]: form.password
+    })
+  }));
+  return {form, validation};
 }
-
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(actions, dispatch)
+    actions: bindActionCreators(Object.assign({},{changeRegistrationField},{createAccount}), dispatch)
   };
 }
 
