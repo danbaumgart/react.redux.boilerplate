@@ -4,58 +4,66 @@ import {ajaxCallError} from './ajaxStatusActions';
 import {toastError, toastSuccess} from './alertsActions';
 import {initializeForm} from '../utils/forms';
 import {schema} from '../mock/db/accounts';
-import debounce from '../utils/debounce';
-import vtypes from '../utils/enums/validation';
 
-function registrationSuccess() {
-  return {type: types.REGISTRATION_SUCCESS};
+function registrationSuccess(initialValues) {
+  return {type: types.REGISTRATION_SUCCESS, payload: initialValues};
 }
-export function updateRegistrationForm({form, errors}) {
-  return {type: types.UPDATE_REGISTRATION_FORM, payload: {form}};
+function updateRegistration(registration) {
+  return {type: types.UPDATE_REGISTRATION, payload: registration};
 }
-export function updateRegistrationField({name, value}) {
-  return {type: types.UPDATE_REGISTRATION_FIELD, payload: {[name]: value}};
+function updateRegistrationForm(form) {
+  return {type: types.UPDATE_REGISTRATION_FORM, payload: form};
 }
-export function updateRegistrationErrors({name, errors}) {
-  return {type: types.UPDATE_REGISTRATION_ERRORS, payload: {[name]: errors}};
+function updateRegistrationValue(field) {
+  return {type: types.UPDATE_REGISTRATION_VALUE, payload: field};
 }
-export function addRegistrationErrors(field, errors) {
-  return {type: types.ADD_REGISTRATION_ERRORS, field: field, errors: errors};
+function updateRegistrationErrors(errors) {
+  return {type: types.UPDATE_REGISTRATION_ERRORS, payload: errors};
 }
-export function removeRegistrationErrors(field, errors) {
-  return {type: types.REMOVE_REGISTRATION_ERRORS, field: field, errors: errors};
+function initializeRegistration({registration}){
+  return {type: types.INITIALIZE_REGISTRATION, payload: registration};
 }
-function initializeRegistration({form, errors}){
-  return {type: types.INITIALIZE_REGISTRATION, payload: Object.assign({form, errors, schema})};
-}
+
 export function initializeRegistrationStore(){
   return function(dispatch){
-    let {form, errors} = initializeForm('emailAddress', 'lastName', 'firstName', 'password', 'confirmPassword');
-    dispatch(initializeRegistration({form, errors, schema}));
+    let registration = Object.assign(initializeForm('emailAddress', 'lastName', 'firstName', 'password', 'confirmPassword'), {schema});
+    dispatch(initializeRegistration({registration}));
   }
 }
 
-export function changeRegistrationField({name, value}){
+export function setRegistration({errors = {}, form, values}){
+  const registration = {form, errors, values};
+  return function (dispatch){
+    dispatch(updateRegistration(registration));
+  }
+}
+
+export function setRegistrationValue({name, value}){
   return function(dispatch){
-    return dispatch(updateRegistrationField({name, value}));
+    return dispatch(updateRegistrationValue({[name]: value}));
+  }
+}
+
+export function setRegistrationForm(form){
+  return function (dispatch){
+    dispatch(updateRegistrationForm(form));
   }
 }
 
 export function createAccount(account) {
   return function (dispatch) {
-    return accountApi.createAccount(account)
-      .then(res => Promise.all([
-        dispatch(registrationSuccess()),
-        dispatch(toastSuccess("ACCOUNT REGISTERED"))
-      ]).catch(err => Promise.all([
-        dispatch(ajaxCallError(err)),
-        dispatch(updateRegistrationErrors(account)),
-        dispatch(toastError(err)),
-        Promise.reject(err)])));
+    return accountApi.createAccount(account).then(res => {
+        dispatch(toastSuccess(res));
+        dispatch(registrationSuccess(initializeForm('emailAddress', 'lastName', 'firstName', 'password', 'confirmPassword')));
+      }).catch(err => {
+        dispatch(ajaxCallError(err));
+        dispatch(updateRegistrationErrors(err));
+        dispatch(toastError(err));
+      });
   }
 }
-export const validateAsync =({emailAddress=''})=> Promise.all([
-      accountApi.checkAvailability(emailAddress)
-  ]).then(result => result[0] ? {emailAddress: result} : null);
+export const validateAsync = ({emailAddress=''}) => Promise.all([
+    accountApi.checkAvailability(emailAddress)
+  ]).then(result => result[0] ? {emailAddress: result[0]} : null);
 
 

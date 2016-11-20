@@ -1,9 +1,7 @@
 export function initializeForm(...keys){
-  const form = {}, errors = {}, schema = {};
+  const form = {values: {}, form:{submitted: false, loading: false, saving: false}, errors: {}};
   keys.forEach(key => {
-    Object.assign(form, {[key]: ''});
-    Object.assign(errors, {[key]: []});
-    Object.assign(schema, {[key]: {}});
+    Object.assign(form.values, {[key]: ''});
   });
-  return Object.assign({}, {form}, {errors}, {schema});
+  return form;
 }

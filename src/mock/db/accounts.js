@@ -18,8 +18,8 @@ export const schema = {
   },
   lastName: {
     [types.REQUIRED]: true,
-    [types.MINIMUM_LENGTH]: 4,
-    [types.MAXIMUM_LENGTH]: 6,
+    [types.MINIMUM_LENGTH]: 2,
+    [types.MAXIMUM_LENGTH]: 20,
   },
   confirmPassword: {
     [types.REQUIRED]: true
@@ -41,7 +41,7 @@ export const accounts = [{
     firstName: "John",
     lastName: "Ndungu"
   }, {
-    emailAddress: "donnyschroeter@email.com",
+    emailAddress: "donnellschroeter@email.com",
     password: "schroeter",
     firstName: "Donnell",
     lastName: "Schroeter"

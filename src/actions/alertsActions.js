@@ -26,6 +26,7 @@ export function toastError(messages) {
 }
 
 export function toastSuccess(messages) {
+  console.log("MESSAGE SUCCESS", messages);
   const messageList = [];
   Object.keys(messages).forEach(key =>
     messages[key].forEach(message => messageList.push(new Alert(key, message, true))));

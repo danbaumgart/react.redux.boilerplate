@@ -7,7 +7,7 @@ import invalid from '../utils/enums/validation';
 // It uses setTimeout to simulate the delay of an AJAX call.
 // All calls return promises.
 
-
+const accountExists = (emailAddress = '') => accounts.find(acct => acct.emailAddress.toLowerCase() === emailAddress.toLowerCase());
 
 class AccountApi {
   static loadSchema(){
@@ -17,33 +17,28 @@ class AccountApi {
       }, delay));
   }
   static checkAvailability(emailAddress){
-    return new Promise((resolve) => {
-      console.log(emailAddress);
-      setTimeout(()=>
-        accounts.find(acct => acct.emailAddress.toLowerCase() === emailAddress.toLowerCase())
-          ? resolve([invalid.UNAVAILABLE])
-          : resolve(null), delay)
-    })
+    return new Promise((resolve) =>
+      setTimeout(()=> accountExists(emailAddress)
+        ? resolve([invalid.UNAVAILABLE])
+        : resolve(null), delay));
   }
   static createAccount(account) { // to avoid manipulating object passed in.
     return new Promise((resolve,reject)=>{
       setTimeout(() => {
-        let validation = new Validator(schema);
-        const errors = validation.validateForm(account);
-        let hasErrors;
-        if(accounts.filter(acct => acct.emailAddress.toLowerCase() === account.emailAddress.toLowerCase()).length)
-            Array.isArray(errors.emailAddress) && errors.emailAddress.length > 0
+        const errors = new Validator(schema).validateForm(account);
+        let hasErrors = false;
+        if(accountExists(account.emailAddress))
+            Array.isArray(errors.emailAddress) && errors.emailAddress.length
               ? Object.assign(errors, {emailAddress: [...errors.emailAddress, invalid.UNAVAILABLE]})
-              : Object.assign(errors, {emailAddress: []});
-        Object.keys(errors).forEach(key => {
-          if(Array.isArray(errors[key]) && errors[key].length > 0)
-            hasErrors = true;
-        });
+              : Object.assign(errors, {emailAddress: [invalid.UNAVAILABLE]});
+        Object.keys(errors).forEach(key => (Array.isArray(errors[key]) && errors[key].length > 0) ? hasErrors = true : hasErrors = !!hasErrors);
+        console.log("HAS ERRORS", hasErrors);
+        console.log("SERVER ERRORS", errors);
         if(hasErrors)
           reject(errors);
         else{
           accounts.push(account);
-          resolve(account);
+          resolve({accountRegistration: "successful"});
         }
         
       }, delay);
@@ -51,13 +46,13 @@ class AccountApi {
   }
   
   
-  static loadAccount(emailAddress, password) {
+  static loadAccount({emailAddress='', password}) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         const loggedIn = accounts.find(acct => acct.emailAddress.toLowerCase() === emailAddress.toLowerCase() && acct.password === password);
         if(loggedIn)
-          resolve(loggedIn);
-        reject(loggedIn);
+          resolve(loggedIn.emailAddress);
+        reject();
       }, delay);
     });
   }
