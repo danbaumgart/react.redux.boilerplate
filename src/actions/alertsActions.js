@@ -25,11 +25,12 @@ export function toastError(messages) {
   }
 }
 
-export function toastSuccess(messages) {
-  console.log("MESSAGE SUCCESS", messages);
+export function toastSuccess(message) {
+  console.log("MESSAGE SUCCESS", message);
   const messageList = [];
-  Object.keys(messages).forEach(key =>
-    messages[key].forEach(message => messageList.push(new Alert(key, message, true))));
+  Object.keys(message).forEach(key =>
+    messageList.push(new Alert(key, message[key], true)));
+  console.log("MESSAGE LIST", messageList);
   return function (dispatch) {
     dispatch(launchToastMessage(messageList));
   }

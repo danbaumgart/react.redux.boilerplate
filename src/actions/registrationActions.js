@@ -3,7 +3,7 @@ import accountApi from '../api/mockAccountApi';
 import {ajaxCallError} from './ajaxStatusActions';
 import {toastError, toastSuccess} from './alertsActions';
 import {initializeForm} from '../utils/forms';
-import {schema} from '../mock/db/accounts';
+import {registration} from '../mock/db/schema';
 
 function registrationSuccess(initialValues) {
   return {type: types.REGISTRATION_SUCCESS, payload: initialValues};
@@ -26,7 +26,7 @@ function initializeRegistration({registration}){
 
 export function initializeRegistrationStore(){
   return function(dispatch){
-    let registration = Object.assign(initializeForm('emailAddress', 'lastName', 'firstName', 'password', 'confirmPassword'), {schema});
+    let registration = Object.assign(initializeForm('emailAddress', 'lastName', 'firstName', 'password', 'confirmPassword'), {schema: registration});
     dispatch(initializeRegistration({registration}));
   }
 }
@@ -52,14 +52,15 @@ export function setRegistrationForm(form){
 
 export function createAccount(account) {
   return function (dispatch) {
-    return accountApi.createAccount(account).then(res => {
-        dispatch(toastSuccess(res));
-        dispatch(registrationSuccess(initializeForm('emailAddress', 'lastName', 'firstName', 'password', 'confirmPassword')));
-      }).catch(err => {
-        dispatch(ajaxCallError(err));
-        dispatch(updateRegistrationErrors(err));
-        dispatch(toastError(err));
-      });
+    return accountApi.createAccount(account).then(
+      result => Promise.all([
+        dispatch(toastSuccess(result)),
+        dispatch(registrationSuccess(initializeForm('emailAddress', 'lastName', 'firstName', 'password', 'confirmPassword')))]),
+      errors => Promise.all([
+        dispatch(ajaxCallError(errors)),
+        dispatch(updateRegistrationErrors(errors)),
+        dispatch(toastError(errors))])
+    );
   }
 }
 export const validateAsync = ({emailAddress=''}) => Promise.all([

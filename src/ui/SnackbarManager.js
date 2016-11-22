@@ -1,8 +1,7 @@
 import React, {PropTypes} from 'react';
 import Snackbar from 'material-ui/Snackbar';
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import reformat from '../utils/reformat';
+import restructure from '../utils/restructure';
 class SnackbarManager extends React.Component {
   constructor(props) {
     super(props);
@@ -55,7 +54,7 @@ class SnackbarManager extends React.Component {
           style.color = 'white';
           break;
       }
-    let message = alert && <span>{reformat.properCase(alert.key, alert.message.toLowerCase())}</span>;
+    let message = alert && <span>{restructure.string.properCase(alert.key, alert.message.toLowerCase())}</span>;
     return (
       <Snackbar open={showSnackbar}
                 message={message}
@@ -76,10 +75,5 @@ function mapStateToProps(state, ownProps) {
     alerts: state.alerts
   };
 }
-// function mapDispatchToProps(dispatch) {
-//   return {
-//     actions: bindActionCreators(dispatch)
-//   };
-// }
 
 export default connect(mapStateToProps)(SnackbarManager);

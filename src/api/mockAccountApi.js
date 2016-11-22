@@ -1,19 +1,19 @@
 import delay from './delay';
-import {accounts, schema} from '../mock/db/accounts';
+import accounts from '../mock/db/accounts';
+import {registration} from '../mock/db/schema';
 import Validator from '../utils/validate';
-//import schema from '../components/account/registrationSchema';
 import invalid from '../utils/enums/validation';
 // This file mocks a web API by working with the hard-coded data below.
 // It uses setTimeout to simulate the delay of an AJAX call.
 // All calls return promises.
 
 const accountExists = (emailAddress = '') => accounts.find(acct => acct.emailAddress.toLowerCase() === emailAddress.toLowerCase());
-
+const getPublicUserInfo = ({emailAddress, firstName, lastName}) => Object.assign({}, emailAddress, firstName, lastName);
 class AccountApi {
   static loadSchema(){
     return new Promise(res =>
       setTimeout(()=>{
-        res(schema);
+        res(registration);
       }, delay));
   }
   static checkAvailability(emailAddress){
@@ -25,7 +25,7 @@ class AccountApi {
   static createAccount(account) { // to avoid manipulating object passed in.
     return new Promise((resolve,reject)=>{
       setTimeout(() => {
-        const errors = new Validator(schema).validateForm(account);
+        const errors = new Validator({schema: registration}).validateForm(account);
         let hasErrors = false;
         if(accountExists(account.emailAddress))
             Array.isArray(errors.emailAddress) && errors.emailAddress.length
@@ -38,7 +38,7 @@ class AccountApi {
           reject(errors);
         else{
           accounts.push(account);
-          resolve({accountRegistration: "successful"});
+          resolve({registration: "successful"});
         }
         
       }, delay);
@@ -46,13 +46,13 @@ class AccountApi {
   }
   
   
-  static loadAccount({emailAddress='', password}) {
+  static getAccount({emailAddress = '', password = ''}) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        const loggedIn = accounts.find(acct => acct.emailAddress.toLowerCase() === emailAddress.toLowerCase() && acct.password === password);
-        if(loggedIn)
-          resolve(loggedIn.emailAddress);
-        reject();
+        const user = accounts.find(acct => acct.emailAddress.toLowerCase() === emailAddress.toLowerCase() && acct.password === password);
+        if(user)
+          resolve(getPublicUserInfo(user));
+        reject({login: 'failed'});
       }, delay);
     });
   }
