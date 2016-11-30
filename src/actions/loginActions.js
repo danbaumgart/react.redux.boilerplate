@@ -1,14 +1,18 @@
 import * as types from './actionTypes';
 import accountApi from '../api/mockAccountApi';
-import {ajaxCallError} from './ajaxStatusActions';
-import {toastError, toastSuccess} from './alertsActions';
-import {initializeForm} from '../utils/forms';
-import {login} from '../mock/db/schema';
+import {showErrorAlerts, showSuccessAlerts} from './alertsActions';
+import {buildForm} from '../utils/forms';
+import {login} from '../mock/db/accounts';
+import {SetTimer} from '../utils/timestamp';
+import roles from '../enums/roles';
 
-function loginSuccess(account) {
-  return {type: types.LOGIN_SUCCESS, payload: account};
+function loginSuccess({login, user}) {
+  return {type: types.LOGIN_SUCCESS, payload: {login, user}};
 }
-function initializeLogin({login}){
+function logoutUser(){
+  return {type: types.LOGOUT_SUCCESS, payload: {}}
+}
+function initializeLogin(login) {
   return {type: types.INITIALIZE_LOGIN, payload: login};
 }
 function updateLoginForm(form) {
@@ -17,29 +21,48 @@ function updateLoginForm(form) {
 function updateLoginValue(field) {
   return {type: types.UPDATE_LOGIN_VALUE, payload: field};
 }
+function updateLoginErrors(errors) {
+  return {type: types.UPDATE_LOGIN_ERRORS, payload: errors};
+}
 
-export function initializeLoginStore(){
-  return function(dispatch){
-    let login = Object.assign(initializeForm('emailAddress', 'password', 'rememberMe'), {schema: login});
-    dispatch(initializeLogin({login}));
+export function initializeLoginStore() {
+  return function (dispatch) {
+    const {schema, model} = {schema: login, model: {emailAddress: '', password: '', rememberMe: false}};
+    const formModel = buildForm({model, schema});
+    dispatch(initializeLogin(formModel));
   }
 }
 
-export function doLogin({emailAddress, password}) {
+export function loginAccount({emailAddress, password, rememberMe = false}) {
+  const minutes = rememberMe ? 15 : 1;
   return function (dispatch) {
     return accountApi.getAccount({emailAddress, password})
-      .then((res)=>dispatch(loginSuccess(res)));
-  };
+      .then(
+        user => Promise.all([
+          dispatch(loginSuccess({
+            user: Object.assign({identity: user.data, timestamp: SetTimer({minutes}).raw, role: roles.USER}),
+            login: buildForm({model: {emailAddress: '', password: '', rememberMe: false}})})),
+          dispatch(showSuccessAlerts(user.messages))]),
+        err => Promise.all([
+          dispatch(showErrorAlerts(err.messages)),
+          dispatch(updateLoginForm({saving: false}))
+        ]));
+      
+  }
 }
-
-export function setLoginValue({name, value}){
-  return function(dispatch){
+export function logoutAccount(){
+  return function (dispatch) {
+    return dispatch(logoutUser());
+  }
+}
+export function setLoginValue({name, value = ''}) {
+  return function (dispatch) {
     return dispatch(updateLoginValue({[name]: value}));
   }
 }
 
-export function setLoginForm(form){
-  return function (dispatch){
+export function setLoginForm(form) {
+  return function (dispatch) {
     dispatch(updateLoginForm(form));
   }
 }

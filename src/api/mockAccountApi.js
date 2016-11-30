@@ -1,14 +1,15 @@
 import delay from './delay';
-import accounts from '../mock/db/accounts';
-import {registration} from '../mock/db/schema';
+import {accounts, registration} from '../mock/db/accounts';
 import Validator from '../utils/validate';
-import invalid from '../utils/enums/validation';
+import invalid from '../enums/validation';
+import response from './serverResponse';
 // This file mocks a web API by working with the hard-coded data below.
 // It uses setTimeout to simulate the delay of an AJAX call.
 // All calls return promises.
-
 const accountExists = (emailAddress = '') => accounts.find(acct => acct.emailAddress.toLowerCase() === emailAddress.toLowerCase());
-const getPublicUserInfo = ({emailAddress, firstName, lastName}) => Object.assign({}, emailAddress, firstName, lastName);
+const getSafeUserInformation = ({emailAddress, firstName, lastName}) => Object.assign({},{emailAddress}, {firstName}, {lastName});
+const loginResponse = (result, data, messages) => response('login', result, data, messages);
+const registrationResponse = (result, data, messages) => response('registration', result, data, messages);
 class AccountApi {
   static loadSchema(){
     return new Promise(res =>
@@ -23,22 +24,26 @@ class AccountApi {
         : resolve(null), delay));
   }
   static createAccount(account) { // to avoid manipulating object passed in.
+    const registrationValidator = new Validator(registration);
     return new Promise((resolve,reject)=>{
       setTimeout(() => {
-        const errors = new Validator({schema: registration}).validateForm(account);
+        const errors = registrationValidator.validateForm(account);
+        console.log("ERRORS", errors);
         let hasErrors = false;
         if(accountExists(account.emailAddress))
-            Array.isArray(errors.emailAddress) && errors.emailAddress.length
-              ? Object.assign(errors, {emailAddress: [...errors.emailAddress, invalid.UNAVAILABLE]})
+            Array.isArray(errors.emailAddress) && errors.emailAddress.length > 0
+              ? Object.assign(errors.emailAddress, [...errors.emailAddress, invalid.UNAVAILABLE])
               : Object.assign(errors, {emailAddress: [invalid.UNAVAILABLE]});
         Object.keys(errors).forEach(key => (Array.isArray(errors[key]) && errors[key].length > 0) ? hasErrors = true : hasErrors = !!hasErrors);
-        console.log("HAS ERRORS", hasErrors);
-        console.log("SERVER ERRORS", errors);
+        const errorMessages = registrationValidator.getAllDefaultErrorMessages({errors: errors, includeField: true});
+        let messages = [];
+        Object.keys(errorMessages).forEach(error => messages.push(...errorMessages[error]));
+        console.log("SERVER ERRORS", messages);
         if(hasErrors)
-          reject(errors);
+          reject(registrationResponse(404, errors, messages));
         else{
           accounts.push(account);
-          resolve({registration: "successful"});
+          resolve(registrationResponse(200, getSafeUserInformation(account), "account created"));
         }
         
       }, delay);
@@ -51,8 +56,8 @@ class AccountApi {
       setTimeout(() => {
         const user = accounts.find(acct => acct.emailAddress.toLowerCase() === emailAddress.toLowerCase() && acct.password === password);
         if(user)
-          resolve(getPublicUserInfo(user));
-        reject({login: 'failed'});
+          resolve(loginResponse(200, getSafeUserInformation(user), ['login successful']));
+        reject(loginResponse(404, null, ['invalid username or password']));
       }, delay);
     });
   }

@@ -7,19 +7,26 @@ import SideNavigation from '../ui/SideNavigation';
 import {browserHistory} from 'react-router';
 import Paper from 'material-ui/Paper';
 import NavbarDropdown from '../ui/NavbarDropdown';
+import {logoutAccount} from '../actions/loginActions'
 import SnackbarManager from '../ui/SnackbarManager';
 
-const changeRoute = (event) => {
-  browserHistory.push(event);
-};
 
 class App extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.closeNavbar = this.closeNavbar.bind(this);
     this.toggleNavbar = this.toggleNavbar.bind(this);
+    this.changeRoute = this.changeRoute.bind(this);
+    this.goHome = this.goHome.bind(this);
+    this.logout = this.logout.bind(this);
   }
-  
+  changeRoute(event, menuItem){
+    const {props:{value: path}} = menuItem;
+    browserHistory.push(path);
+  }
+  logout(){
+    this.props.actions.logoutAccount();
+  }
   toggleNavbar() {
     this.props.actions.toggleNavbar();
   }
@@ -27,26 +34,34 @@ class App extends React.Component {
   closeNavbar() {
     this.props.actions.closeNavbar();
   }
-  
+  goHome(){
+    this.closeNavbar();
+    browserHistory.push(this.props.links.find(link => link.name.toLowerCase() === 'home'));
+  }
   render() {
-    const title = "SPA";
-    const goHome = ()=> {
-      this.closeNavbar();
-      changeRoute('/');
+    const title = <span style={{cursor: "pointer"}}>{this.props.title}</span>;
+    const {appBar: appBarStyle, paper: paperStyle, container: containerStyle} = {
+      paper: {
+        marginTop: "64px", paddingBottom: "20px", display: "inline-block", width: "100%"
+      },
+      container: {
+        backgroundColor: "rgb(215, 215, 215)", bottom: "0"
+      },
+      appBar: {
+        position: "fixed", top: "0"
+      }
     };
-    
+    const accountBar = <NavbarDropdown logout={this.logout} user={this.props.user} links={this.props.userLinks} changeRoute={this.changeRoute} closeNavbar={this.closeNavbar} />;
     return (
-      <div style={{backgroundColor: "rgb(215, 215, 215)", bottom: "0"}}>
-        <AppBar title={<span style={{cursor: "pointer"}}>{title}</span>}
-                onTitleTouchTap={goHome}
-                iconElementRight={<NavbarDropdown links={this.props.userLinks} changeRoute={changeRoute}
-                                                  closeNavbar={this.closeNavbar}/>}
+      <div style={containerStyle}>
+        <AppBar title={title}
+                onTitleTouchTap={this.goHome}
+                iconElementRight={accountBar}
                 onRightIconButtonTouchTap={this.closeNavbar}
-                style={{position: "fixed", top: "0px"}}
+                style={appBarStyle}
                 onLeftIconButtonTouchTap={this.toggleNavbar}/>
-        <Paper style={{marginTop: "64px", paddingBottom: "20px", display: "inline-block", width: "100%"}}
-               zDepth={2}>{this.props.children}</Paper>
-        <SideNavigation title={title} changeRoute={changeRoute} handleToggle={this.toggleNavbar}
+        <Paper style={paperStyle} zDepth={2}>{this.props.children}</Paper>
+        <SideNavigation title={this.props.title} changeRoute={this.changeRoute} handleToggle={this.toggleNavbar}
                         handleClose={this.closeNavbar}
                         collapsed={this.props.collapsed} links={this.props.links}/>
         <SnackbarManager/>
@@ -56,37 +71,40 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-  children: React.PropTypes.object.isRequired,
-  collapsed: React.PropTypes.bool.isRequired,
-  loading: React.PropTypes.bool.isRequired,
-  actions: React.PropTypes.object.isRequired,
-  links: React.PropTypes.array.isRequired,
-  currentLocation: React.PropTypes.string,
-  userLinks: React.PropTypes.array.isRequired
+  children: PropTypes.object.isRequired,
+  collapsed: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
+  actions: PropTypes.object.isRequired,
+  links: PropTypes.array.isRequired,
+  currentLocation: PropTypes.string,
+  userLinks: PropTypes.array.isRequired,
+  user: PropTypes.object.isRequired,
+  title: PropTypes.string
 };
-
+App.defaultProps = {
+  title: "SINGLE PAGE APPLICATION"
+};
 App.contextTypes = {
-  router: PropTypes.object
+  router: PropTypes.object,
 };
 
 
 function mapStateToProps(state, ownProps) {
-  let current = ownProps.routes[1].path || '';
-  current = '/' + current;
-  let homeLinks = state.links.homeLinks;
-  let userLinks = state.links.userLinks;
-  
+  const {links:{userLinks, homeLinks}, navbarCollapsed, ajaxCallsInProgress, user, title} = state;
+  let current = '/' + (ownProps.routes[1].path || '');
   return {
-    loading: state.ajaxCallsInProgress > 0,
-    collapsed: state.navbarCollapsed,
+    loading: ajaxCallsInProgress > 0,
+    collapsed: navbarCollapsed,
     links: homeLinks,
     currentLocation: current,
-    userLinks: userLinks
+    userLinks: userLinks,
+    user: user,
+    title: title
   };
 }
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(Object.assign({}, navbarActions), dispatch)
+    actions: bindActionCreators(Object.assign({}, navbarActions, {logoutAccount}), dispatch)
   };
 }
 

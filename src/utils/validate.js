@@ -1,4 +1,4 @@
-import types from './enums/validation';
+import types from '../enums/validation';
 import messages from './validation/messages';
 import validators from './validation/validators';
 
@@ -10,7 +10,7 @@ class Validator {
     this.validateField = this.validateField.bind(this);
     this.getDefaultErrorMessages = this.getDefaultErrorMessages.bind(this);
     this.getAllDefaultErrorMessages = this.getAllDefaultErrorMessages.bind(this);
-    this.getAsyncronousFields = this.getAsyncronousFields.bind(this);
+    this.hasAsyncronousValidation = this.hasAsyncronousValidation.bind(this);
   }
   static fieldValidation(input = '', schema = {}){
     let valid = validators(input);
@@ -24,14 +24,14 @@ class Validator {
       Object.keys(schema).forEach(condition => !valid[condition](schema[condition]) && err.push(types[condition]));
     return err;
   }
-  getAsyncronousFields(){
-    return this.asyncronousFields || [];
+  hasAsyncronousValidation({name}){
+    return this.asyncronousFields.find(field => field.toLowerCase() === name.toLowerCase())
   }
-  getAllDefaultErrorMessages(errors = {}){
-    return Object.assign({}, ...Object.keys(errors).map(key => this.getDefaultErrorMessages(key, errors[key])));
+  getAllDefaultErrorMessages({errors, includeField = true}){
+    return Object.assign({}, ...Object.keys(errors).map(name => this.getDefaultErrorMessages({name: name, errors: errors[name], includeField})));
   }
-  getDefaultErrorMessages(name, errors = []){
-    let defaultMessages = messages(name);
+  getDefaultErrorMessages({name, errors = [], includeField}){
+    let defaultMessages = messages(includeField ? {name} : null);
     return {[name]: errors.map(e => e.includes("MINIMUM") || e.includes("MAXIMUM")
       ? defaultMessages[e](this.schema[name][e], null)
       : defaultMessages[e]())};
@@ -39,8 +39,9 @@ class Validator {
   validateForm(form) {
     const errors = {};
     Object.keys(form).forEach(field => Object.assign(errors, {[field]: this.validateField(field, form[field])}));
-    return Object.assign({}, ...Object.keys(errors).filter(key => Array.isArray(errors[key]) && errors[key].length > 0)
-      .map(errKey => Object.assign({}, {[errKey]: errors[errKey]})));
+    return Object.assign({}, ...Object.keys(errors)
+      .filter(key => Array.isArray(errors[key]) && errors[key].length > 0)
+      .map(errKey => Object.assign({[errKey]: errors[errKey]})));
   }
   validateField(name, value){
     return Validator.fieldValidation(value, this.schema[name]);

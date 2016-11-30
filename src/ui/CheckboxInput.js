@@ -1,12 +1,12 @@
 import React, {PropTypes} from 'react';
 import Checkbox from 'material-ui/Checkbox';
 
-const CheckboxInput = ({label, name, update, defaultChecked, value}) => {
+const CheckboxInput = ({label, name, update, value}) => {
   return (
-    <Checkbox label={label}
-              name={name}
-              onCheck={update}
-              checked={defaultChecked} />
+    <div>
+      <br/>
+      <Checkbox label={label} name={name} onCheck={update} defaultChecked={value || false} />
+    </div>
   );
 };
 
@@ -14,8 +14,7 @@ CheckboxInput.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   update: PropTypes.func.isRequired,
-  defaultChecked: PropTypes.bool.isRequired,
-  value: PropTypes.bool.isRequired
+  value: PropTypes.bool
 };
 CheckboxInput.defaultProps = {
   value: false

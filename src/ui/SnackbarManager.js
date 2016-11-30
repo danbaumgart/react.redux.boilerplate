@@ -2,12 +2,13 @@ import React, {PropTypes} from 'react';
 import Snackbar from 'material-ui/Snackbar';
 import {connect} from 'react-redux';
 import restructure from '../utils/restructure';
+
 class SnackbarManager extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       messageNumber: 0,
-      messages: []
+      alerts: []
     };
     this.handleRequestClose = this.handleRequestClose.bind(this);
   }
@@ -15,7 +16,7 @@ class SnackbarManager extends React.Component {
   componentWillMount() {
     let alerts = this.props.alerts.slice(0);
     this.setState({
-      messages: alerts
+      alerts: alerts
     });
   }
   
@@ -23,38 +24,27 @@ class SnackbarManager extends React.Component {
     let alerts = nextProps.alerts.slice(0);
     if (this.props.alerts.length < nextProps.alerts.length)
       this.setState({
-        messages: alerts
+        alerts: alerts
       });
   }
   
   handleRequestClose() {
-    let hasMoreMessages = this.state.messageNumber < this.state.messages.length;
+    let hasMoreMessages = this.state.messageNumber < this.state.alerts.length;
     let increment = this.state.messageNumber + 1;
     if(hasMoreMessages)
       this.setState({messageNumber: increment});
   }
   
   render() {
-    let showSnackbar = this.state.messages.length > this.state.messageNumber;
+    let showSnackbar = this.state.alerts.length > this.state.messageNumber;
+    let alert = showSnackbar && this.state.alerts[this.state.messageNumber];
     const style = Object.assign({}, {
       textAlign: 'center',
-      fontWeight: "800",
-      color: 'white'
+      fontWeight: '800'
     });
-    let alert = showSnackbar && this.state.messages[this.state.messageNumber];
     if(alert)
-      switch(alert.result) {
-        case 'success':
-          style.color = 'green';
-          break;
-        case 'error':
-          style.color = 'red';
-          break;
-        default:
-          style.color = 'white';
-          break;
-      }
-    let message = alert && <span>{restructure.string.properCase(alert.key, alert.message.toLowerCase())}</span>;
+      Object.assign(style, ...Object.keys(alert.style).map(key => Object.assign({[key]: alert.style[key]})));
+    let message = alert && <span>{alert.message}</span>;
     return (
       <Snackbar open={showSnackbar}
                 message={message}

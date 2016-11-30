@@ -1,102 +1,85 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import PageTitle from '../common/PageTitle';
-import * as accountActions from '../../actions/loginActions';
+import {setLoginValue, loginAccount, setLoginForm} from '../../actions/loginActions';
 import Validator from '../../utils/validate';
-import toastr from 'toastr';
-import LoginForm from './LoginForm';
+import MaterialForm from '../../ui/MaterialForm';
+import {browserHistory} from 'react-router';
+const hasErrors = (errors) => Object.keys(errors).filter(field => Array.isArray(errors[field]) && errors[field].length > 0).length > 0;
 
 class LoginPage extends React.Component {
   constructor(props, context) {
     super(props, context);
-    this.state = {
-      loading: false,
-      saving: false,
-      submitted: false,
-      touched: []
-    };
     this.updateField = this.updateField.bind(this);
-    this.onSubmitForm = this.onSubmitForm.bind(this);
+    this.submitForm = this.submitForm.bind(this);
+    this.login = this.login.bind(this);
+    this.changeRoute = this.changeRoute.bind(this);
+  }
+  updateField({target:{name, value}}, isInputChecked) {
+    this.props.actions.setLoginValue({name, value: name === 'rememberMe' ? isInputChecked : value});
+  }
+  login() {
+    Promise.resolve(this.props.actions.setLoginForm({saving: true, submitted: true}))
+      .then(this.props.actions.loginAccount(this.props.values))
+      .then();
+  }
+  submitForm(event) {
+    const {values, errors, validation, actions} = this.props;
+    if(!hasErrors(validation.validateForm(values)) && !hasErrors(errors))
+      this.login();
+    else
+      actions.setLoginForm({submitted: true});
+  }
+  changeRoute({link:{path, name}}){
+    browserHistory.push(path);
   }
   
-  onSubmitForm(event) {
-    event.preventDefault();
-    this.setState({
-      saving: true,
-      submitted: true
-    });
-    this.props.actions.loginAccount(this.props.user)
-      .then((result)=> {
-      this.setState({saving:false});
-      toastr.success("Login Success" + result);
-    }).catch((errors)=>{
-      this.setState({saving:false});
-      let err = Object.keys(errors).map(i=>{return {field: i, errors: errors[i]};});
-      err.forEach(e=>{
-        if(e.errors && Array.isArray(e.errors)) {
-          let message = e.errors[0];
-          e.errors.slice(1).forEach(m => message += '<br/>' + m);
-          toastr.error(message, e.field);
-        }
-      });
-    });
-    
-  }
-  
-  updateField(event) {
-    let {name, value} = event.target;
-    let dirty = Object.keys(this.props.user).filter(i=>this.props.user[i] !== '');
-    let fieldIsAlreadyDirty = dirty.indexOf(name) !== -1;
-    
-    this.setState({
-      touched: fieldIsAlreadyDirty ? dirty : [...dirty, name]
-    });
-    let payload = Object.assign({}, this.props.user, {[name]: value});
-    this.props.actions.updateLoginForm(payload);
-  }
-  render() {
-    let fieldsToValidate = {};
-    this.state.touched.forEach(field => fieldsToValidate[field] = this.props.user[field]);
-    const fieldErrors = this.props.validation.validateForm(fieldsToValidate);
-    const errors = {};
-    if(this.state.submitted)
-      Object.assign(errors, fieldErrors);
+  render(){
+    const {errors, form, validation, values, fields} = this.props;
+    let loading = !!form.submitted && (!!form.loading || !!form.saving);
+    const errorMessages = form.submitted ? validation.getAllDefaultErrorMessages({errors: Object.assign(validation.validateForm(values), errors)}) : {};
     return (
       <div>
-        <PageTitle title="Login" />
-        <LoginForm user={this.props.user} errors={errors} update={this.updateField} save={this.onSubmitForm} saving={this.state.saving} />
+        <MaterialForm
+          title="Login"
+          fields={fields}
+          values={values}
+          errors={errorMessages}
+          update={this.updateField}
+          save={this.submitForm}
+          loading={loading}
+          changeRoute={this.changeRoute}
+          submitLabel="Login"/>
       </div>
     );
   }
 }
 
-
 LoginPage.propTypes = {
-  user: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired,
-  validation: PropTypes.object
+  values: PropTypes.object.isRequired,
+  fields: PropTypes.arrayOf(PropTypes.object).isRequired,
+  errors: PropTypes.object.isRequired,
+  form: PropTypes.object.isRequired,
+  validation: PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired
 };
-LoginPage.defaultProps = {
-  validation: {}
+LoginPage.contextTypes = {
+  router: PropTypes.object
 };
-function mapStateToProps(state, ownProps) {
-  const userForm = {
-    username: '',
-    password: '',
-    rememberMe: false
-  };
-  let validation = new Validator({username:{required:true}},{password:{required:true}});
-  Object.assign(userForm,state.login);
-  return {
-    user: userForm,
-    validation: validation
-  };
-}
 
+function mapStateToProps(state) {
+  let loggedIn = state.user && state.user.timestamp - new Date() > 0;
+  console.log("LOGGED IN", loggedIn);
+  const {schema, values, errors, form, fields} = state.login;
+  const validation = new Validator(Object.assign({}, schema));
+  return {values, errors, form, validation, fields};
+}
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(accountActions, dispatch)
+    actions: bindActionCreators(Object.assign({},
+      {loginAccount},
+      {setLoginForm},
+      {setLoginValue}), dispatch)
   };
 }
 

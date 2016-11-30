@@ -1,10 +1,11 @@
 import React, {PropTypes} from 'react';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
+import restructure from '../utils/restructure';
 
-const InputField = ({name, onChange, type, placeholder, value, errors, disabled}) => {
+const InputField = ({name, onChange, type, placeholder, value, errors, disabled, label}) => {
   const field = Object.assign({},
-    {label: name.charAt(0).toUpperCase() + name.replace(/[A-Z]/g, (match)=> ' ' + match).slice(1)});
+    {label: label || restructure.string.properCase(name)});
   if(Array.isArray(errors) && errors.length)
     Object.assign(field, {errors:  <span><ul>{errors.map(error => <li key={error}>{error}</li>)}</ul></span>});
   if(disabled)
@@ -33,19 +34,19 @@ InputField.propTypes = {
   name: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   type: PropTypes.string,
-  fixedLabel: PropTypes.bool,
   placeholder: PropTypes.string,
   value: PropTypes.string,
   errors: PropTypes.array,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  label: PropTypes.string
 };
 InputField.defaultProps = {
   type: 'text',
-  fixedLabel: false,
   placeholder: null,
   value: '',
   errors: [],
-  disabled: false
+  disabled: false,
+  label: null
 };
 
 

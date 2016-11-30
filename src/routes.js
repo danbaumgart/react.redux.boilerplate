@@ -26,6 +26,7 @@ export default (
     <Route path="about" component={AboutPage}/>
     <Route path="registration" component={RegistrationPage}/>
     <Route path="login" component={LoginPage}/>
+    <Route path="logoff" component={LoginPage}/>
     <Route path="volunteer" component={VolunteerPage}/>
     <Route path="training" component={TrainingPage}/>
     <Route path="donate" component={DonatePage}/>

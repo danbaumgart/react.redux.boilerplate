@@ -3,13 +3,10 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {setRegistrationValue, createAccount, validateAsync, setRegistration, setRegistrationForm} from '../../actions/registrationActions';
 import Validator from '../../utils/validate';
-import types from '../../utils/enums/validation';
-import PageTitle from '../common/PageTitle';
-import RegistrationForm from './RegistrationForm';
-import debounce from '../../utils/debounce';
+import types from '../../enums/validation';
+import {debounce, hasErrors} from '../../utils/forms';
 import reformat from '../../utils/restructure';
-
-const hasErrors = (errors) => Object.keys(errors).filter(field => Array.isArray(errors[field]) && errors[field].length > 0).length > 0;
+import MaterialForm from '../../ui/MaterialForm';
 
 class RegistrationPage extends React.Component {
   constructor(props, context) {
@@ -18,6 +15,7 @@ class RegistrationPage extends React.Component {
     this.submitForm = this.submitForm.bind(this);
     this.asyncValidation = debounce(this.asyncValidation, 300);
     this.register = this.register.bind(this);
+    this.renderForm = this.renderForm.bind(this);
   }
   
   asyncValidation() {
@@ -27,17 +25,18 @@ class RegistrationPage extends React.Component {
   }
   
   updateField({target:{name, value = ''}}) {
+    let {errors, validation, form, actions} = this.props;
     const payload = {
       values: {[name]: value},
-      errors: reformat.object.removeProperties(this.props.errors, name)
+      errors: reformat.object.removeProperties(errors, name)
     };
-    if(name === 'password' && (value === '' || (this.props.form.submitted && this.props.validation.validateField(name, value).length)))
+    if(name === 'password' && (value === '' || (form.submitted && validation.validateField(name, value).length)))
       Object.assign(payload.values, {confirmPassword: ''});
-    if(this.props.validation.getAsyncronousFields().find(field => field.toLowerCase() === name.toLowerCase())) {
+    if(validation.hasAsyncronousValidation({name})) {
       Object.assign(payload, {loading: true});
       this.asyncValidation();
     }
-    this.props.actions.setRegistration(payload);
+    actions.setRegistration(payload);
   }
   register(){
     Promise.all([
@@ -52,19 +51,33 @@ class RegistrationPage extends React.Component {
     else
       actions.setRegistrationForm({submitted: true});
   }
-  
+  renderForm(){
+    const {form, validation} = this.props;
+    const passwordHasValue = !!this.props.values.password && this.props.values.password !== '';
+    const values = passwordHasValue ? this.props.values : reformat.object.removeProperties(this.props.values);
+    let errors = !form.submitted ? {} : Object.assign(validation.getAllDefaultErrorMessages(validation.validateForm(values)), this.props.errors);
+    const passwordHasErrors = Array.isArray(errors.password) && errors.password.length > 0;
+    let fields = this.props.fields.slice(0);
+    if(!passwordHasValue || passwordHasErrors) {
+      fields = fields.filter(field => field.name !== 'confirmPassword');
+      errors = reformat.object.removeProperties(errors, 'confirmPassword');
+    }
+    errors = validation.getAllDefaultErrorMessages({errors, includeField: true});
+    const loading = !!form.submitted && (!!form.loading || !!form.saving);
+    return {fields, values, errors, loading};
+  }
   render(){
-    const {errors, form, validation, values} = this.props;
-    let loading = !!form.submitted && (!!form.loading || !!form.saving);
-    const errorMessages = form.submitted ? validation.getAllDefaultErrorMessages(Object.assign({}, validation.validateForm(values), errors)) : {};
+    const {fields, values, errors, loading} = this.renderForm();
     return (
       <div>
-        <PageTitle title="Registration"/>
-        <RegistrationForm account={this.props.values}
-                          errors={errorMessages}
-                          update={this.updateField}
-                          save={this.submitForm}
-                          loading={loading}/>
+        <MaterialForm fields={fields}
+                      values={values}
+                      errors={errors}
+                      update={this.updateField}
+                      save={this.submitForm}
+                      loading={loading}
+                      title="Registration"
+                      submitLabel="Register"/>
       </div>
     );
   }
@@ -72,6 +85,7 @@ class RegistrationPage extends React.Component {
 
 RegistrationPage.propTypes = {
   values: PropTypes.object.isRequired,
+  fields: PropTypes.arrayOf(PropTypes.object).isRequired,
   errors: PropTypes.object.isRequired,
   form: PropTypes.object.isRequired,
   validation: PropTypes.object.isRequired,
@@ -82,10 +96,10 @@ RegistrationPage.contextTypes = {
 };
 
 function mapStateToProps(state) {
-  const {schema, values, errors, form} = state.registration;
+  const {schema, values, errors, form, fields} = state.registration;
   const enhancedSchema = Object.assign({}, schema, {confirmPassword:  Object.assign({}, schema.confirmPassword, {[types.RESTRICT_VALUE]: values.password})});
   const validation = new Validator(enhancedSchema, 'emailAddress');
-  return {values, errors, form, validation};
+  return {values, errors, form, validation, fields};
 }
 function mapDispatchToProps(dispatch) {
   return {

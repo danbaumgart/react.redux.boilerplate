@@ -14,13 +14,16 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import {initializeRegistrationStore} from './actions/registrationActions';
+import {initializeLoginStore} from './actions/loginActions';
 injectTapEventPlugin();
 
 const store = configureStore();
 Promise.all([
   store.dispatch(getHomeLinks()),
   store.dispatch(getUserLinks()),
-  store.dispatch(initializeRegistrationStore())])
+  store.dispatch(initializeRegistrationStore()),
+  store.dispatch(initializeLoginStore())
+]);
 render(
   <Provider store={store}>
     <MuiThemeProvider muiTheme={getMuiTheme(muiCustom)}>

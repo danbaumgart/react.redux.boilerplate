@@ -1,51 +1,42 @@
 import React, {PropTypes} from 'react';
-import InputField from '../../ui/InputField';
 import SubmitButton from '../common/SubmitButton';
+import InputField from '../../ui/InputField';
+import Paper from 'material-ui/Paper';
 import CheckboxInput from '../../ui/CheckboxInput';
 import Checkbox from 'material-ui/Checkbox';
 
-const LoginForm = ({user, update, save, errors, saving}) => {
-  console.log(user.rememberMe);
+const LoginForm = ({values, update, save, errors, loading}) => {
   return (
-    <form>
-      <InputField label="Usermame"
-                  name="username"
+    <Paper zDepth={1} style={{display: "inline-block", width: "100%", padding: "10px"}}>
+      <InputField name="emailAddress"
                   placeholder="Enter your email address"
-                  value={user.emailAddress}
-                  type="email"
+                  value={values.emailAddress}
                   errors={errors.emailAddress}
                   onChange={update}/>
-      <br/>
-      <InputField label="Password"
-                  name="password"
+      <InputField name="password"
                   placeholder="Enter your password"
-                  value={user.password}
+                  value={values.password}
                   type="password"
                   errors={errors.password}
                   onChange={update}/>
-      <br/>
-      <Checkbox name="rememberMe" defaultChecked={user.rememberMe} label="Remember me" onCheck={update}/>
-      <div className="control-group">
+      <Checkbox name="rememberMe" defaultChecked={values.rememberMe} label="Remember me" onCheck={update}/>
         <SubmitButton
           onSave={save}
-          disable={saving}
-          label={!saving ? "Login" : "Login"}/>
-      </div>
-    </form>
+          disable={loading}
+          label="Login"/>
+      </Paper>
   );
 };
 
 LoginForm.propTypes = {
-  user: React.PropTypes.object.isRequired,
-  update: React.PropTypes.func.isRequired,
-  save: React.PropTypes.func.isRequired,
-  saving: React.PropTypes.bool.isRequired,
-  errors: React.PropTypes.object,
-  validation: React.PropTypes.object
+  values: PropTypes.object.isRequired,
+  update: PropTypes.func.isRequired,
+  save: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+  errors: PropTypes.object
 };
 LoginForm.defaultProps = {
-  errors: {},
-  validation: {}
+  errors: {}
 };
 
 
