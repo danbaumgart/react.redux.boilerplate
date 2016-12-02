@@ -2,7 +2,7 @@ import * as types from './actionTypes';
 import accountApi from '../api/mockAccountApi';
 import {ajaxCallError} from './ajaxStatusActions';
 import {showErrorAlerts, showSuccessAlerts} from './alertsActions';
-import {initializeForm} from '../utils/forms';
+import {buildFormModel} from '../utils/forms';
 import {registration} from '../mock/db/accounts';
   
 function registrationSuccess(initialValues) {
@@ -26,7 +26,7 @@ function initializeRegistration(registration){
 
 export function initializeRegistrationStore(){
   return function(dispatch){
-    let registrationState = initializeForm(registration, 'emailAddress', 'firstName', 'lastName', 'password', 'confirmPassword');
+    let registrationState = buildFormModel(registration, 'emailAddress', 'firstName', 'lastName', 'password', 'confirmPassword');
     dispatch(initializeRegistration(registrationState));
   }
 }

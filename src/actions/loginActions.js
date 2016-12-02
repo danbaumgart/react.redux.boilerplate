@@ -1,7 +1,7 @@
 import * as types from './actionTypes';
 import accountApi from '../api/mockAccountApi';
 import {showErrorAlerts, showSuccessAlerts} from './alertsActions';
-import {buildForm} from '../utils/forms';
+import {buildForm, buildFormModel} from '../utils/forms';
 import {login} from '../mock/db/accounts';
 import {SetTimer} from '../utils/timestamp';
 import roles from '../enums/roles';
@@ -21,15 +21,12 @@ function updateLoginForm(form) {
 function updateLoginValue(field) {
   return {type: types.UPDATE_LOGIN_VALUE, payload: field};
 }
-function updateLoginErrors(errors) {
-  return {type: types.UPDATE_LOGIN_ERRORS, payload: errors};
-}
 
 export function initializeLoginStore() {
   return function (dispatch) {
-    const {schema, model} = {schema: login, model: {emailAddress: '', password: '', rememberMe: false}};
-    const formModel = buildForm({model, schema});
-    dispatch(initializeLogin(formModel));
+    const model = buildFormModel(login, 'emailAddress', 'password', {rememberMe: false});
+    console.log("LOGIN STORE", model);
+    dispatch(initializeLogin(model));
   }
 }
 

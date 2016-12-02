@@ -1,24 +1,26 @@
 import React, {PropTypes} from 'react';
-import {IconMenu, MenuItem, IconButton, Menu} from 'material-ui';
+import {IconButton} from 'material-ui';
 import {SocialPerson, SocialPersonOutline} from 'material-ui/svg-icons/index'
-import {Link} from 'react-router';
+import NavigationLinkList from './NavigationLinkList';
 
-const menuLink = ({path, name})=><MenuItem containerElement={<Link to={path}/>} key={path} primaryText={name} value={path} />;
+const filterUserLinks = (links, isLoggedIn) => isLoggedIn
+  ? links.filter(i => !i.name.toLowerCase().includes('sign in') && !i.name.toLowerCase().includes('register'))
+  : links.filter(i => !i.name.toLowerCase().includes('sign out'));
+
 
 const NavbarDropdown = ({links, closeNavbar, changeRoute, user, logout}) => {
   let isLoggedIn = user.timestamp && user.timestamp - new Date() > 0;
-  let userLinks = isLoggedIn ? links.filter(i => !i.name.toLowerCase().includes('sign in') && !i.name.toLowerCase().includes('register')) : links.filter(i => !i.name.toLowerCase().includes('sign out'));
-  const linkList = userLinks.map(link => link.name.toLowerCase().includes('sign out') ? <MenuItem onTouchTap={logout} key={link.path} primaryText={link.name} /> : menuLink(link));
-  console.log("LINK LIST", linkList);
-  const iconButton = isLoggedIn ? <SocialPerson/> : <SocialPersonOutline/>;
+  const userLinks = filterUserLinks(links, isLoggedIn, logout);
+ const iconButton = isLoggedIn ? <SocialPerson/> : <SocialPersonOutline/>;
   return (
-    <IconMenu
-      iconButtonElement={<IconButton>{iconButton}</IconButton>}
-      anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-      iconStyle={{color:"white"}}
-      onItemTouchTap={closeNavbar}
-      targetOrigin={{horizontal: 'right', vertical: 'top'}} children={linkList}/>
-  );
+    <NavigationLinkList
+      closeNavbar={closeNavbar}
+      iconStyle={{color: "white"}}
+      origin={{horizontal: 'right', vertical: 'top'}}
+      iconButton={iconButton}
+      logout={logout}
+      type="ICON"
+      links={userLinks}/>);
 };
 
 NavbarDropdown.propTypes = {

@@ -1,7 +1,7 @@
 export default {
   title: '',
   ajaxCallsInProgress: 0,
-  navbarCollapsed: true,
+  navbarOpen: false,
   registration: {},
   login: {},
   user: {},

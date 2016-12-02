@@ -6,3 +6,6 @@ export function toggleNavbar(){
 export function closeNavbar(){
   return {type: types.CLOSE_NAVBAR};
 }
+export function openNavbar(){
+  return {type: types.OPEN_NAVBAR};
+}

@@ -25,12 +25,14 @@ class LoginPage extends React.Component {
   }
   submitForm(event) {
     const {values, errors, validation, actions} = this.props;
-    if(!hasErrors(validation.validateForm(values)) && !hasErrors(errors))
+    var formErrors = validation.validateForm(values);
+    console.log("FORM ERRORS", formErrors);
+    if(!hasErrors(formErrors) && !hasErrors(errors))
       this.login();
     else
       actions.setLoginForm({submitted: true});
   }
-  changeRoute({link:{path, name}}){
+  changeRoute({link:{path}}){
     browserHistory.push(path);
   }
   
@@ -38,6 +40,7 @@ class LoginPage extends React.Component {
     const {errors, form, validation, values, fields} = this.props;
     let loading = !!form.submitted && (!!form.loading || !!form.saving);
     const errorMessages = form.submitted ? validation.getAllDefaultErrorMessages({errors: Object.assign(validation.validateForm(values), errors)}) : {};
+    console.log("ERR", errorMessages);
     return (
       <div>
         <MaterialForm
@@ -69,9 +72,9 @@ LoginPage.contextTypes = {
 
 function mapStateToProps(state) {
   let loggedIn = state.user && state.user.timestamp - new Date() > 0;
-  console.log("LOGGED IN", loggedIn);
   const {schema, values, errors, form, fields} = state.login;
   const validation = new Validator(Object.assign({}, schema));
+  console.log("LOGGED IN", validation);
   return {values, errors, form, validation, fields};
 }
 function mapDispatchToProps(dispatch) {

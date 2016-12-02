@@ -1,33 +1,35 @@
+import debounceMethod from './debounce';
 export function initializeForm(schema, ...keys){
-  return buildForm({model: Object.assign({}, ...keys.map(key => Object.assign({[key]:''}))), schema});
+  return buildForm(initValues(keys), schema);
 }
-export const buildForm = ({model, schema}) => Object.assign({}, {
-  values: model
-}, {
-  fields: Object.keys(model)
-    .map(field => buildField({
-      name: field,
-      type: (model[field] === false || model[field] === true)
-        ? 'checkbox'
-        : null
-    }))
-}, {
-  form: {
-    submitted: false,
-    loading: false,
-    saving: false
-  }
-}, {
-  errors: {}
-}, {
-  schema
-});
-export const buildField = ({name, type = null, placeholder = null}) => {
+export const buildForm = (model, schema) => ({schema,
+    values: model,
+    errors: {},
+    fields: Object.keys(model).map(field => new Field(field, (typeof model[field] === 'boolean') ? 'checkbox' : 'text')),
+    form: {submitted: false, loading: false, saving: false}});
+export const buildFormModel = (schema, ...initFields) => {
+  const model = initValues(...initFields);
+  console.log("SCHEMA",schema);
+  return buildForm(model, schema);
+};
+const initValues = (...initFields) => {
+  const model = {};
+  initFields.forEach(field => {
+    switch((typeof field).toLowerCase()){
+      case 'string':
+        Object.assign(model, {[field]: ''});
+        break;
+      case 'object':
+        Object.assign(model, field);
+        break;
+    }
+  });
+  return model;
+};
+export const buildField = (name, type = null, placeholder = null) => {
   if(!type)
     if(name.toLowerCase().includes('password'))
       type = 'password';
-    // else if(name.toLowerCase().includes('email'))
-    //   type = 'email';
     else
       type = 'text';
   const model = Object.assign({},{name, type});
@@ -35,21 +37,16 @@ export const buildField = ({name, type = null, placeholder = null}) => {
     Object.assign(model, {placeholder});
   return model;
 };
-export const hasErrors = (errors) => Object.keys(errors)
-  .filter(field => Array.isArray(errors[field]) && errors[field].length > 0)
-  .length > 0;
+export const hasErrors = (errors) => !!Object.keys(errors).find(field => Array.isArray(errors[field]) && errors[field].length > 0);
 
-export const debounce = (func, wait, immediate) => {
-  var timeout;
-  return function() {
-    var context = this, args = arguments;
-    var later = function() {
-      timeout = null;
-      if (!immediate) func.apply(context, args);
-    }
-    var callNow = immediate && !timeout;
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-    if (callNow) func.apply(context, args);
+export const debounce = debounceMethod;
+
+export class Field{
+  constructor(name, type){
+    this.name = name;
+    this.type = type || 'text';
+    this.value = type && type === 'checkbox' ? false : '';
+    this.errors = [];
+    this.touched = false;
   }
 }

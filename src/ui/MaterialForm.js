@@ -5,7 +5,6 @@ import Paper from 'material-ui/Paper';
 import CheckboxInput from './CheckboxInput';
 import PageTitle from './PageTitle';
 import restructure from '../utils/restructure';
-import {SetTimer} from '../utils/timestamp';
 
 const MaterialForm = ({fields, values, update, save, errors = {}, loading, title = null, submitLabel = null}) => {
   const renderedFields = fields.map((field) => {
@@ -18,6 +17,7 @@ const MaterialForm = ({fields, values, update, save, errors = {}, loading, title
       case 'email':
       case 'number':
       case 'text':
+      default:
         return (
           <InputField
             key={name}
@@ -28,7 +28,6 @@ const MaterialForm = ({fields, values, update, save, errors = {}, loading, title
             value={values[name]}
             placeholder={placeholder}
             onChange={update} />);
-      default:
         break;
     }
   });

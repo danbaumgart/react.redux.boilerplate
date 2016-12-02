@@ -55,7 +55,7 @@ class RegistrationPage extends React.Component {
     const {form, validation} = this.props;
     const passwordHasValue = !!this.props.values.password && this.props.values.password !== '';
     const values = passwordHasValue ? this.props.values : reformat.object.removeProperties(this.props.values);
-    let errors = !form.submitted ? {} : Object.assign(validation.getAllDefaultErrorMessages(validation.validateForm(values)), this.props.errors);
+    let errors = !form.submitted ? {} : Object.assign({}, validation.validateForm(values), this.props.errors);
     const passwordHasErrors = Array.isArray(errors.password) && errors.password.length > 0;
     let fields = this.props.fields.slice(0);
     if(!passwordHasValue || passwordHasErrors) {

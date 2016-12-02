@@ -5,11 +5,11 @@ import * as navbarActions from '../actions/navbarActions';
 import AppBar from 'material-ui/AppBar';
 import SideNavigation from '../ui/SideNavigation';
 import {browserHistory} from 'react-router';
-import Paper from 'material-ui/Paper';
+import {Paper, IconButton} from 'material-ui';
 import NavbarDropdown from '../ui/NavbarDropdown';
 import {logoutAccount} from '../actions/loginActions'
 import SnackbarManager from '../ui/SnackbarManager';
-
+import {NavigationMenu} from 'material-ui/svg-icons/index';
 
 class App extends React.Component {
   constructor(props, context) {
@@ -18,6 +18,7 @@ class App extends React.Component {
     this.toggleNavbar = this.toggleNavbar.bind(this);
     this.changeRoute = this.changeRoute.bind(this);
     this.goHome = this.goHome.bind(this);
+    this.openNavbar = this.openNavbar.bind(this);
     this.logout = this.logout.bind(this);
   }
   changeRoute(event, menuItem){
@@ -27,18 +28,23 @@ class App extends React.Component {
   logout(){
     this.props.actions.logoutAccount();
   }
+  openNavbar(){
+    this.props.action.openNavbar();
+  }
   toggleNavbar() {
     this.props.actions.toggleNavbar();
   }
   
   closeNavbar() {
-    this.props.actions.closeNavbar();
+    if(!this.props.collapsed)
+      this.props.actions.closeNavbar();
   }
   goHome(){
     this.closeNavbar();
     browserHistory.push(this.props.links.find(link => link.name.toLowerCase() === 'home'));
   }
   render() {
+    const navmenuIcon = <IconButton onMouseEnter={this.props.actions.openNavbar}><NavigationMenu/></IconButton>;
     const title = <span style={{cursor: "pointer"}}>{this.props.title}</span>;
     const {appBar: appBarStyle, paper: paperStyle, container: containerStyle} = {
       paper: {
@@ -52,9 +58,11 @@ class App extends React.Component {
       }
     };
     const accountBar = <NavbarDropdown logout={this.logout} user={this.props.user} links={this.props.userLinks} changeRoute={this.changeRoute} closeNavbar={this.closeNavbar} />;
+    
     return (
       <div style={containerStyle}>
         <AppBar title={title}
+                iconElementLeft={navmenuIcon}
                 onTitleTouchTap={this.goHome}
                 iconElementRight={accountBar}
                 onRightIconButtonTouchTap={this.closeNavbar}
@@ -63,7 +71,7 @@ class App extends React.Component {
         <Paper style={paperStyle} zDepth={2}>{this.props.children}</Paper>
         <SideNavigation title={this.props.title} changeRoute={this.changeRoute} handleToggle={this.toggleNavbar}
                         handleClose={this.closeNavbar}
-                        collapsed={this.props.collapsed} links={this.props.links}/>
+                        open={this.props.open} links={this.props.links}/>
         <SnackbarManager/>
       </div>
     );
@@ -72,7 +80,7 @@ class App extends React.Component {
 
 App.propTypes = {
   children: PropTypes.object.isRequired,
-  collapsed: PropTypes.bool.isRequired,
+  open: PropTypes.bool.isRequired,
   loading: PropTypes.bool.isRequired,
   actions: PropTypes.object.isRequired,
   links: PropTypes.array.isRequired,
@@ -90,11 +98,11 @@ App.contextTypes = {
 
 
 function mapStateToProps(state, ownProps) {
-  const {links:{userLinks, homeLinks}, navbarCollapsed, ajaxCallsInProgress, user, title} = state;
+  const {links:{userLinks, homeLinks}, navbarOpen, ajaxCallsInProgress, user, title} = state;
   let current = '/' + (ownProps.routes[1].path || '');
   return {
     loading: ajaxCallsInProgress > 0,
-    collapsed: navbarCollapsed,
+    open: navbarOpen,
     links: homeLinks,
     currentLocation: current,
     userLinks: userLinks,

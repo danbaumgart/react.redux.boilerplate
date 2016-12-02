@@ -1,0 +1,5 @@
+export default {
+  CHECKBOX: 'CHECKBOX',
+  TEXTBOX: 'TEXTBOX',
+  PASSWORD: 'PASSWORD'
+};
