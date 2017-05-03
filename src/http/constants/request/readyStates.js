@@ -1,0 +1,9 @@
+const READY_STATES =  {
+    UNSENT: 0,
+    OPENED: 1,
+    HEADERS_RECEIVED: 2,
+    LOADING: 3,
+    DONE: 4
+};
+export const {UNSENT, OPENED, HEADERS_RECEIVED, LOADING, DONE} = READY_STATES;
+export default READY_STATES;

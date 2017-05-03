@@ -20,9 +20,13 @@ export function getUserLinks(){
 export function getHomeLinks() {
   return function (dispatch) {
     let homeLinks = [
-      {path: '/', name: 'Home'},
-      {path: '/volunteer', name: 'Volunteer'},
-      {path: '/services', name: 'Seeking Help'}];
+        {path: '/', name: 'Home'},
+        {path: '/about', name: 'About'},
+        {path: '/contactme', name: 'Contact Me'},
+        {path: '/testimonials', name: 'Testimonials'},
+        {path: '/appointment', name: 'Appointment'},
+        {path: '/events', name: 'Events'}
+      ];
     dispatch(loadHomeLinks(homeLinks));
   }
 }

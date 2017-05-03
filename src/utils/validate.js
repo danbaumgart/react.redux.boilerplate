@@ -1,22 +1,22 @@
-import types from './enums/validation';
+import CONDITIONS from './constants/validation';
 
 const minCharacter = (input, requirement, mincount = 1)=> {
   let matches = [];
   if (input && requirement) {
     switch (requirement) {
-      case types.ALPHA:
+      case CONDITIONS.ALPHA:
         matches = input.match(/[A-Za-z]/g) || [];
         break;
-      case types.UPPERCASE:
+      case CONDITIONS.UPPERCASE:
         matches = input.match(/[A-Z]/g) || [];
         break;
-      case types.LOWERCASE:
+      case CONDITIONS.LOWERCASE:
         matches = input.match(/[a-z]/g) || [];
         break;
-      case types.NUMERIC:
+      case CONDITIONS.NUMERIC:
         matches = input.match(/[\d]/g) || [];
         break;
-      case types.SPECIAL:
+      case CONDITIONS.SPECIAL:
         matches = input.match(/([^\w\s]|_)/g) || [];
         break;
     }
@@ -39,11 +39,11 @@ const evaluate = (input)=> {
     LOWERCASE: ()=>/[a-z]/.test(input),
     MINIMUM_LENGTH: (minlength)=>input && input.length >= minlength,
     MINIMUM_VALUE: (minvalue)=>input && input >= minvalue,
-    MINIMUM_ALPHA: (mincount)=>minCharacter(input, types.ALPHA, mincount),
-    MINIMUM_NUMERIC: (mincount)=>minCharacter(input, types.NUMERIC, mincount),
-    MINIMUM_SPECIAL: (mincount)=>minCharacter(input, types.SPECIAL, mincount),
-    MINIMUM_UPPERCASE: (mincount)=>minCharacter(input, types.UPPERCASE, mincount),
-    MINIMUM_LOWERCASE: (mincount)=>minCharacter(input, types.LOWERCASE, mincount),
+    MINIMUM_ALPHA: (mincount)=>minCharacter(input, CONDITIONS.ALPHA, mincount),
+    MINIMUM_NUMERIC: (mincount)=>minCharacter(input, CONDITIONS.NUMERIC, mincount),
+    MINIMUM_SPECIAL: (mincount)=>minCharacter(input, CONDITIONS.SPECIAL, mincount),
+    MINIMUM_UPPERCASE: (mincount)=>minCharacter(input, CONDITIONS.UPPERCASE, mincount),
+    MINIMUM_LOWERCASE: (mincount)=>minCharacter(input, CONDITIONS.LOWERCASE, mincount),
     MAXIMUM_LENGTH: (maxlength)=>input && input.length <= maxlength,
     MAXIMUM_VALUE: (maxvalue)=>input && input <= maxvalue,
     RESTRICT_ALPHA: ()=>/^[a-zA-Z]+$/.test(input),
@@ -59,27 +59,34 @@ const _validateField = (input = '', schema) => {
   let keys = Object.keys(schema);
   let err = [];
   if (Array.isArray(keys) && keys.length) {
-    if (keys.findIndex(i => i === types.REQUIRED) > -1)
+    if (keys.findIndex(i => i === CONDITIONS.REQUIRED) > -1)
       if (!valid.REQUIRED())
-        return [types.REQUIRED];
+        return [CONDITIONS.REQUIRED];
     else if (!input || input == '')
         return [];
     keys.forEach(requirement => {
       if (!valid[requirement](schema[requirement]))
-        err.push(types[requirement]);
+        err.push(CONDITIONS[requirement]);
     });
   } return err;
 };
 
 class Validator {
-  constructor(schema) {
+  constructor(schema, asyncValidation) {
     this.schema = schema;
+    this.hasAsyncValidation = Boolean(asyncValidation);
+    this.asyncValidation = asyncValidation;
     this.validateField = this.validateField.bind(this);
     this.validateForm = this.validateForm.bind(this);
   }
   validateForm(form) {
     const errors = {};
-    Object.keys(form).forEach(field => Object.assign(errors, {[field]: this.validateField(field, form[field])}));
+    console.log("FORM", form);
+    Object.keys(form).forEach(field => {
+        const fieldErrors = this.validateField(field, form[field]);
+        console.log("FIELD ERRORS", fieldErrors);
+        Object.assign(errors, {[field]: fieldErrors});
+    });
     return errors;
   }
   validateField(name, value) {

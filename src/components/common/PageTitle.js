@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react';
 import Divider from 'material-ui/Divider';
+import {BLACK} from '../../utils/constants/colors';
 const PageTitle = ({title}) => {
   return (
     <div>

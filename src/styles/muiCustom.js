@@ -2,31 +2,33 @@
 import * as colors from 'material-ui/styles/colors';
 import {fade} from 'material-ui/utils/colorManipulator';
 import * as spacing from 'material-ui/styles/spacing';
+import {GREEN_YELLOW, PURPLE} from '../utils/constants/colors';
+const palette = {
+  primary1Color: PURPLE,
+  primary2Color: GREEN_YELLOW,
+  primary3Color: colors.grey400,
+  accent1Color: colors.deepOrange700,
+  accent2Color: colors.grey100,
+  accent3Color: colors.grey500,
+  textColor: colors.darkBlack,
+  alternateTextColor: colors.fullWhite,
+  canvasColor: colors.white,
+  borderColor: colors.grey300,
+  disabledColor: fade(colors.darkBlack, 0.3),
+  pickerHeaderColor: GREEN_YELLOW,
+  clockCircleColor: fade(colors.darkBlack, 0.075),
+  shadowColor: colors.fullBlack
+};
 
-let muiCustom = {
+export default {
   spacing: spacing,
   fontFamily: 'Roboto, sans-serif',
-  palette: {
-    primary1Color: colors.teal600,
-    primary2Color: colors.cyan700,
-    primary3Color: colors.grey400,
-    accent1Color: colors.deepOrange700,
-    accent2Color: colors.grey100,
-    accent3Color: colors.grey500,
-    textColor: colors.darkBlack,
-    alternateTextColor: colors.fullWhite,
-    canvasColor: colors.white,
-    borderColor: colors.grey300,
-    disabledColor: fade(colors.darkBlack, 0.3),
-    pickerHeaderColor: colors.cyan500,
-    clockCircleColor: fade(colors.darkBlack, 0.075),
-    shadowColor: colors.fullBlack
-  },
+  palette,
   overlay:{
     backgroundColor: fade(colors.fullBlack, 0.57)
   },
   appBar: {
-    color: colors.blueGrey800,
+    color: PURPLE,
     textColor: colors.white
   },
   ripple: {
@@ -57,4 +59,3 @@ let muiCustom = {
     submit: colors.teal800
   }
 };
-export default muiCustom

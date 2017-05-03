@@ -1,8 +1,8 @@
 import delay from './delay';
-import {accounts, schema} from '../mock/db/accounts';
+import {accounts, schema} from '../mock/data/accountsData';
 import Validator from '../utils/validate';
 //import schema from '../components/account/registrationSchema';
-import invalid from '../utils/enums/validation';
+import {UNAVAILABLE} from '../utils/constants/validation';
 // This file mocks a web API by working with the hard-coded data below.
 // It uses setTimeout to simulate the delay of an AJAX call.
 // All calls return promises.
@@ -20,7 +20,7 @@ class AccountApi {
     return new Promise((resolve) =>{
       setTimeout(()=>
         accounts.find(acct => acct.emailAddress.toLowerCase() === emailAddress.toLowerCase())
-        ? resolve(invalid.UNAVAILABLE)
+        ? resolve(UNAVAILABLE)
         : resolve(null), delay)});
   }
   static createAccount(account) { // to avoid manipulating object passed in.
@@ -29,9 +29,9 @@ class AccountApi {
         let validation = new Validator(schema);
         const errors = validation.validateForm(account);
         let hasErrors;
-        if(accounts.filter(acct => acct.emailAddress.toLowerCase() === account.emailAddress.toLowerCase()).length)
+        if(account && accounts.filter(acct => acct.emailAddress.toLowerCase() === account.emailAddress.toLowerCase()).length)
             Array.isArray(errors.emailAddress) && errors.emailAddress.length > 0
-              ? Object.assign(errors, {emailAddress: [...errors.emailAddress, invalid.UNAVAILABLE]})
+              ? Object.assign(errors, {emailAddress: [...errors.emailAddress, UNAVAILABLE]})
               : Object.assign(errors, {emailAddress: []});
         Object.keys(errors).forEach(key => {
           if(Array.isArray(errors[key]) && errors[key].length > 0)
@@ -44,16 +44,16 @@ class AccountApi {
           accounts.push(account);
           resolve(account);
         }
-        
+
       }, delay);
     });
   }
-  
-  
+
+
   static loadAccount(emailAddress, password) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        const loggedIn = accounts.find(acct => acct.emailAddress.toLowerCase() === emailAddress.toLowerCase() && acct.password === password);
+        const loggedIn = emailAddress && password ? accounts.find(acct => acct.emailAddress.toLowerCase() === emailAddress.toLowerCase() && acct.password === password) : null;
         if(loggedIn)
           resolve(loggedIn);
         reject(loggedIn);

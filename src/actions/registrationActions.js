@@ -18,13 +18,12 @@ function updateRegistrationForm(registrationForm) {
 function updateRegistrationErrors(registrationErrors) {
   return {type: types.UPDATE_REGISTRATION_ERRORS, payload: registrationErrors};
 }
-export function loadSchema(){
-  return function(dispatch){
+export function loadSchema() {
+  return function(dispatch) {
     return accountApi.loadSchema()
       .then(result => dispatch(loadRegistrationSchema(result)));
   };
 }
-
 export function createAccount(account) {
   return function (dispatch) {
     return accountApi.createAccount(account)
@@ -36,7 +35,7 @@ export function createAccount(account) {
       });
   };
 }
-function checkAvailability({emailAddress}){
+function checkAvailability({emailAddress}) {
   return accountApi.checkAvailability(emailAddress)
     .then(res => res)
     .catch(err => err);
@@ -49,7 +48,7 @@ export function changeRegistrationForm(form) {
       .then(result => result[1]);
   }
 }
-export function changeRegistrationErrors(errors){
+export function changeRegistrationErrors(errors) {
   return function (dispatch) {
     dispatch(updateRegistrationErrors(errors));
   };

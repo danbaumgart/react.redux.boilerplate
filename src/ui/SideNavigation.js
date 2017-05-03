@@ -7,7 +7,12 @@ const SideNavigation = ({title, handleToggle, collapsed, links, changeRoute, han
     <MenuItem key={link.path} onTouchTap={()=>changeRoute(link['path'])}>{link.name}</MenuItem>);
   return (
     <div onClick={handleClose}>
-      <Drawer title={title} docked={false} width={230} open={!collapsed} onRequestChange={handleToggle} containerStyle={{borderRight:"2px solid rgb(86, 86, 90)"}}>
+      <Drawer title={title}
+              docked={false}
+              width={230}
+              open={!collapsed}
+              onRequestChange={handleToggle}
+              containerStyle={{borderRight:"2px solid rgb(86, 86, 90)"}}>
         <div style={{marginTop:"50px", paddingTop:'20px'}}>{linkList}</div>
       </Drawer>
     </div>

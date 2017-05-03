@@ -12,29 +12,29 @@ class SnackbarManager extends React.Component {
     };
     this.handleRequestClose = this.handleRequestClose.bind(this);
   }
-  
+
   componentWillMount() {
     let alerts = this.props.alerts.slice(0);
     this.setState({
       messages: alerts
     });
   }
-  
+
   componentWillReceiveProps(nextProps) {
-    let alerts = nextProps.alertsReducer.slice(0);
-    if (this.props.alerts.length < nextProps.alertsReducer.length)
+    let alerts = nextProps.alerts.slice(0);
+    if (this.props.alerts.length < nextProps.alerts.length)
       this.setState({
         messages: alerts
       });
   }
-  
+
   handleRequestClose() {
     let hasMoreMessages = this.state.messageNumber < this.state.messages.length;
     let increment = this.state.messageNumber + 1;
     if(hasMoreMessages)
       this.setState({messageNumber: increment});
   }
-  
+
   render() {
     console.log("SNACKBAR MANAGER STATE", this.state);
     let showSnackbar = this.state.messages.length > this.state.messageNumber;
@@ -75,7 +75,7 @@ SnackbarManager.defaultProps = {
 };
 function mapStateToProps(state, ownProps) {
   return {
-    alerts: state.alertsReducer
+    alerts: state.alerts
   };
 }
 // function mapDispatchToProps(dispatch) {

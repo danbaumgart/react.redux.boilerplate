@@ -6,10 +6,10 @@ const InputField = ({name, onChange, type, placeholder, value, errors, disabled}
   const field = Object.assign({},
     {label: name.charAt(0).toUpperCase() + name.replace(/[A-Z]/g, (match)=> ' ' + match).slice(1)});
   if(Array.isArray(errors) && errors.length)
-    Object.assign(field, {errors:  <span><ul>{errors.map(error => <li key={error}>{error}</li>)}</ul></span>});
+    Object.assign(field, {errors:  <span><ul>{errors.map(error => <li key={error}>{error}</li>)}</ul></span>}, {style: {backgroundColor: "white"}});
   if(disabled)
-    Object.assign(field, {style: {cursor: "default"}});
-  
+    Object.assign(field, {style: Object.assign({}, field.style, {cursor: "default"})});
+
   return (
     <Paper zDepth={1}>
     <TextField name={name}

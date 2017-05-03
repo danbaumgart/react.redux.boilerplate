@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react';
 import {IconMenu, MenuItem, IconButton} from 'material-ui';
 import Person from 'material-ui/svg-icons/social/person';
+import {WHITE} from '../utils/constants/colors';
 
 const NavbarDropdown = ({links, closeNavbar, changeRoute}) => {
   let linkList = links.map(link=><MenuItem primaryText={link.name} key={link.path} onTouchTap={()=>changeRoute(link.path)}/>);
@@ -8,7 +9,7 @@ const NavbarDropdown = ({links, closeNavbar, changeRoute}) => {
     <IconMenu
       iconButtonElement={<IconButton><Person /></IconButton>}
       anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-      iconStyle={{color:"white"}}
+      iconStyle={{color: WHITE}}
       onItemTouchTap={closeNavbar}
       targetOrigin={{horizontal: 'right', vertical: 'top'}}>
       {linkList}
