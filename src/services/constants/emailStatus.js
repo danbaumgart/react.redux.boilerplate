@@ -1,0 +1,7 @@
+const STATUS = {
+  UNAUTHENTICATED: "UNAUTHENTICATED",
+  USER: "USER",
+  ADMIN: "ADMIN"
+};
+export const {UNAUTHENTICATED, USER, ADMIN} = STATUS;
+export default STATUS;

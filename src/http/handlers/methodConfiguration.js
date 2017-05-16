@@ -8,8 +8,6 @@ class RequestConfiguration {
         this.methodType = methodType;
         this.params = toEncodedParameters(data);
         this.promiseHandlers = {resolve, reject};
-        console.log("REQUEST HEADERS", requestHeaders);
-        //if(Array.isArray(requestHeaders) && requestHeaders.length > 0)
         this.requestHeaders = requestHeaders.map(toRequestHeader);
     }
 }

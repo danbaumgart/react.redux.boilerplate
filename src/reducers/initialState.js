@@ -1,42 +1,41 @@
-import {UNAUTHENTICATED} from '../utils/constants/emailStatus';
+import STATUS from '../services/constants/emailStatus';
 export default {
-  ajaxCallsInProgress: 0,
-  navbarCollapsed: true,
-  registration: {},
-  login: {},
-  links: {},
-  alerts: [],
-  user: {},
-  contact: {
-    firstName: null,
-    lastName: null,
-    phone: [],
-    email: null,
-    status: UNAUTHENTICATED
-  },
-  appointment: {
-    time: null,
-    date: null,
-    flexible: false,
-    cancelled: false,
-    institutionId: null,
-    contactId: null
-  },
-  phone: {
-    number: null,
-    extension: null
-  },
-  instution: {
-    name: null,
-    street: null,
-    city: null,
-    state: null,
-    zip: null,
-    country: null
-  },
-  location: {
-    id: null,
-    institutionId: null,
-    details: null
-  }
+    ajaxCallsInProgress: 0,
+    navbarCollapsed: true,
+    registration: {},
+    login: {},
+    links: {},
+    alerts: [],
+    user: {},
+    email: {
+        emailAddress: '',
+        status: STATUS.UNAUTHENTICATED
+    },
+    contact: {
+        firstName: '',
+        lastName: ''
+    },
+    events: [],
+    countries: [],
+    states: [],
+    appointment: {
+        time: '',
+        date: '',
+        flexible: ''
+    },
+    phone: {
+        number: '',
+        extension: ''
+    },
+    instution: {
+        type: null,
+        name: ''
+    },
+    location: {
+        street: '',
+        city: '',
+        state: '',
+        zip: '',
+        country: ''
+    }
 };

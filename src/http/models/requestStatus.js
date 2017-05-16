@@ -1,4 +1,3 @@
-import {StatusClassHandler} from '../handlers/statusClassHandler';
 import {getStatusClass} from '../utils/httpUtils';
 import StatusCodeHandler from '../handlers/statusCodeHandler';
 class RequestStatus {

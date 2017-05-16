@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import SubmitButton from '../../components/common/SubmitButton';
 import InputField from '../../ui/InputField';
-import Paper from 'material-ui/Paper';
+import FormPaper from '../../components/common/FormPaper';
 
 const RegistrationForm = ({account, update, save, errors, saving}) => {
   let passwordHasValue = account.password && account.password !== '';
@@ -11,7 +11,7 @@ const RegistrationForm = ({account, update, save, errors, saving}) => {
   console.log("REGISTRATION FORM", formErrors);
   let hasFormErrors = formErrors.length > 0;
   return (
-    <Paper zDepth={1} style={{display: "inline-block", width: "100%", padding: "10px"}}>
+    <FormPaper>
       <InputField name="emailAddress"
                   placeholder="Enter your email address"
                   value={account.emailAddress}
@@ -48,7 +48,7 @@ const RegistrationForm = ({account, update, save, errors, saving}) => {
         onSave={save}
         disable={saving || hasFormErrors}
         label="Register"/>
-    </Paper>
+    </FormPaper>
   );
 };
 

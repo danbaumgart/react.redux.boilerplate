@@ -2,7 +2,7 @@
 import * as colors from 'material-ui/styles/colors';
 import {fade} from 'material-ui/utils/colorManipulator';
 import * as spacing from 'material-ui/styles/spacing';
-import {GREEN_YELLOW, PURPLE} from '../utils/constants/colors';
+import {GREEN_YELLOW, PURPLE} from '../../utils/constants/colors';
 const palette = {
   primary1Color: PURPLE,
   primary2Color: GREEN_YELLOW,

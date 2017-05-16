@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import {EditorModeEdit, ContentSave, ImageFlare, ActionDelete, ContentLink, ActionSearch, AvPlayCircleOutline, NavigationCancel} from 'material-ui/svg-icons'
-import config from '../styles/muiCustom';
+import config from '../config/theme/muiCustom';
 import {FlatButton, RaisedButton} from 'material-ui';
 import {fade} from 'material-ui/utils/colorManipulator';
 
@@ -19,7 +19,7 @@ const ActionButton = ({actionType, handleClick, buttonType, href}) => {
     rippleColor: config.ripple.color,
     hoverColor: fade(config.actionButton[actionType], .25),
   };
-  
+
   const getIconComponent = () => {
     switch (actionType) {
       case 'cancel':

@@ -1,9 +1,8 @@
 import HttpPromise from '../utils/httpPromise';
 import {FUNCTION} from '../../utils/constants/dataTypes';
-class HttpProxy {
+class HttpService {
     constructor(url, mapper) {
         this.url = url;
-        console.log("URL", url);
         if(typeof mapper === FUNCTION) this.mapper = mapper;
     }
     Get(endpoint, data) {
@@ -19,4 +18,4 @@ class HttpProxy {
         return HttpPromise.DELETE(endpoint ? this.url + endpoint : this.url, data);
     }
 }
-export default HttpProxy;
+export default HttpService;
