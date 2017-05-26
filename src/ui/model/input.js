@@ -38,6 +38,6 @@ class TimePicker extends Input {
     }
 }
 export default {
-    [INPUT.TEXT]: Text,
+    [INPUT.TEXT_FIELD]: Text,
     [INPUT.AUTO_COMPLETE]: AutoComplete,
 }

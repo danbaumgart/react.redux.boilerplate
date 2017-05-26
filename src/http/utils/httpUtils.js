@@ -1,6 +1,6 @@
 import RequestHeaderHandler from '../handlers/requestHeaderTypes';
 import StatusClassHandler from '../handlers/statusClassHandler';
-import {EQUALS, AMPERSAND} from '../../utils/constants/characters'
+import {EQUALS, AMPERSAND, QUESTION_MARK} from '../../utils/constants/characters'
 import {STRING} from '../../utils/constants/dataTypes';
 const HttpUtility = {
     toEncodedParameters(data){
@@ -20,5 +20,6 @@ const HttpUtility = {
         return StatusClassHandler[classKey];
     }
 };
+export const toQueryParameters = parameters => QUESTION_MARK + HttpUtility.toEncodedParameters(parameters);
 export const {toEncodedParameters, toRequestHeader, getStatusClass} = HttpUtility;
 export default HttpUtility;

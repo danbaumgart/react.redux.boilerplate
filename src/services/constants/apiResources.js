@@ -5,9 +5,9 @@ const resources = {
     APPOINTMENTS: 'Appointments',
     STATES: 'States',
     COUNTRIES: 'Countries',
-    INSTITUTIONS: 'Institutions',
     LOCATIONS: 'Locations',
-    CONFIRMATIONS: 'Confirmations'
+    CONFIRMATIONS: 'Confirmations',
+    APPOINTMENT_LOCATIONS: 'AppointmentLocations'
 };
 export const {
     URL,
@@ -16,8 +16,8 @@ export const {
     APPOINTMENTS,
     STATES,
     COUNTRIES,
-    INSTITUTIONS,
     LOCATIONS,
-    CONFIRMATIONS
+    CONFIRMATIONS,
+    APPOINTMENT_LOCATIONS
 } = resources;
 export default resources;

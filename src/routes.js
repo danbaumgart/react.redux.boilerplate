@@ -6,7 +6,8 @@ import TestimonialsPage from './views/testimonials/TestimonialsPage';
 import EventsPage from './views/events/EventsPage';
 import AboutPage from './views/about/AboutPage';
 import ContactMePage from './views/contactMe/ContactMePage';
-import AppointmentPage from './views/appointment/AppointmentPage';
+import ContactPage from './views/contact/contactPage';
+import AppointmentPage from './views/appointment/appointmentPage';
 import RegistrationPage from './views/account/RegistrationPage';
 import LoginPage from './views/account/LoginPage';
 const PATHS = {
@@ -16,7 +17,8 @@ const PATHS = {
     LOGIN: "login",
     APPOINTMENT: "appointment",
     EVENTS: "events",
-    TESTIMONIALS: "testimonials"
+    TESTIMONIALS: "testimonials",
+    CONTACT: "contact"
 };
 export const TitleHandler = {
     [PATHS.ABOUT]: "About",
@@ -26,25 +28,18 @@ export const TitleHandler = {
     [PATHS.REGISTRATION]: "Registration",
     [PATHS.EVENTS]: "Events",
     [PATHS.TESTIMONIALS]: "Testimonials",
-};
-const ComponentHandler = {
-    [PATHS.ABOUT]: AboutPage,
-    [PATHS.APPOINTMENT]: AppointmentPage,
-    [PATHS.CONTACT_ME]: ContactMePage,
-    [PATHS.LOGIN]: LoginPage,
-    [PATHS.REGISTRATION]: RegistrationPage,
-    [PATHS.EVENTS]: EventsPage,
-    [PATHS.TESTIMONIALS]: TestimonialsPage
+    [PATHS.CONTACT]: "Contact"
 };
 export default (
-  <Route path="/" component={App}>
-    <IndexRoute component={HomePage}/>
-    <Route path="about" component={AboutPage}/>
-    <Route path="contactme" component={ContactMePage}/>
-    <Route path="registration" component={RegistrationPage}/>
-    <Route path="login" component={LoginPage}/>
-    <Route path="appointment" component={AppointmentPage}/>
-    <Route path="testimonials" component={TestimonialsPage}/>
-    <Route path="events" component={EventsPage}/>
-  </Route>
+    <Route path="/" component={App}>
+        <IndexRoute component={HomePage}/>
+        <Route path="about" component={AboutPage}/>
+        <Route path="contactme" component={ContactMePage}/>
+        <Route path="contact" component={ContactPage}/>
+        <Route path="registration" component={RegistrationPage}/>
+        <Route path="login" component={LoginPage}/>
+        <Route path="appointment" component={AppointmentPage}/>
+        <Route path="testimonials" component={TestimonialsPage}/>
+        <Route path="events" component={EventsPage}/>
+    </Route>
 );

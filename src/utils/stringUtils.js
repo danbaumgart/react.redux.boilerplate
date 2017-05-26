@@ -1,16 +1,19 @@
-import {WHITESPACE} from './regex/patterns';
-import {TRAILING, LEADING} from './regex/symbols';
-import {GLOBAL, IGNORE_CASE} from './regex/options';
+import PatternHandler from './regex/patterns';
+import {WHITESPACE, UPPERCASE} from './constants/regexPatterns';
+import {TRAILING, LEADING} from './constants/regexSymbols';
+import SymbolHandler from './regex/symbols';
+import {GLOBAL, IGNORE_CASE} from './constants/regexOptions';
+import OptionHandler from './regex/options';
 import {FORWARD_SLASH} from './constants/characters';
 
 export const formatRegex = expression => {
     return expression.includes(' ') ?
-        expression.split(' ').join(WHITESPACE) :
+        expression.split(' ').join(PatternHandler[WHITESPACE]) :
         expression;
 };
 export const getMatchIndices = (pattern, source) => {
     const result = [];
-    const regex = new RegExp(pattern, GLOBAL + IGNORE_CASE);
+    const regex = new RegExp(pattern, OptionHandler[GLOBAL] + OptionHandler[IGNORE_CASE]);
     let match;
     while (match = regex.exec(source))
         result.push(match.index);
@@ -44,19 +47,19 @@ export const trim = (character, value) => {
 };
 export const trimLeading = (character, value, ignoreCase = true) => {
     if([character, value].every(param => hasLength(param))){
-        const expression = LEADING + formatPattern(character);
+        const expression = SymbolHandler[LEADING] + formatPattern(character);
         return value.replace(toRegExp(expression, ignoreCase), '');
     }
 };
 export const trimTrailing = (character, value, ignoreCase = true) => {
     if([character, value].every(param => hasLength(param))){
-        const expression = formatPattern(character) + TRAILING;
+        const expression = formatPattern(character) + SymbolHandler[TRAILING];
         return value.replace(toRegExp(expression, ignoreCase), '');
     }
 };
 export const toRegExp = (expression, ignoreCase = true) => {
-    let options = GLOBAL;
-    if(ignoreCase) options += IGNORE_CASE;
+    let options = OptionsHandler[GLOBAL];
+    if(ignoreCase) options += OptionHandler[IGNORE_CASE];
     return hasLength(expression) ? new RegExp(expression, options) : null;
 };
 export const hasLength = (value) => {
@@ -71,8 +74,9 @@ export const combineURL = (url, endpoint) => {
     else if(hasLength(url)) return trimTrailing(url) + FORWARD_SLASH;
     return null;
 };
-export const camelCaseToProperCase = name => name.charAt(0).toUpperCase() + name.replace(/[A-Z]/g, match => ' ' + match).slice(1);
-export const formatSnackbarAlert = (...parts) => parts.map(str => str.charAt(0).toUpperCase() + str.replace(/[A-Z]/g, match => ' ' + match).slice(1)).join(' ').toUpperCase();
+export const camelCaseToProperCase = name => name.charAt(0).toUpperCase() + name.replace(PatternHandler[UPPERCASE], match => ' ' + match).slice(1);
+export const properCaseToCamelCase = name => typeof name === 'string' ? name.charAt(0).toLowerCase() + name.slice(1).replace(PatternHandler[WHITESPACE], '') : name;
+export const formatSnackbarAlert = (...parts) => parts.map(str => str.charAt(0).toUpperCase() + str.replace(PatternHandler[UPPERCASE], match => ' ' + match).slice(1)).join(' ').toUpperCase();
 export const constantCaseToProperCase = constantName => constantName.toLowerCase().split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 export default {
     combineURL,
@@ -87,5 +91,6 @@ export default {
     trimTrailing,
     camelCaseToProperCase,
     formatSnackbarAlert,
-    constantCaseToProperCase
+    constantCaseToProperCase,
+    properCaseToCamelCase
 };

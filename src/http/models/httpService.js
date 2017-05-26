@@ -1,21 +1,36 @@
 import HttpPromise from '../utils/httpPromise';
 import {FUNCTION} from '../../utils/constants/dataTypes';
 class HttpService {
-    constructor(url, mapper) {
+    constructor(url, mapping) {
         this.url = url;
-        if(typeof mapper === FUNCTION) this.mapper = mapper;
+        if(typeof mapping === FUNCTION) this.mapper = mapping;
     }
-    Get(endpoint, data) {
-        return HttpPromise.GET(endpoint ? this.url + endpoint : this.url, data);
+    Get(data, endpoint) {
+        return this.mapperExists() ?
+            HttpPromise.DELETE(endpoint ? this.url + endpoint : this.url, data)
+                .then(this.mapper.toViewModel) :
+            HttpPromise.DELETE(endpoint ? this.url + endpoint : this.url, data);
     }
-    Post(endpoint, data) {
-        return HttpPromise.POST(endpoint ? this.url + endpoint : this.url, data);
+    Post(data, endpoint) {
+        return this.mapperExists() ?
+            HttpPromise.POST(endpoint ? this.url + endpoint : this.url, data)
+                .then(this.mapper.toViewModel) :
+            HttpPromise.POST(endpoint ? this.url + endpoint : this.url, data);
     }
-    Put(endpoint, data) {
-        return HttpPromise.PUT(endpoint ? this.url + endpoint : this.url, data);
+    Put(data, endpoint) {
+        return this.mapperExists() ?
+            HttpPromise.PUT(endpoint ? this.url + endpoint : this.url, data)
+                .then(this.mapper.toViewModel) :
+            HttpPromise.PUT(endpoint ? this.url + endpoint : this.url, data);
     }
-    Delete(endpoint, data) {
-        return HttpPromise.DELETE(endpoint ? this.url + endpoint : this.url, data);
+    Delete(data, endpoint) {
+        return this.mapperExists() ?
+            HttpPromise.DELETE(endpoint ? this.url + endpoint : this.url, data)
+                .then(this.mapper.toViewModel) :
+            HttpPromise.DELETE(endpoint ? this.url + endpoint : this.url, data);
+    }
+    mapperExists() {
+        return typeof this.mapper === FUNCTION ? mapper : null;
     }
 }
 export default HttpService;

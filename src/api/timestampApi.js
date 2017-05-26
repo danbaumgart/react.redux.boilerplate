@@ -7,7 +7,7 @@ const GetStamp = now => {
     minute: now.getMinutes(),
     second: now.getSeconds()
   };
-  return Object.assign({},d,{meridiem:d.hour >= 12 ? 'PM' : 'AM'},{hour:d.hour>=12? d.hour-12 : d.hour});
+  return Object.assign({},d, {meridiem:d.hour >= 12 ? 'PM' : 'AM'},{hour:d.hour>=12? d.hour-12 : d.hour});
 };
 const Timestamp = ()=>{
   const stamp = Object.assign({}, GetStamp(new Date()));

@@ -2,8 +2,8 @@
   "name": "react-redux-boilerplate",
   "version": "1.0.0",
   "description": "Boilerplate initially created with pluralsight React Redux with ES6 tutorial by Cory House",
-  "scripts":{
-    "prestart":"babel-node tools/startMessage.js",
+  "scripts": {
+    "prestart": "babel-node tools/startMessage.js",
     "start": "npm-run-all --parallel open:src lint:watch test:watch",
     "open:src": "babel-node tools/srcServer.js",
     "lint": "node_modules/.bin/esw webpack.config.* src tools",
@@ -27,7 +27,9 @@
     "material-ui": "^0.16",
     "react-tap-event-plugin": "^1.0.0",
     "redux-form": "^6.1.0",
-      "react-swipeable-views": "^0.12.1"
+    "react-swipeable-views": "^0.12.1",
+    "react-addons-pure-render-mixin": "^15.5.2",
+    "vanilla-masker": "^1.1.1"
   },
   "devDependencies": {
     "babel-cli": "6.8.0",
@@ -66,7 +68,9 @@
     "webpack": "1.13.0",
     "webpack-dev-middleware": "1.6.1",
     "webpack-hot-middleware": "2.10.0",
-    "remote-redux-devtools": "^0.5.0"
+    "remote-redux-devtools": "^0.5.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "react-input-mask": "^0.8.0 "
   },
   "repository": {
     "type": "git",

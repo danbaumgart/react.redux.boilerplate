@@ -1,5 +1,5 @@
 import React from 'react';
-import PageTitle from '../../components/common/PageTitle';
+import PageTitle from '../../ui/common/PageTitle';
 import AboutContent from '../../config/content/aboutContent';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText, FlatButton} from 'material-ui';
 class AboutPage extends React.Component {

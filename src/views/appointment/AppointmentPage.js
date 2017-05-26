@@ -1,95 +1,53 @@
-import React, {PropTypes} from 'react';
+import React from '../../utils/react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import SwipeableTabs from '../../ui/SwipeableTabs';
-import AppointmentForm from './AppointmentForm';
-import {DatePicker, TextField, TimePicker, Checkbox} from 'material-ui';
-import LocationForm from './locationForm';
-import RegistrationForm from '../account/RegistrationForm';
-import * as actions from '../../actions/appointmentActions';
-
-import PageTitle from '../../components/common/PageTitle';
-class AppointmentPage extends React.Component {
-	constructor(props, context) {
-		super(props, context);
-        this.updateDate = this.updateDate.bind(this);
-        this.updateTime = this.updateTime.bind(this);
-        this.updateField = this.updateField.bind(this);
-	}
-	updateDate(something, date){
-	    console.log("DATE", date);
-        this.setState({date});
+import AppointmentForm from './appointmentForm';
+import {DateTime, DateModel, TimeModel} from '../../utils/model/dateTimeModel';
+import {DATE, TIME, DETAILS, FLEXIBLE} from './constants/properties';
+import {
+    updateAppointmentDetails,
+    updateAppointmentDate,
+    updateAppointmentTime,
+    updateAppointmentFlexible,
+} from '../../actions/appointmentActionCreators';
+class AppointmentPage extends React.PureComponent {
+    constructor(props, context) {
+        super(props, context);
     }
-    updateTime(something, time){
-        this.setState({time});
+    render() {
+        const {date, time, flexible, details, actions} = this.props;
+        const props = {date, time, flexible, details, actions};
+        return (<AppointmentForm {...props} />);
     }
-    updateField(event){
-        const {name, value} = event.target;
-        this.setState({[name]: value});
-    }
-	render() {
-        const textFieldStyle = {width: '100%'};
-        const {appointment} = this.props;
-	    const {date, time, flexible, firstName, lastName, emailAddress, phoneNumber, extension, details} = this.props.appointment;
-	    const account = {lastName: '', firstName: '', emailAddress: '', password: '', confirmPassword: ''};
-        const other = {update: () => null, save: () => null, saving: false};
-        const locationProps = {
-            institution: null,
-            name: '',
-            address: '',
-            city: '',
-            state: '',
-            zip: '',
-            details: ''
-        };
-	    const user = {emailAddress: '', password: '', rememberMe: ''};
-        const tabs = ["Contact Info", "Schedule", "Location"];
-        const props = Object.assign({}, appointment, {
-            updateField: this.updateField,
-            updateDate: this.updateDate,
-            updateTime: this.updateTime,
-            textFieldStyle
-        });
-        const views = [
-            <AppointmentForm {...props} />,
-            <RegistrationForm account={account} save={other.save} saving={other.saving} update={other.update} />,
-            <LocationForm {...locationProps} />
-        ];
-	    return (
-		    <div>
-                <SwipeableTabs views={views} tabs={tabs} />
-            </div>		);
-	}
 }
 
 AppointmentPage.propTypes = {
-	appointment: PropTypes.object
+    actions: React.PropTypes.object.isRequired,
+    date: React.PropTypes.instanceOf(DateModel),
+    time: React.PropTypes.instanceOf(TimeModel),
+    flexible: React.PropTypes.bool,
+    details: React.PropTypes.string
 };
 
 AppointmentPage.defaultProps = {
-    appointment: {
-        date: '',
-        time: '',
-        flexible: false,
-        location: '',
-        details: '',
-        firstName: '',
-        lastName: '',
-        emailAddress: '',
-        phoneNumber: '',
-        extension: ''
-    }
+    date: DateTime.ToDateModel(),
+    time: DateTime.ToTimeModel(),
+    flexible: false,
+    details: null
 };
 
-function mapStateToProps(state, ownProps) {
-	const {appointment} = state;
-	return {appointment};
+function mapStateToProps(state) {
+    const {date, time, flexible, details} = state.appointment;
+    return {date, time, flexible, details};
 }
 
 function mapDispatchToProps(dispatch) {
-	return {
-		actions: bindActionCreators(actions, dispatch)
-	};
+    return {
+        actions: bindActionCreators({
+            [DATE]: updateAppointmentDate,
+            [TIME]: updateAppointmentTime,
+            [DETAILS]: updateAppointmentDetails,
+            [FLEXIBLE]: updateAppointmentFlexible}, dispatch)};
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppointmentPage);

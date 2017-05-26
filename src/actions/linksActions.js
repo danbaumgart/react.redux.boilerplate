@@ -1,11 +1,11 @@
-import * as types from './actionTypes';
+import ACTIONS from './types/linksActions';
 import Timestamp from '../api/timestampApi';
 
 export function loadUserLinks(links){
-  return {type:types.LOAD_USER_LINKS, payload: links, timestamp:Timestamp()};
+  return {type: ACTIONS.LOAD_USER_LINKS, payload: links, timestamp:Timestamp()};
 }
 export function loadHomeLinks(links){
-  return {type:types.LOAD_HOME_LINKS, payload: links, timestamp:Timestamp()};
+  return {type: ACTIONS.LOAD_HOME_LINKS, payload: links, timestamp:Timestamp()};
 }
 
 export function getUserLinks(){

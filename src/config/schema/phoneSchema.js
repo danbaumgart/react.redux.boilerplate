@@ -1,15 +1,15 @@
 import {REQUIRED, MINIMUM_LENGTH, RESTRICT_ALPHA} from '../../utils/constants/validation';
-import {TEXT} from '../../ui/constants/inputTypes';
+import {TEXT_FIELD} from '../../ui/constants/inputTypes';
 export default {
     phoneNumber: {
-        type: TEXT,
+        type: TEXT_FIELD,
         criteria: {
             [REQUIRED]: true,
             [RESTRICT_ALPHA]: true
         }
     },
     extension: {
-        type: TEXT,
+        type: TEXT_FIELD,
         criteria: {
             [REQUIRED]: true,
             [RESTRICT_ALPHA]: true,

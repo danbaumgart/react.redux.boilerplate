@@ -1,5 +1,15 @@
 import STATUS from '../services/constants/emailStatus';
+import {appointment, email, contact, location, phone} from './state';
 export default {
+    contact,
+    location,
+    email,
+    appointment,
+    phone,
+    countries: [],
+    states: [],
+    confirmations: [],
+    universities: [],
     ajaxCallsInProgress: 0,
     navbarCollapsed: true,
     registration: {},
@@ -7,35 +17,4 @@ export default {
     links: {},
     alerts: [],
     user: {},
-    email: {
-        emailAddress: '',
-        status: STATUS.UNAUTHENTICATED
-    },
-    contact: {
-        firstName: '',
-        lastName: ''
-    },
-    events: [],
-    countries: [],
-    states: [],
-    appointment: {
-        time: '',
-        date: '',
-        flexible: ''
-    },
-    phone: {
-        number: '',
-        extension: ''
-    },
-    instution: {
-        type: null,
-        name: ''
-    },
-    location: {
-        street: '',
-        city: '',
-        state: '',
-        zip: '',
-        country: ''
-    }
 };

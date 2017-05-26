@@ -1,52 +1,35 @@
-import React, {PropTypes} from 'react';
-import {DatePicker, TextField, TimePicker, Checkbox} from 'material-ui';
-const AppointmentForm = ({firstName, lastName, emailAddress, phoneNumber, date, time, flexible, details, updateField, updateDate, updateTime, textFieldStyle}) => {
-
-    return (<div>
-        <DatePicker hintText="Appointment Date"
-                    defaultDate={date || new Date()}
-                    floatingLabelText="Appointment Date"
-                    onChange={updateDate}
-                    container="inline"
-                    autoOk={true}
-                    textFieldStyle={textFieldStyle}
-                    mode="landscape"/>
-        <TimePicker name="time"
-                    hintText="Appointment Time"
-                    textFieldStyle={textFieldStyle}
-                    floatingLabelText="Appointment Time"
-                    defaultTime={time}
-                    autoOk={true}
-                    onChange={updateTime}/>
-        <Checkbox name="Flexible" defaultChecked={flexible} label="Flexible" onCheck={updateField}/>
-        <TextField name="Details"
-                   defaultValue={details}
-                   floatingLabelText="Details"
-                   fullWidth={true}
-                   multiLine={true}
-                   rows={2}
-                   rowsMax={6}
-                   onChange={updateField}/>
-    </div>);
-};
+import React from '../../utils/react';
+import {DatePicker, TimePicker, Checkbox, TextArea, Paper} from '../../ui/inputs';
+import {DateTime, DateModel, TimeModel} from '../../utils/model/dateTimeModel';
+import {DETAILS, DATE, TIME, FLEXIBLE} from './constants/properties';
+const AppointmentForm = ({date, time, flexible, details, actions}) => (<Paper style={{margin: "10px"}}>
+        <DatePicker name={DATE}
+                    value={date}
+                    onChange={actions[DATE]}/>
+        <TimePicker name={TIME}
+                    value={time}
+                    onChange={actions[TIME]}/>
+        <Checkbox name={FLEXIBLE}
+                  value={flexible}
+                  onChange={actions[FLEXIBLE]}/>
+        <TextArea name={DETAILS}
+                  value={details}
+                  onChange={actions[DETAILS]}/>
+</Paper>);
 
 AppointmentForm.propTypes = {
-    updateField: React.PropTypes.func.isRequired,
-    updateDate: React.PropTypes.func.isRequired,
-    updateTime: React.PropTypes.func.isRequired,
-    date: React.PropTypes.string,
-    time: React.PropTypes.string,
+    actions: React.PropTypes.object.isRequired,
+    date: React.PropTypes.instanceOf(DateModel),
+    time: React.PropTypes.instanceOf(TimeModel),
     flexible: React.PropTypes.bool,
-    details: React.PropTypes.string,
-    textFieldStyle: React.PropTypes.object
-};
-AppointmentForm.defaultProps = {
-    date: new Date(),
-    time: '',
-    flexible: false,
-    details: '',
-    textFieldStyle: null
+    details: React.PropTypes.string
 };
 
+AppointmentForm.defaultProps = {
+    date: DateTime.ToDateModel(),
+    time: DateTime.ToTimeModel(),
+    flexible: false,
+    details: null
+};
 
 export default AppointmentForm;

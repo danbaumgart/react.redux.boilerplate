@@ -1,0 +1,5 @@
+export default {
+    PHONE_NUMBER: '(999)999-9999',
+    INTERNATIONAL_PHONE: '9-(999)999-9999',
+    EXTENSION: '999999999'
+};

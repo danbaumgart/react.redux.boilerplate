@@ -1,6 +1,5 @@
-const OPTIONS = {
-    IGNORE_CASE: 'i',
-    GLOBAL: 'g'
+import OPTIONS from '../constants/regexOptions';
+export default {
+    [OPTIONS.IGNORE_CASE]: 'i',
+    [OPTIONS.GLOBAL]: 'g'
 };
-export const {IGNORE_CASE, GLOBAL} = OPTIONS;
-export default OPTIONS;

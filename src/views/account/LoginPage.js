@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import PageTitle from '../../components/common/PageTitle';
+import PageTitle from '../../ui/common/PageTitle';
 import {loadAccount, changeLoginForm} from '../../actions/loginActions';
 import Validator from '../../utils/validate';
 import {toastError, toastSuccess} from '../../actions/alertsActions';

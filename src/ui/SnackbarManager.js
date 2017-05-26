@@ -56,7 +56,7 @@ class SnackbarManager extends React.Component {
           style.color = 'white';
           break;
       }
-    let message = alert && <span>{formatSnackbarAlert(alert.key, alert.message.toLowerCase())}</span>;
+    let message = alert && <span>{formatSnackbarAlert(alert.key, alert.message && alert.message.toLowerCase() || '')}</span>;
     return (
       <Snackbar open={showSnackbar}
                 message={message}

@@ -5,15 +5,31 @@ import navbarCollapsed from './navbarReducer';
 import login from './loginReducer';
 import links from './linksReducers';
 import alerts from './alertsReducer';
-
-
+import contact from './contactReducer';
+import location from './locationReducer';
+import email from './emailReducer';
+import confirmations from './confirmationsReducer';
+import appointment from './appointmentReducer';
+import phone from './phoneReducer';
+import states from './statesReducer';
+import countries from './countriesReducer';
+import universities from './universitiesReducer';
 const reducer = combineReducers({
-  ajaxCallsInProgress,
-  navbarCollapsed,
-  registration,
-  login,
-  links,
-  alerts
+    appointment,
+    contact,
+    email,
+    phone,
+    universities,
+    location,
+    confirmations,
+    states,
+    countries,
+    ajaxCallsInProgress,
+    navbarCollapsed,
+    registration,
+    login,
+    links,
+    alerts
 });
 
 export default reducer;

@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
-import SubmitButton from '../../components/common/SubmitButton';
+import SubmitButton from '../../ui/common/SubmitButton';
 import InputField from '../../ui/InputField';
-import FormPaper from '../../components/common/FormPaper';
+import FormPaper from '../../ui/common/paper';
 
 const RegistrationForm = ({account, update, save, errors, saving}) => {
   let passwordHasValue = account.password && account.password !== '';

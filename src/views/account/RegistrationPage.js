@@ -5,7 +5,7 @@ import {createAccount, changeRegistrationForm, loadSchema, changeRegistrationErr
 import {toastError, toastSuccess} from '../../actions/alertsActions';
 import Validator from '../../utils/validate';
 import {REQUIRED, RESTRICT_VALUE, UNAVAILABLE} from '../../utils/constants/validation';
-import PageTitle from '../../components/common/PageTitle';
+import PageTitle from '../../ui/common/PageTitle';
 import RegistrationForm from './RegistrationForm';
 
 class RegistrationPage extends React.Component {

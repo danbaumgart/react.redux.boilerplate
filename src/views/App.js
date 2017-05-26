@@ -1,7 +1,7 @@
-import React, {PropTypes} from 'react';
+import React from '../utils/react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as navbarActions from '../actions/navbarActions';
+import {closeNavbar, toggleNavbar} from '../actions/navbarActions';
 import AppBar from 'material-ui/AppBar';
 import SideNavigation from '../ui/SideNavigation';
 import {browserHistory} from 'react-router';
@@ -10,17 +10,23 @@ import NavbarDropdown from '../ui/NavbarDropdown';
 import SnackbarManager from '../ui/SnackbarManager';
 import {TitleHandler} from '../routes';
 import {GREEN_YELLOW} from '../utils/constants/colors';
+import {loadStates} from '../actions/statesActionCreators';
+import {loadCountries} from '../actions/countriesActionCreators';
+import {loadConfirmations} from '../actions/confirmationsActionCreators';
+
 const changeRoute = (event) => {
     browserHistory.push(event);
 };
 
-class App extends React.Component {
+class App extends React.PureComponent {
     constructor(props, context) {
         super(props, context);
         this.closeNavbar = this.closeNavbar.bind(this);
         this.toggleNavbar = this.toggleNavbar.bind(this);
     }
+    componentWillMount() {
 
+    }
     toggleNavbar() {
         this.props.actions.toggleNavbar();
     }
@@ -44,7 +50,7 @@ class App extends React.Component {
         return (
             <div style={style.container}>
                 {/*<AppBar title={<span style={style.appBarTitle}>{this.props.title}</span>}*/}
-                        {/*//onTitleTouchTap={goHome}*/}
+                        {/*onTitleTouchTap={goHome}*/}
                         {/*iconElementRight={<NavbarDropdown links={this.props.userLinks}*/}
                                                           {/*changeRoute={changeRoute}*/}
                                                           {/*closeNavbar={this.closeNavbar}/>}*/}
@@ -75,7 +81,7 @@ App.propTypes = {
     userLinks: React.PropTypes.array.isRequired
 };
 App.contextTypes = {
-    router: PropTypes.object
+    router: React.PropTypes.object
 };
 
 
@@ -84,7 +90,6 @@ function mapStateToProps(state, ownProps) {
     currentLocation += ownProps.routes[1].path || '';
     const sliceOfCurrent = currentLocation.slice(1);
     const title = TitleHandler[sliceOfCurrent] || "Home";
-    console.log("CURRENT", sliceOfCurrent, "TITLE", title, 'TITLEHANDLER', TitleHandler);
     const {homeLinks, userLinks} = state.links;
     return {
         loading: state.ajaxCallsInProgress > 0,
@@ -97,7 +102,13 @@ function mapStateToProps(state, ownProps) {
 }
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(Object.assign({}, navbarActions), dispatch)
+        actions: bindActionCreators({
+            closeNavbar,
+            toggleNavbar,
+            loadConfirmations,
+            loadStates,
+            loadCountries
+        }, dispatch)
     };
 }
 

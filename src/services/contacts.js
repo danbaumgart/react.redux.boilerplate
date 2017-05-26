@@ -1,32 +1,46 @@
 import TrinitaWellness from './trinitaWellness';
 import {CONTACTS} from './constants/apiResources';
 import {PHONES, EMAILS} from './constants/endpoints/contactsApi';
-import {toEncodedParameters} from '../http/utils/httpUtils';
-import {FORWARD_SLASH, QUESTION_MARK} from '../utils/constants/characters';
+import {toQueryParameters} from '../http/utils/httpUtils';
+import {FORWARD_SLASH} from '../utils/constants/characters';
 class Contacts extends TrinitaWellness {
     constructor() {
         super(CONTACTS);
     }
-    GetPhoneNumbers(contactId){
-        return super.Get(Contacts.Phones(contactId))
+    static ToDomainModel(contact) {
+        return {
+            phone: contact.phoneNumber,
+            email: contact.emailAddress,
+            extension: contact.extension,
+            firstName: contact.firstName,
+            lastName: contact.lastName
+        };
     }
-    InsertPhoneNumber(contactId, phone, extension){
-        return super.Post(Contacts.Phones(contactId), {id: contactId, phone, extension})
+    Post(contact){
+        const domainModel = Contacts.ToDomainModel(contact);
+        console.log("DOMAIN", domainModel);
+        return super.Post(domainModel);
+    }
+    GetPhoneNumbers(contactId){
+        return super.Get(null, Contacts.Phones(contactId));
+    }
+    InsertPhoneNumber(contactId, phone, extension = null){
+        return super.Post(extension ? {id: contactId, phone, extension} : {id: contactId, phone}, Contacts.Phones(contactId));
     }
     UpdatePhoneNumber(contactId, phone, extension){
-        return super.Put(Contacts.Phones(contactId, phone), {id: contactId, phone, extension})
+        return super.Put({id: contactId, phone, extension}, Contacts.Phones(contactId, phone));
     }
     DeletePhoneNumber(contactId, phone){
         return super.Delete(Contacts.Phones(contactId, phone));
     }
     GetEmailAddresses(contactId){
-        return super.Get(Contacts.Emails(contactId));
+        return super.Get(null, Contacts.Emails(contactId));
     }
     InsertEmailAddress(contactId, emailAddress, authenticationStatus, password){
-        return super.Post(Contacts.Emails(contactId), {contactId, emailAddress, authenticationStatus, password})
+        return super.Post({contactId, emailAddress, authenticationStatus, password}, Contacts.Emails(contactId))
     }
     UpdateEmailAddress(contactId, emailAddress, authenticationStatus, password){
-        return super.Put(Contacts.Emails(contactId, emailAddress), {contactId, emailAddress, authenticationStatus, password})
+        return super.Put({contactId, emailAddress, authenticationStatus, password}, Contacts.Emails(contactId, emailAddress))
     }
     DeleteEmailAddress(contactId, emailAddress){
         return super.Delete(Contacts.Emails(contactId, emailAddress));
@@ -38,7 +52,7 @@ class Contacts extends TrinitaWellness {
     }
     static Emails(contactId, emailAddress) {
         let endpoint = FORWARD_SLASH + contactId + EMAILS;
-        if(emailAddress) endpoint += QUESTION_MARK + toEncodedParameters({emailAddress});
+        if(emailAddress) endpoint += toQueryParameters({emailAddress});
         return endpoint;
     }
 }
