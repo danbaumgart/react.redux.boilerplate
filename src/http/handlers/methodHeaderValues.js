@@ -1,9 +1,9 @@
-import {GET, PUT, POST, DELETE} from '../constants/request/methods';
-import {APPLICATION_X_WWW_FORM_URL_ENCODED} from '../constants/request/headers/contentType';
-import {XML_HTTP_REQUEST} from '../constants/request/headers/xRequestedWith';
+import METHODS from '../constants/request/methods';
+import CONTENT_TYPE from '../constants/request/headers/contentType';
+import X_REQUESTED_WITH from '../constants/request/headers/xRequestedWith';
 export default {
-    [GET]: [XML_HTTP_REQUEST, APPLICATION_X_WWW_FORM_URL_ENCODED],
-    [POST]: [APPLICATION_X_WWW_FORM_URL_ENCODED],
-    [PUT]: [APPLICATION_X_WWW_FORM_URL_ENCODED],
-    [DELETE]: [XML_HTTP_REQUEST, APPLICATION_X_WWW_FORM_URL_ENCODED]
+    [METHODS.GET]: [X_REQUESTED_WITH.XML_HTTP_REQUEST, CONTENT_TYPE.APPLICATION_X_WWW_FORM_URL_ENCODED],
+    [METHODS.POST]: [CONTENT_TYPE.APPLICATION_X_WWW_FORM_URL_ENCODED],
+    [METHODS.PUT]: [CONTENT_TYPE.APPLICATION_X_WWW_FORM_URL_ENCODED],
+    [METHODS.DELETE]: [X_REQUESTED_WITH.XML_HTTP_REQUEST, CONTENT_TYPE.APPLICATION_X_WWW_FORM_URL_ENCODED]
 };

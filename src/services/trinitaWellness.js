@@ -1,17 +1,20 @@
 import HttpProxy from '../http/models/httpService';
 import {URL} from './constants/apiResources';
-import {FORWARD_SLASH} from '../utils/constants/characters';
-import {FUNCTION} from '../utils/constants/dataTypes';
+import CHARACTERS from '../utils/constants/characters';
 class TrinitaWellness extends HttpProxy {
     constructor(resource, mapper) {
         super(URL + resource, mapper);
-        this.isMapperProvided = () => typeof this.mapper === FUNCTION
     }
-    Get(){
-        return super.Get();
+    Get(identifier) {
+        return identifier ?
+            super.Get(null, CHARACTERS.FORWARD_SLASH + identifier) :
+            super.Get();
     }
-    Delete(identifier){
-        return super.Delete(null, FORWARD_SLASH + identifier);
+    Put(data, identifier) {
+        return super.Put(data, CHARACTERS.FORWARD_SLASH + identifier);
+    }
+    Delete(identifier) {
+        return super.Delete(null, CHARACTERS.FORWARD_SLASH + identifier);
     }
 }
 export default TrinitaWellness;

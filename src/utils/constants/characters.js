@@ -1,11 +1,10 @@
-const CHARACTERS = {
+export default {
     FORWARD_SLASH: '/',
     WHITESPACE: ' ',
     COLON: ':',
     ZERO: '0',
     EQUALS: '=',
     AMPERSAND: '&',
-    QUESTION_MARK: '?'
+    QUESTION_MARK: '?',
+    UNDERSCORE: '_'
 };
-export const {FORWARD_SLASH, WHITESPACE, COLON, ZERO, EQUALS, AMPERSAND, QUESTION_MARK} = CHARACTERS;
-export default CHARACTERS;

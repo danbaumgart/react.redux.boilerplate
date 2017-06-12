@@ -1,13 +1,13 @@
-import {NOT_MODIFIED, OK} from '../constants/response/statusCodes';
-import {GET} from '../constants/request/methods';
-import {DONE} from '../constants/request/readyStates';
-import {FUNCTION} from '../../utils/constants/dataTypes';
+import STATUS_CODES from '../constants/response/statusCodes';
+import METHODS from '../constants/request/methods';
+import READY_STATES from '../constants/request/readyStates';
+import DATA_TYPES from '../../utils/constants/dataTypes';
 import RequestStatus from './requestStatus';
 class HttpRequest {
     constructor(config) {
         this.ajax = HttpRequest.Initialize();
         this.ajax.withCredentials = false;
-        if(config.methodType !== GET)
+        if(config.methodType !== METHODS.GET)
             this.onReadyStateChange(config.promiseHandlers);
         else{
             this.onLoad(config.promiseHandlers);
@@ -35,8 +35,8 @@ class HttpRequest {
     onReadyStateChange({resolve, reject}){
         this.ajax.onreadystatechange = function() {
             const status = new RequestStatus(this.status);
-            if (this.readyState === DONE) {
-                if(status.code === OK || status.code === NOT_MODIFIED)
+            if (this.readyState === READY_STATES.DONE) {
+                if(status.code === STATUS_CODES.OK || status.code === STATUS_CODES.NOT_MODIFIED)
                     resolve(JSON.parse(this.responseText));
                 else reject({status, description: this.statusText});
             }
@@ -44,16 +44,16 @@ class HttpRequest {
         };
     }
     onLoad({resolve, reject}) {
-        if(typeof resolve === FUNCTION && typeof reject === FUNCTION) {
+        if(typeof resolve === DATA_TYPES.FUNCTION && typeof reject === DATA_TYPES.FUNCTION) {
             this.ajax.onload = function () {
-                if (this.status === OK || this.status === NOT_MODIFIED)
+                if (this.status === STATUS_CODES.OK || this.status === STATUS_CODES.NOT_MODIFIED)
                     resolve(JSON.parse(this.responseText));
             };
         }
 
     }
     onError({reject}) {
-        if (typeof reject === FUNCTION)
+        if (typeof reject === DATA_TYPES.FUNCTION)
             this.ajax.onerror = function(){
                 const status = new RequestStatus(this.status);
                 reject({status, description: this.statusText});

@@ -1,7 +1,10 @@
-const TYPES = {
+export default {
+    UNDEFINED: 'undefined',
+    NULL: 'null',
+    BOOLEAN: 'boolean',
+    NUMBER: 'number',
     STRING: 'string',
+    SYMBOL: 'symbol',
     FUNCTION: 'function',
-    OBJECT: 'object'
+    OBJECT: 'object',
 };
-export const {STRING, FUNCTION, OBJECT} = TYPES;
-export default TYPES;

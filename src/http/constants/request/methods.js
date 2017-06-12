@@ -1,4 +1,4 @@
-const METHODS = {
+export default {
     GET: 'GET',
     POST: 'POST',
     PUT: 'PUT',
@@ -9,5 +9,3 @@ const METHODS = {
     OPTIONS: 'OPTIONS',
     TRACE: 'TRACE'
 };
-export const {GET, POST, PUT, DELETE, PATCH, HEAD, CONNECT, OPTIONS, TRACE} = METHODS;
-export default METHODS;

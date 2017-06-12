@@ -1,11 +1,39 @@
 import TrinitaWellness from './trinitaWellness';
+import HttpMapper from '../http/models/httpMapper';
 import {CONTACTS} from './constants/apiResources';
 import {PHONES, EMAILS} from './constants/endpoints/contactsApi';
 import {toQueryParameters} from '../http/utils/httpUtils';
-import {FORWARD_SLASH} from '../utils/constants/characters';
+import CHARACTERS from '../utils/constants/characters';
+class ContactPhones extends TrinitaWellness{
+    constructor(resource) {
+        super(resource, new HttpMapper(ContactPhones.ToDomainModel));
+    }
+    static ToDomainModel(model) {
+        return {
+            id: model.contactId,
+            phone: model.phone,
+            extension: model.extension
+        }
+    }
+}
+class ContactEmails extends TrinitaWellness{
+    constructor(resource) {
+        super(resource);
+    }
+    Get(emailAddress) {
+        return emailAddress ? super.Get(toQueryParameters({emailAddress})) : super.Get();
+    }
+    Put(contactEmail, emailAddress) {
+        return super.Put(contactEmail, toQueryParameters({emailAddress}));
+    }
+    Delete(emailAddress) {
+        return super.Delete(toQueryParameters({emailAddress}));
+    }
+}
 class Contacts extends TrinitaWellness {
     constructor() {
-        super(CONTACTS);
+        super(CONTACTS, new HttpMapper(Contacts.ToDomainModel));
+        this.endpoints = {PHONES, EMAILS}
     }
     static ToDomainModel(contact) {
         return {
@@ -16,44 +44,13 @@ class Contacts extends TrinitaWellness {
             lastName: contact.lastName
         };
     }
-    Post(contact){
-        const domainModel = Contacts.ToDomainModel(contact);
-        console.log("DOMAIN", domainModel);
-        return super.Post(domainModel);
+    Phones(contactId){
+        const resource = CONTACTS + CHARACTERS.FORWARD_SLASH + contactId + this.endpoints.PHONES;
+        return new ContactPhones(resource);
     }
-    GetPhoneNumbers(contactId){
-        return super.Get(null, Contacts.Phones(contactId));
-    }
-    InsertPhoneNumber(contactId, phone, extension = null){
-        return super.Post(extension ? {id: contactId, phone, extension} : {id: contactId, phone}, Contacts.Phones(contactId));
-    }
-    UpdatePhoneNumber(contactId, phone, extension){
-        return super.Put({id: contactId, phone, extension}, Contacts.Phones(contactId, phone));
-    }
-    DeletePhoneNumber(contactId, phone){
-        return super.Delete(Contacts.Phones(contactId, phone));
-    }
-    GetEmailAddresses(contactId){
-        return super.Get(null, Contacts.Emails(contactId));
-    }
-    InsertEmailAddress(contactId, emailAddress, authenticationStatus, password){
-        return super.Post({contactId, emailAddress, authenticationStatus, password}, Contacts.Emails(contactId))
-    }
-    UpdateEmailAddress(contactId, emailAddress, authenticationStatus, password){
-        return super.Put({contactId, emailAddress, authenticationStatus, password}, Contacts.Emails(contactId, emailAddress))
-    }
-    DeleteEmailAddress(contactId, emailAddress){
-        return super.Delete(Contacts.Emails(contactId, emailAddress));
-    }
-    static Phones(contactId, phone){
-        let endpoint = FORWARD_SLASH + contactId + PHONES;
-        if(phone) endpoint += FORWARD_SLASH + phone;
-        return endpoint;
-    }
-    static Emails(contactId, emailAddress) {
-        let endpoint = FORWARD_SLASH + contactId + EMAILS;
-        if(emailAddress) endpoint += toQueryParameters({emailAddress});
-        return endpoint;
+    Emails(contactId){
+        const resource = CONTACTS + CHARACTERS.FORWARD_SLASH + contactId + this.endpoints.EMAILS;
+        return new ContactEmails(resource);
     }
 }
 export default new Contacts();

@@ -1,16 +1,16 @@
 import RequestHeaderHandler from '../handlers/requestHeaderTypes';
 import StatusClassHandler from '../handlers/statusClassHandler';
-import {EQUALS, AMPERSAND, QUESTION_MARK} from '../../utils/constants/characters'
-import {STRING} from '../../utils/constants/dataTypes';
+import CHARACTERS from '../../utils/constants/characters'
+import DATA_TYPES from '../../utils/constants/dataTypes';
 const HttpUtility = {
     toEncodedParameters(data){
-        if(data && typeof data !== STRING)
+        if(data && typeof data !== DATA_TYPES.STRING)
             return Object.keys(data).map(key => [
                     encodeURIComponent(key),
                     encodeURIComponent(data[key])
-                ].join(EQUALS)
-            ).join(AMPERSAND);
-        else return data;
+                ].join(CHARACTERS.EQUALS)
+            ).join(CHARACTERS.AMPERSAND);
+        else return encodeURIComponent(data);
     },
     toRequestHeader(headerValue){
         return RequestHeaderHandler[headerValue];
@@ -20,6 +20,6 @@ const HttpUtility = {
         return StatusClassHandler[classKey];
     }
 };
-export const toQueryParameters = parameters => QUESTION_MARK + HttpUtility.toEncodedParameters(parameters);
+export const toQueryParameters = parameters => CHARACTERS.QUESTION_MARK + HttpUtility.toEncodedParameters(parameters);
 export const {toEncodedParameters, toRequestHeader, getStatusClass} = HttpUtility;
 export default HttpUtility;

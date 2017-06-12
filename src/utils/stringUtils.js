@@ -4,12 +4,16 @@ import {TRAILING, LEADING} from './constants/regexSymbols';
 import SymbolHandler from './regex/symbols';
 import {GLOBAL, IGNORE_CASE} from './constants/regexOptions';
 import OptionHandler from './regex/options';
-import {FORWARD_SLASH} from './constants/characters';
-
+import CHARACTERS from './constants/characters';
+export const patternMatches = (input, expression) => input.match(new RegExp(expression, GLOBAL)) || [];
 export const formatRegex = expression => {
     return expression.includes(' ') ?
         expression.split(' ').join(PatternHandler[WHITESPACE]) :
         expression;
+};
+export const toProperCase = (...values) => {
+    const words = values.map(value => String(value));
+    return words.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(CHARACTERS.WHITESPACE);
 };
 export const getMatchIndices = (pattern, source) => {
     const result = [];
@@ -68,29 +72,13 @@ export const hasLength = (value) => {
 export const combineURL = (url, endpoint) => {
     console.log("URL", url, "ENDPOINT", endpoint);
     if(hasLength(url) && hasLength(endpoint)) return [
-        trimTrailing(FORWARD_SLASH, url),
-        trimLeading(FORWARD_SLASH, endpoint)
-    ].join(FORWARD_SLASH);
-    else if(hasLength(url)) return trimTrailing(url) + FORWARD_SLASH;
+        trimTrailing(CHARACTERS.FORWARD_SLASH, url),
+        trimLeading(CHARACTERS.FORWARD_SLASH, endpoint)
+    ].join(CHARACTERS.FORWARD_SLASH);
+    else if(hasLength(url)) return trimTrailing(url) + CHARACTERS.FORWARD_SLASH;
     return null;
 };
 export const camelCaseToProperCase = name => name.charAt(0).toUpperCase() + name.replace(PatternHandler[UPPERCASE], match => ' ' + match).slice(1);
 export const properCaseToCamelCase = name => typeof name === 'string' ? name.charAt(0).toLowerCase() + name.slice(1).replace(PatternHandler[WHITESPACE], '') : name;
 export const formatSnackbarAlert = (...parts) => parts.map(str => str.charAt(0).toUpperCase() + str.replace(PatternHandler[UPPERCASE], match => ' ' + match).slice(1)).join(' ').toUpperCase();
 export const constantCaseToProperCase = constantName => constantName.toLowerCase().split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-export default {
-    combineURL,
-    formatPattern,
-    formatRegex,
-    getMatchIndices,
-    toRegExp,
-    getSubstrings,
-    hasLength,
-    trim,
-    trimLeading,
-    trimTrailing,
-    camelCaseToProperCase,
-    formatSnackbarAlert,
-    constantCaseToProperCase,
-    properCaseToCamelCase
-};

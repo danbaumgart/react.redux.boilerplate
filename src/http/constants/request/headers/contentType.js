@@ -1,11 +1,6 @@
-const HEADER_VALUES = {
-    CONTENT_TYPE: 'Content-Type',
-    APPLICATION_X_WWW_FORM_URL_ENCODED: 'application/x-www-form-urlencoded',
-    APPLICATION_JSON: 'application/json',
-};
-export const {CONTENT_TYPE, APPLICATION_X_WWW_FORM_URL_ENCODED, APPLICATION_JSON} = HEADER_VALUES;
+const CONTENT_TYPE = 'CONTENT_TYPE';
 export default {
     HEADER: CONTENT_TYPE,
-    APPLICATION_JSON,
-    APPLICATION_X_WWW_FORM_URL_ENCODED
+    APPLICATION_X_WWW_FORM_URL_ENCODED: 'application/x-www-form-urlencoded',
+    APPLICATION_JSON: 'application/json',
 };
