@@ -15,6 +15,8 @@ export default function location(state = initialState.location, action) {
             return Object.assign({}, state, {zip: action.payload});
         case ACTIONS.UPDATE_LOCATION_INSTITUTION:
             return Object.assign({}, state, {institution: action.payload});
+        case ACTIONS.UPDATE_LOCATION:
+            return Object.assign({}, state, action.payload);
         case ACTIONS.SAVE_CONTACT:
             return Object.assign({}, state, action.payload);
         default: return state;

@@ -1,8 +1,9 @@
+import INSTITUTION from '../../views/appointment/constants/institution';
 export default {
     street: '',
     city: '',
     state: '',
     zip: '',
     country: '',
-    instution: ''
+    institution: INSTITUTION.UNIVERSITY
 }

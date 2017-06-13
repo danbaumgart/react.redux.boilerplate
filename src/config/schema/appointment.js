@@ -1,18 +1,18 @@
-import PROPERTIES from '../../views/appointment/constants/properties';
+import APPOINTMENT from '../../views/appointment/constants/appointmentProperties';
 import {TEXT_AREA, CHECKBOX, TIME_PICKER, DATE_PICKER} from '../../ui/constants/inputTypes';
 const _LabelHandler = {
-    [PROPERTIES.TIME]: 'Time',
-    [PROPERTIES.DATE]: 'Date',
-    [PROPERTIES.DETAILS]: 'Details',
-    [PROPERTIES.FLEXIBLE]: 'Flexible'
+    [APPOINTMENT.TIME]: 'Time',
+    [APPOINTMENT.DATE]: 'Date',
+    [APPOINTMENT.DETAILS]: 'Details',
+    [APPOINTMENT.FLEXIBLE]: 'Flexible'
 };
 const _TypeHandler = {
-    [PROPERTIES.TIME]: TIME_PICKER,
-    [PROPERTIES.DATE]: DATE_PICKER,
-    [PROPERTIES.DETAILS]: TEXT_AREA,
-    [PROPERTIES.FLEXIBLE]: CHECKBOX
+    [APPOINTMENT.TIME]: TIME_PICKER,
+    [APPOINTMENT.DATE]: DATE_PICKER,
+    [APPOINTMENT.DETAILS]: TEXT_AREA,
+    [APPOINTMENT.FLEXIBLE]: CHECKBOX
 };
-export default {...Object.keys(PROPERTIES)
+export default {...Object.keys(APPOINTMENT)
     .map(property => ({
         [property]:{
             label: _LabelHandler[property],

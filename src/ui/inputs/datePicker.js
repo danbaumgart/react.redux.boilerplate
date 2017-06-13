@@ -16,6 +16,7 @@ class DatePickerTool extends React.PureComponent {
         const label = _label || camelCaseToProperCase(name);
 	    const value = _value.ToStandardDate();
 		return (<DatePicker name={name}
+                            ref="DatePicker"
                             label={label}
                             hintText={label}
                             defaultDate={value}

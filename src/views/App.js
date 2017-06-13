@@ -45,18 +45,18 @@ class App extends React.PureComponent {
             container: {backgroundColor: "rgb(215, 215, 215)"},
             appBar: {position: "fixed", top: "0px"},
             appBarTitle: {cursor: "pointer"},
-            paper: {paddingBottom: "20px", display: "inline-block", width: "100%"}
+            paper: {paddingBottom: "20px", marginTop: "64px", display: "inline-block", width: "100%"}
         };
         return (
             <div style={style.container}>
-                {/*<AppBar title={<span style={style.appBarTitle}>{this.props.title}</span>}*/}
-                        {/*onTitleTouchTap={goHome}*/}
-                        {/*iconElementRight={<NavbarDropdown links={this.props.userLinks}*/}
-                                                          {/*changeRoute={changeRoute}*/}
-                                                          {/*closeNavbar={this.closeNavbar}/>}*/}
-                        {/*onRightIconButtonTouchTap={this.closeNavbar}*/}
-                        {/*style={style.appBar}*/}
-                        {/*onLeftIconButtonTouchTap={this.toggleNavbar}/>*/}
+                <AppBar title={<span style={style.appBarTitle}>{this.props.title}</span>}
+                        onTitleTouchTap={goHome}
+                        iconElementRight={<NavbarDropdown links={this.props.userLinks}
+                                                          changeRoute={changeRoute}
+                                                          closeNavbar={this.closeNavbar}/>}
+                        onRightIconButtonTouchTap={this.closeNavbar}
+                        style={style.appBar}
+                        onLeftIconButtonTouchTap={this.toggleNavbar}/>
                 <Paper style={style.paper} zDepth={2}>{this.props.children}</Paper>
                 <SideNavigation title={title}
                                 changeRoute={changeRoute}

@@ -1,12 +1,15 @@
-import React from 'react';
-import {Tabs, Tab} from 'material-ui/Tabs';
+import React from '../utils/react';
+import {Tabs, Tab, Stepper, StepLabel, Step} from 'material-ui';
 import SwipeableViews from 'react-swipeable-views';
-class SwipeableTabs extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            slideIndex: 0
-        };
+const formMapper = (model, schema) => ({
+    ...Object.keys(model).map(field => {
+        const data = {}
+    })
+});
+class SwipeableTabs extends React.PureComponent {
+    constructor(props, context) {
+        super(props, context);
+        this.state = {slideIndex: 0};
         this.handleChange = this.handleChange.bind(this);
     }
     handleChange(value) {
@@ -16,16 +19,17 @@ class SwipeableTabs extends React.Component {
     }
     render() {
         const {views, tabs} = this.props;
+        // const swipeableViews = <SwipeableViews index={this.state.slideIndex}
+        //                                        onChangeIndex={this.handleChange}>
+        //     {views.map((view, index) => <div key={index} >{view}</div>)}
+        // </SwipeableViews>;
         return (
             <div>
                 <Tabs onChange={this.handleChange}
                       value={this.state.slideIndex}>{tabs.map((tab, index) =>
                     <Tab label={tab} value={index} key={tab} />)}
                 </Tabs>
-                <SwipeableViews index={this.state.slideIndex}
-                                onChangeIndex={this.handleChange}>{views.map((view, index) =>
-                    <div key={index} >{view}</div>)}
-                </SwipeableViews>
+                {views[this.state.slideIndex]}
             </div>
         );
     }

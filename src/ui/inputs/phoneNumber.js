@@ -2,68 +2,34 @@ import React from '../../utils/react';
 import MaskedTextField from '../common/maskedTextField';
 import MASKS from '../constants/inputMasks';
 import {camelCaseToProperCase} from '../../utils/stringUtils';
+import StaticError from '../common/staticError';
 class PhoneNumber extends React.PureComponent {
     constructor(props) {
         super(props);
-        this.onUpdatePhoneNumber = this.onUpdatePhoneNumber.bind(this);
-    }
-    onUpdatePhoneNumber({target:{value}}) {
-        this.props.onChange(value);
     }
     render() {
-        const {name, label: _label, value, onChange} = this.props;
-        const label = _label || camelCaseToProperCase(name);
-        return (<MaskedTextField name={name}
-                                 defaultValue={value}
-                                 floatingLabelText={label}
-                                 fullWidth={true}
-                                 onChange={onChange}
-                                 mask={MASKS.PHONE_NUMBER}/>);
+        const {name, label: _label, value: defaultValue, onChange, errors, children} = this.props;
+        const floatingLabelText = _label || camelCaseToProperCase(name);
+        const props = {
+            name, defaultValue, floatingLabelText, children, onChange,
+            mask: MASKS.PHONE_NUMBER,
+            fullWidth: true
+        };
+        if(Array.isArray(errors) && errors.length > 0)
+            Object.assign(props, {errorText: <StaticError errors={errors}/>});
+        return (<MaskedTextField {...props}/>);
     }
 }
 PhoneNumber.propTypes = {
     name: React.PropTypes.string.isRequired,
     onChange: React.PropTypes.func.isRequired,
     label: React.PropTypes.string,
-    value: React.PropTypes.string
+    value: React.PropTypes.string,
+    errors: React.PropTypes.arrayOf(React.PropTypes.string)
 };
 PhoneNumber.defaultProps = {
     label: null,
-    value: ''
+    value: '',
+    errors: []
 };
 export default PhoneNumber;
-
-{/*import React from '../../utils/react';*/}
-{/*import MaskedField from './maskedField';*/}
-{/*import MASKS from '../constants/inputMasks';*/}
-{/*import InputMask from 'react-input-mask';*/}
-{/*import {camelCaseToProperCase} from '../../utils/stringUtils';*/}
-{/*class PhoneNumber extends React.PureComponent {*/}
-    {/*constructor(props) {*/}
-        {/*super(props);*/}
-        {/*this.onUpdateText = this.onUpdateText.bind(this);*/}
-    {/*}*/}
-    {/*onUpdateText(value) {*/}
-        {/*this.props.onChange(value);*/}
-    {/*}*/}
-    {/*render() {*/}
-        {/*const {name, label: _label, value, onChange} = this.props;*/}
-        {/*const label = _label || camelCaseToProperCase(name);*/}
-        {/*return (<MaskedField name={name}*/}
-                             {/*value={value}*/}
-                             {/*onChange={onChange}*/}
-                             {/*mask={MASKS.PHONE_NUMBER}*/}
-                             {/*label={label}/>);*/}
-    {/*}*/}
-{/*}*/}
-{/*PhoneNumber.propTypes = {*/}
-    {/*name: React.PropTypes.string.isRequired,*/}
-    {/*onChange: React.PropTypes.func.isRequired,*/}
-    {/*label: React.PropTypes.string,*/}
-    {/*value: React.PropTypes.string*/}
-{/*};*/}
-{/*PhoneNumber.defaultProps = {*/}
-    {/*label: null,*/}
-    {/*value: ''*/}
-{/*};*/}
-{/*export default PhoneNumber;*/}

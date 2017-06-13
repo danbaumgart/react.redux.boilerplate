@@ -10,8 +10,8 @@ class HttpRequest {
         if(config.methodType !== METHODS.GET)
             this.onReadyStateChange(config.promiseHandlers);
         else{
-            this.onLoad(config.promiseHandlers);
-            this.onError(config.promiseHandlers);
+             this.onLoad(config.promiseHandlers);
+             this.onError(config.promiseHandlers);
         }
         this.open(config.methodType, config.resourceUrl);
         this.setRequestHeaders(config.requestHeaders);

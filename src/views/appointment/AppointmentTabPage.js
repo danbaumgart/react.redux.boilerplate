@@ -1,95 +1,114 @@
-import React from 'react';
+import React from '../../utils/react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import SwipeableTabs from '../../ui/SwipeableTabs';
+import ContactForm from '../contact/contactForm';
+import APPOINTMENT from './constants/appointmentProperties';
+import LOCATION from './constants/locationProperties';
+import CONTACT from '../contact/constants/contactProperties';
+import INSTITUTION from './constants/institution';
 import AppointmentForm from './appointmentForm';
-import {DatePicker, TextField, TimePicker, Checkbox} from 'material-ui';
 import LocationForm from './locationForm';
-import RegistrationForm from '../account/RegistrationForm';
-import {updateAppointmentConfirmation, updateAppointmentDate, updateAppointmentFlexible, updateAppointmentTime, updateAppointmentLocation} from '../../actions/appointmentActionCreators';
-import {updateContactFirstName, updateContactLastName} from '../../actions/contactActionCreators';
-import PageTitle from '../../ui/common/PageTitle';
+import ContactSchema from '../../config/schema/contactSchema';
+import SchemaMapper from '../../config/schema/utils/schemaMappers';
+import * as locationActions from '../../actions/locationActionCreators';
+import * as contactActions from '../../actions/contactActionCreators';
+import * as appointmentActions from '../../actions/appointmentActionCreators';
+import * as universitiesActions from '../../actions/universitiesActionCreators';
 class AppointmentTabPage extends React.Component {
 	constructor(props, context) {
 		super(props, context);
-        this.updateDate = this.updateDate.bind(this);
-        this.updateTime = this.updateTime.bind(this);
-        this.updateField = this.updateField.bind(this);
+		this.getContactProps = this.getContactProps.bind(this);
+        this.getAppointmentProps = this.getAppointmentProps.bind(this);
+        this.getLocationProps = this.getLocationProps.bind(this);
 	}
-	updateDate(something, date){
-	    console.log("DATE", date);
-        this.setState({date});
+    getAppointmentProps() {
+        const {
+            appointment: {date, time, flexible, details},
+            actions: {appointment: actions}
+        } = this.props;
+        return {date, time, flexible, details, actions};
     }
-    updateTime(something, time){
-        this.setState({time});
+	getContactProps() {
+        const errorInfo = SchemaMapper.toErrorInfoModel(ContactSchema, this.props.contact);
+        const {
+            contact: {firstName, lastName, emailAddress, phoneNumber, extension},
+            actions: {contact: actions}
+        } = this.props;
+        return {firstName, lastName, emailAddress, phoneNumber, extension, actions, errorInfo};
     }
-    updateField(event){
-        const {name, value} = event.target;
-        this.setState({[name]: value});
+    getLocationProps() {
+        const {institution = INSTITUTION.UNIVERSITY, name, street, city, state, zip, details} = this.props.location;
+        return {
+            name, street, city, state, zip, details,
+            institution: INSTITUTION[institution] || INSTITUTION.OTHER,
+            actions: this.props.actions.location,
+            universities: this.props.universities,
+        };
     }
 	render() {
-        const textFieldStyle = {width: '100%'};
-        const {appointment} = this.props;
-	    const {date, time, flexible, firstName, lastName, emailAddress, phoneNumber, extension, details} = this.props.appointment;
-	    const account = {lastName: '', firstName: '', emailAddress: '', password: '', confirmPassword: ''};
-        const other = {update: () => null, save: () => null, saving: false};
-        const locationProps = {
-            institution: null,
-            name: '',
-            address: '',
-            city: '',
-            state: '',
-            zip: '',
-            details: ''
-        };
-        console.log("THIS", this.mixins);
-	    const user = {emailAddress: '', password: '', rememberMe: ''};
-        const tabs = ["Contact Info", "Schedule", "Location"];
-        const props = Object.assign({}, appointment, {
-            updateField: this.updateField,
-            updateDate: this.updateDate,
-            updateTime: this.updateTime,
-            textFieldStyle
-        });
-        this.props.actions.updateAppointmentFlexible(true);
+        const tabs = ['Contact Info', 'Schedule', 'Location'];
+        const appointmentProps = this.getAppointmentProps();
+        const contactProps = this.getContactProps();
+        const locationProps = this.getLocationProps();
         const views = [
-            <AppointmentForm {...props} />,
-            <RegistrationForm account={account} save={other.save} saving={other.saving} update={other.update} />,
+            <ContactForm {...contactProps} />,
+            <AppointmentForm {...appointmentProps} />,
             <LocationForm {...locationProps} />
         ];
-	    return (
-		    <div>
-                <SwipeableTabs views={views} tabs={tabs} />
-            </div>		);
+	    return <SwipeableTabs views={views} tabs={tabs} />;
 	}
 }
 AppointmentTabPage.propTypes = {
-	appointment: React.PropTypes.object
+    actions: React.PropTypes.object.isRequired,
+	appointment: React.PropTypes.object,
+    contact: React.PropTypes.object,
+    location: React.PropTypes.object,
+    universities: React.PropTypes.arrayOf(React.PropTypes.object)
 };
 AppointmentTabPage.defaultProps = {
-    appointment: {}
+    appointment: null,
+    contact: null,
+    location: null,
+    universities: []
 };
 
 function mapStateToProps(state, ownProps) {
-	const appointment = state.appointment || {
-        date: '',
-        time: '',
-        flexible: false,
-        details: ''
-    };
-    return {appointment};
+    const {appointment, contact, location, universities} = state;
+    return {appointment, contact, location, universities};
 }
 
 function mapDispatchToProps(dispatch) {
-	return {
-		actions: bindActionCreators({
-            updateAppointmentDate,
-            updateAppointmentTime,
-            updateAppointmentFlexible,
-            updateContactLastName,
-            updateAppointmentConfirmation
-        }, dispatch)
-	};
+    const appointment = {
+        [APPOINTMENT.DATE]: appointmentActions.updateAppointmentDate,
+        [APPOINTMENT.TIME]: appointmentActions.updateAppointmentTime,
+        [APPOINTMENT.DETAILS]: appointmentActions.updateAppointmentDetails,
+        [APPOINTMENT.FLEXIBLE]: appointmentActions.updateAppointmentFlexible
+    };
+    const contact = {
+        [CONTACT.FIRST_NAME]: contactActions.updateContactFirstName,
+        [CONTACT.LAST_NAME]: contactActions.updateContactLastName,
+        [CONTACT.EMAIL_ADDRESS]: contactActions.updateContactEmailAddress,
+        [CONTACT.PHONE_NUMBER]: contactActions.updateContactPhoneNumber,
+        [CONTACT.EXTENSION]: contactActions.updateContactExtension,
+        saveContact: contactActions.saveContact,
+    };
+    const location = {
+        [LOCATION.INSTITUTION]: locationActions.updateLocationInstitution,
+        [LOCATION.NAME]: locationActions.updateLocationName,
+        [LOCATION.STATE]: locationActions.updateLocationState,
+        [LOCATION.STREET]: locationActions.updateLocationStreet,
+        [LOCATION.ZIP]: locationActions.updateLocationZip,
+        [LOCATION.CITY]: locationActions.updateLocationCity,
+        updateLocation: locationActions.updateLocationFromUniversitySearch,
+        universities: universitiesActions.searchUniversities
+    };
+    const actions = {
+        contact: bindActionCreators(contact, dispatch),
+        appointment: bindActionCreators(appointment, dispatch),
+        location: bindActionCreators(location, dispatch)
+    };
+	return {actions};
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppointmentTabPage);

@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import ContactForm from './contactForm';
 import {RaisedButton} from '../../ui/inputs';
-import CONTACT_PROPERTIES from '../../config/schema/constants/contactProperties';
+import CONTACT from './constants/contactProperties';
 import * as actions from '../../actions/contactActionCreators';
 import {toastError, toastSuccess} from '../../actions/alertsActions';
 import ContactSchema from '../../config/schema/contactSchema';
@@ -13,31 +13,29 @@ class ContactPage extends React.PureComponent {
         super(props, context);
         this.saveContact = this.saveContact.bind(this);
     }
-    saveContact(event){
-        const {lastName, firstName, emailAddress, phoneNumber, extension, actions, ...props} = this.props;
+    saveContact(){
+        const {lastName, firstName, emailAddress, phoneNumber, extension, actions} = this.props;
         const contact = {lastName, firstName, emailAddress, phoneNumber, extension};
         actions.saveContact(contact).then(result => {
+            console.log("RESULT", result);
             actions.toastSuccess({contact: ["SUCCESS"]});
         }).catch(err => {
+            console.log("ERROR", err);
             actions.toastError({contact: [err.status.type]})
         });
     }
     render() {
         const {actions, ...fields} = this.props;
-        const formSchema = SchemaMapper.toSchemaModel(ContactSchema);
-        const errors = formSchema.map(fieldSchema => ({
-            [fieldSchema.name]: fieldSchema.isInvalid(this.props[fieldSchema.name]) ? fieldSchema.errors : []
-        }));
-        const errorInfo = SchemaMapper.toErrorInfo(errors);
+        const errorInfo = SchemaMapper.toErrorInfoModel(ContactSchema, fields);
         const {firstName, lastName, emailAddress, phoneNumber, extension} = fields;
-        const props = {firstName, lastName, emailAddress, phoneNumber, extension, errorInfo, actions};
+        const props = {errorInfo, firstName, lastName, emailAddress, phoneNumber, extension, actions};
         return (<ContactForm {...props}>
             <RaisedButton onClick={this.saveContact} label="Submit" />
         </ContactForm>);
     }
 }
 ContactPage.propTypes = {
-    actions: React.PropTypes.object.isRequired,
+    actions: React.PropTypes.object,
     firstName: React.PropTypes.string,
     lastName: React.PropTypes.string,
     emailAddress: React.PropTypes.string,
@@ -61,11 +59,11 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators({
-            [CONTACT_PROPERTIES.FIRST_NAME]: actions.updateContactFirstName,
-            [CONTACT_PROPERTIES.LAST_NAME]: actions.updateContactLastName,
-            [CONTACT_PROPERTIES.EMAIL_ADDRESS]: actions.updateContactEmailAddress,
-            [CONTACT_PROPERTIES.PHONE_NUMBER]: actions.updateContactPhoneNumber,
-            [CONTACT_PROPERTIES.EXTENSION]: actions.updateContactExtension,
+            [CONTACT.FIRST_NAME]: actions.updateContactFirstName,
+            [CONTACT.LAST_NAME]: actions.updateContactLastName,
+            [CONTACT.EMAIL_ADDRESS]: actions.updateContactEmailAddress,
+            [CONTACT.PHONE_NUMBER]: actions.updateContactPhoneNumber,
+            [CONTACT.EXTENSION]: actions.updateContactExtension,
             saveContact: actions.saveContact,
             toastError, toastSuccess
         }, dispatch)};

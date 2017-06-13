@@ -1,5 +1,5 @@
 const resources = {
-    URL: 'http://localhost:28536/api/',
+    URL: 'http://testapi.trinitawellness.com/api/',
     UNIVERSITIES: 'Universities',
     CONTACTS: 'Contacts',
     APPOINTMENTS: 'Appointments',

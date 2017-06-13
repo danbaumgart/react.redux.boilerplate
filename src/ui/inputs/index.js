@@ -7,6 +7,7 @@ import _MaskedField from './maskedField';
 import _PhoneNumber from './phoneNumber';
 import _RaisedButton from '../common/raisedButton';
 import _Paper from '../common/paper';
+import _Typeahead from '../Typeahead';
 const FormInputs = {
     TimePicker: _TimePicker,
     DatePicker: _DatePicker,
@@ -16,6 +17,7 @@ const FormInputs = {
     PhoneNumber: _PhoneNumber,
     Paper: _Paper,
     TextArea: _TextArea,
-    RaisedButton: _RaisedButton
+    RaisedButton: _RaisedButton,
+    Typeahead: _Typeahead
 };
-export const {TimePicker, DatePicker, Checkbox, TextField, Paper, TextArea, MaskedField, PhoneNumber, RaisedButton} = FormInputs;
+export const {TimePicker, DatePicker, Checkbox, TextField, Typeahead, Paper, TextArea, MaskedField, PhoneNumber, RaisedButton} = FormInputs;

@@ -34,12 +34,16 @@ export const updateContactPhoneNumber = phoneNumber => function(dispatch){
     dispatch(_updateContactPhoneNumber(unmaskedPhoneInput));
 };
 export const updateContactExtension = extension => function(dispatch){
-    //const unmaskedExtension = extension.slice(5);
-
-    console.log("EXTENSION", extension);
     dispatch(_updateContactExtension(extension));
 };
 export const saveContact = contact => function(dispatch){
     return Contacts.Post(contact)
-        .then(result => dispatch(_saveContact(contact)));
+        .then(result => {
+            console.log("RESULT", result);
+            return dispatch(_saveContact(contact));
+        })
+        .catch(err => {
+            console.log("ERROR", err);
+            throw new Error(err);
+        });
 };

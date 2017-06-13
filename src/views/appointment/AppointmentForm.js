@@ -1,20 +1,20 @@
 import React from '../../utils/react';
 import {DatePicker, TimePicker, Checkbox, TextArea, Paper} from '../../ui/inputs';
 import {DateTime, DateModel, TimeModel} from '../../utils/model/dateTimeModel';
-import {DETAILS, DATE, TIME, FLEXIBLE} from './constants/properties';
+import APPOINTMENT from './constants/appointmentProperties';
 const AppointmentForm = ({date, time, flexible, details, actions}) => (<Paper style={{margin: "10px"}}>
-        <DatePicker name={DATE}
+        <DatePicker name={APPOINTMENT.DATE}
                     value={date}
-                    onChange={actions[DATE]}/>
-        <TimePicker name={TIME}
+                    onChange={actions[APPOINTMENT.DATE]}/>
+        <TimePicker name={APPOINTMENT.TIME}
                     value={time}
-                    onChange={actions[TIME]}/>
-        <Checkbox name={FLEXIBLE}
+                    onChange={actions[APPOINTMENT.TIME]}/>
+        <Checkbox name={APPOINTMENT.FLEXIBLE}
                   value={flexible}
-                  onChange={actions[FLEXIBLE]}/>
-        <TextArea name={DETAILS}
+                  onChange={actions[APPOINTMENT.FLEXIBLE]}/>
+        <TextArea name={APPOINTMENT.DETAILS}
                   value={details}
-                  onChange={actions[DETAILS]}/>
+                  onChange={actions[APPOINTMENT.DETAILS]}/>
 </Paper>);
 
 AppointmentForm.propTypes = {

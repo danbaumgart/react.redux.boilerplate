@@ -25,7 +25,8 @@ class MaskedTextField extends React.PureComponent {
 }
 
 MaskedTextField.propTypes = {
-    mask: React.PropTypes.string
+    mask: React.PropTypes.string,
+    onChange: React.PropTypes.func.isRequired
 };
 
 export default MaskedTextField

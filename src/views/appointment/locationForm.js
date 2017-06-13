@@ -1,82 +1,74 @@
-import React, {PropTypes} from 'react';
+import React from '../../utils/react';
 import INSTITUTION from './constants/institution';
-import INPUT from '../../ui/constants/inputTypes';
-import FormGroup from '../../ui/formGroup';
-import {constantCaseToProperCase} from '../../utils/stringUtils';
-import {DatePicker, TextField, TimePicker, Checkbox, RadioButton, RadioButtonGroup} from 'material-ui';
-const LocationForm = ({institution, name, address, city, state, zip, details, updateField, updateDate, updateTime, textFieldStyle}) => {
-    const schema = [
-        {
-            name: "streetAddress",
-            type: INPUT.TEXT_FIELD,
-            placeholder: null
-        }
-    ]
-    return (<FormGroup>
-        {/*<RadioButtonGroup name="Institution"*/}
-                          {/*defaultSelected={INSTITUTION[institution] || INSTITUTION.OTHER}>*/}
-            {/*<RadioButton value={INSTITUTION.UNIVERSITY}*/}
-                         {/*label={constantCaseToProperCase(INSTITUTION.UNIVERSITY)}*/}
-                         {/*onCheck={updateField}/>*/}
-            {/*<RadioButton value={INSTITUTION.HIGH_SCHOOL}*/}
-                         {/*label={constantCaseToProperCase(INSTITUTION.HIGH_SCHOOL)}*/}
-                         {/*onCheck={updateField}/>*/}
-            {/*<RadioButton value={INSTITUTION.OTHER}*/}
-                         {/*label={constantCaseToProperCase(INSTITUTION.OTHER)}*/}
-                         {/*onCheck={updateField}/>*/}
-        {/*</RadioButtonGroup>*/}
-        <TextField name="streetAddress"
-                   defaultValue=""
-                   hintText="Street"
-                   floatingLabelText="Institution"
-                   fullWidth={true}
-                   onChange={updateField}/>
-        <TextField name="streetAddress"
-                   defaultValue={address}
-                   hintText="Street Address"
-                   floatingLabelText="Street Address"
-                   fullWidth={true}
-                   onChange={updateField}/>
-        <TextField name="city"
-                   hintText="City"
-                   defaultValue={city}
-                   floatingLabelText="City"
-                   fullWidth={true}
-                   onChange={updateField}/>
-        <TextField name="stateProvince"
-                   hintText="State or Province"
-                   defaultValue={state}
-                   floatingLabelText="State or Province"
-                   fullWidth={true}
-                   onChange={updateField}/>
-        <TextField name="postalCode"
-                   hintText="Postal Code"
-                   defaultValue={zip}
-                   floatingLabelText="Postal Code"
-                   fullWidth={true}
-                   onChange={updateField}/>
-    </FormGroup>);
-};
+import {Typeahead, Paper, TextField, Checkbox} from '../../ui/inputs';
+import LOCATION from './constants/locationProperties';
+import {camelCaseToProperCase} from '../../utils/stringUtils';
+class LocationForm extends React.PureComponent {
+    constructor(props, context){
+        super(props, context)
+    }
+    render(){
+        const {institution, name, street, city, state, zip, universities, actions} = this.props;
+        console.log("NAME", name);
+        return (
+            <Paper>
+                <Checkbox name={LOCATION.INSTITUTION}
+                          label="University"
+                          value={institution === INSTITUTION.UNIVERSITY}
+                          onChange={actions[LOCATION.INSTITUTION]}/>
+                {institution === INSTITUTION.UNIVERSITY ?
+                    <Typeahead name="universitySearch"
+                               promise={actions.universities}
+                               onSelect={actions.updateLocation}
+                               searchText={name}
+                               onUpdateInput={actions[LOCATION.NAME]}
+                               dataSource={universities}
+                               debounce={200}/> :
+                    <TextField name={LOCATION.NAME}
+                               label={camelCaseToProperCase(LOCATION.NAME)}
+                               value={name}
+                               onChange={actions[LOCATION.NAME]}/>
+                }
+                <TextField name={LOCATION.STREET}
+                           label={camelCaseToProperCase(LOCATION.STREET)}
+                           value={street}
+                           onChange={actions[LOCATION.STREET]}/>
+                <TextField name={LOCATION.CITY}
+                           label={camelCaseToProperCase(LOCATION.CITY)}
+                           value={city}
+                           onChange={actions[LOCATION.CITY]}/>
+                <TextField name={LOCATION.STATE}
+                           label={camelCaseToProperCase(LOCATION.STATE)}
+                           value={state}
+                           onChange={actions[LOCATION.STATE]}/>
+                <TextField name={LOCATION.ZIP}
+                           label={camelCaseToProperCase(LOCATION.ZIP)}
+                           value={zip}
+                           onChange={actions[LOCATION.ZIP]}/>
+
+            </Paper>);
+    }
+}
 
 LocationForm.propTypes = {
-    updateField: React.PropTypes.func.isRequired,
-    updateDate: React.PropTypes.func.isRequired,
-    updateTime: React.PropTypes.func.isRequired,
+    actions: React.PropTypes.object.isRequired,
     institution: React.PropTypes.oneOf([INSTITUTION.HIGH_SCHOOL, INSTITUTION.UNIVERSITY, INSTITUTION.OTHER]),
     name: React.PropTypes.string,
-    address: React.PropTypes.string,
+    street: React.PropTypes.string,
     city: React.PropTypes.string,
     state: React.PropTypes.string,
-    postalCode: React.PropTypes.string
+    postalCode: React.PropTypes.string,
+    universities: React.PropTypes.arrayOf(React.PropTypes.object)
 };
 LocationForm.defaultProps = {
     institution: INSTITUTION.OTHER,
     name: '',
-    address: '',
+    street: '',
     city: '',
     state: '',
     zip: '',
-    details: ''
+    details: '',
+    universities: []
 };
 
 

@@ -9,16 +9,17 @@ import CRITERIA from '../constants/criteria';
 class Schema extends Metadata {
     constructor({name, type, value, ...constraints}) {
         super({name, type, value});
-        this.required = constraints.hasOwnProperty(CONSTRAINTS.REQUIRED) ? constraints[CONSTRAINTS.REQUIRED] : false;
+        this.required = constraints.hasOwnProperty(CONSTRAINTS.REQUIRED) && constraints[CONSTRAINTS.REQUIRED] === true;
         this.restrict = constraints.hasOwnProperty(CONSTRAINTS.RESTRICT) ? constraints[CONSTRAINTS.RESTRICT] : null;
         this.maximum = constraints.hasOwnProperty(CONSTRAINTS.MAXIMUM) ? constraints[CONSTRAINTS.MAXIMUM] : null;
         this.minimum = constraints.hasOwnProperty(CONSTRAINTS.MINIMUM) ? constraints[CONSTRAINTS.MINIMUM] : null;
         this.errors = [];
     }
+    hasFalseyValue(value) {
+        return TYPES.MULTISELECT[this.type] ? !Array.isArray(value) || value.length < 1 : !Boolean(value);
+    }
     isInvalidRequired(value) {
-        console.log("THIS VALUE", value);
-        const isInvalid = this.required && TYPES.MULTISELECT[this.type] ?
-            !Array.isArray(value) || value.length < 1 : !Boolean(value);
+        const isInvalid = this.required && this.hasFalseyValue(value);
         if(isInvalid) this.errors.push(ErrorMessageHandler[CONSTRAINTS.REQUIRED]);
         return isInvalid;
     }
@@ -68,7 +69,8 @@ export class OptimizedValidator extends Schema {
         super(schema);
     }
     isInvalid(value) {
-        return this.isInvalidRequired(value) ||
+        return this.hasFalseyValue(value) && !this.required ? false :
+            this.isInvalidRequired(value) ||
             this.isInvalidRestriction(value) ||
             this.isInvalidMaximum(value) ||
             this.isInvalidMinimum(value);

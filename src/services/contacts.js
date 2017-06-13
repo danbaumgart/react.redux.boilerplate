@@ -37,11 +37,12 @@ class Contacts extends TrinitaWellness {
     }
     static ToDomainModel(contact) {
         return {
-            phone: contact.phoneNumber,
-            email: contact.emailAddress,
-            extension: contact.extension,
-            firstName: contact.firstName,
-            lastName: contact.lastName
+            Id: contact.id || null,
+            LastName: contact.lastName,
+            FirstName: contact.firstName,
+            Email: contact.emailAddress,
+            Phone: contact.phoneNumber || null,
+            Extension: contact.extension || null,
         };
     }
     Phones(contactId){

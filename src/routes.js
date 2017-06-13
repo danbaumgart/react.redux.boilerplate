@@ -7,7 +7,7 @@ import EventsPage from './views/events/EventsPage';
 import AboutPage from './views/about/AboutPage';
 import ContactMePage from './views/contactMe/ContactMePage';
 import ContactPage from './views/contact/contactPage';
-import AppointmentPage from './views/appointment/appointmentPage';
+import AppointmentTabsPage from './views/appointment/AppointmentTabPage';
 import RegistrationPage from './views/account/RegistrationPage';
 import LoginPage from './views/account/LoginPage';
 const PATHS = {
@@ -38,7 +38,7 @@ export default (
         <Route path="contact" component={ContactPage}/>
         <Route path="registration" component={RegistrationPage}/>
         <Route path="login" component={LoginPage}/>
-        <Route path="appointment" component={AppointmentPage}/>
+        <Route path="appointment" component={AppointmentTabsPage}/>
         <Route path="testimonials" component={TestimonialsPage}/>
         <Route path="events" component={EventsPage}/>
     </Route>

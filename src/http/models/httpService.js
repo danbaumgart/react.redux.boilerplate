@@ -9,7 +9,10 @@ class HttpService {
         return this.mapper.requestMapper(data);
     }
     responseMapper(data) {
-        return this.mapper.responseMapper(data);
+        console.log("DATA", data);
+        const responseMapper = this.mapper.responseMapper;
+        console.log("RESPONSE MAPPER", responseMapper);
+        return responseMapper(data);
     }
     getEndpointURL(endpoint) {
         return endpoint ? this.url + endpoint : this.url;
@@ -17,22 +20,22 @@ class HttpService {
     Get(data, endpoint) {
         const url = this.getEndpointURL(endpoint);
         const payload = this.requestMapper(data);
-        return HttpPromise.GET(url, payload).then(this.responseMapper);
+        return HttpPromise.GET(url, payload);
     }
     Post(data, endpoint) {
         const url = this.getEndpointURL(endpoint);
         const payload = this.requestMapper(data);
-        return HttpPromise.POST(url, payload).then(this.responseMapper);
+        return HttpPromise.POST(url, payload);
     }
     Put(data, endpoint) {
         const url = this.getEndpointURL(endpoint);
         const payload = this.requestMapper(data);
-        return HttpPromise.PUT(url, payload).then(this.responseMapper);
+        return HttpPromise.PUT(url, payload);
     }
     Delete(data, endpoint) {
         const url = this.getEndpointURL(endpoint);
         const payload = this.requestMapper(data);
-        return HttpPromise.DELETE(url, payload).then(this.responseMapper);
+        return HttpPromise.DELETE(url, payload);
     }
 }
 export default HttpService;

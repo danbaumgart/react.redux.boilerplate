@@ -5,11 +5,12 @@ class TrinitaWellness extends HttpProxy {
     constructor(resource, mapper) {
         super(URL + resource, mapper);
     }
-    Get(identifier) {
-        return identifier ?
-            super.Get(null, CHARACTERS.FORWARD_SLASH + identifier) :
-            super.Get();
-    }
+    // Get(identifier, data) {
+    //     console.log("IDENTIFIER", identifier);
+    //     return identifier ?
+    //         super.Get(null, CHARACTERS.FORWARD_SLASH + identifier) :
+    //         super.Get(data, endpoint);
+    // }
     Put(data, identifier) {
         return super.Put(data, CHARACTERS.FORWARD_SLASH + identifier);
     }

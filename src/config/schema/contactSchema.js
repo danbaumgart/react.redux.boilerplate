@@ -1,6 +1,6 @@
 import CRITERIA from '../../validation/constants/criteria';
 import METADATA from '../../regexp/constants/metadata';
-import CONTACT from './constants/contactProperties';
+import CONTACT from '../../views/contact/constants/contactProperties';
 import SCHEMA from './constants/schemaProperties';
 export default {
     [CONTACT.FIRST_NAME]: {

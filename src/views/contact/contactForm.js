@@ -1,9 +1,8 @@
 import React from '../../utils/react';
 import {TextField, Paper, MaskedField, PhoneNumber} from '../../ui/inputs';
 import MASKS from '../../ui/constants/inputMasks';
-import CONTACT from '../../config/schema/constants/contactProperties';
+import CONTACT from './constants/contactProperties';
 const ContactForm = ({firstName, lastName, emailAddress, phoneNumber, extension, errorInfo, actions, children}) => {
-    console.log("ERRORS", errorInfo);
     return (
         <Paper style={{margin: "10px"}}>
             <TextField name={CONTACT.FIRST_NAME}
@@ -20,6 +19,7 @@ const ContactForm = ({firstName, lastName, emailAddress, phoneNumber, extension,
                        onChange={actions[CONTACT.EMAIL_ADDRESS]}/>
             <PhoneNumber name={CONTACT.PHONE_NUMBER}
                          value={phoneNumber}
+                         errors={errorInfo[CONTACT.PHONE_NUMBER]}
                          onChange={actions[CONTACT.PHONE_NUMBER]}/>
             <MaskedField name={CONTACT.EXTENSION}
                          value={extension}
