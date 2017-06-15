@@ -1,6 +1,7 @@
 import React from '../../utils/react';
 import {Step, Stepper, StepButton, StepContent} from 'material-ui/Stepper';
 import StepNavigation from './stepNavigation';
+import {AlertWarning} from 'material-ui/svg-icons'
 import ExpandTransition from 'material-ui/internal/ExpandTransition';
 class HorizontalTransition extends React.PureComponent {
     constructor(props) {
@@ -41,9 +42,28 @@ class HorizontalTransition extends React.PureComponent {
             }));
         }
     }
+
+    getStepProps(stepIndex) {
+        return {
+            active: stepIndex === this.state.stepIndex,
+            key: this.props.stepLabels[stepIndex]
+        };
+    }
+
+    hasErrors() {
+        return Array.isArray(this.props.stepErrors) && this.props.stepErrors.length > 0;
+    }
+
+    getStepButtonProps(stepIndex) {
+        const isActive = stepIndex === this.state.stepIndex;
+        const onClick = () => this.setState({stepIndex});
+        return isActive && this.hasErrors() ? {onClick, icon: <AlertWarning/>} : {onClick};
+    }
+
     render() {
         const {loading, stepIndex: _stepIndex} = this.state;
-        const {stepLabels, getStepContent} = this.props;
+        const {stepLabels, getStepContent, stepErrors} = this.props;
+        const hasErrors = Array.isArray(stepErrors) && stepErrors.length > 0;
         const StepHandler = getStepContent(_stepIndex);
         const contentStyle = {paddingBottom: "50px"};
         const previousDisabled = _stepIndex === 0;
@@ -52,15 +72,12 @@ class HorizontalTransition extends React.PureComponent {
             <div style={{width: '100%', margin: 'auto'}}>
                 <Stepper linear={false}>
                     {stepLabels.map((stepLabel, stepIndex) =>
-                        <Step active={_stepIndex === stepIndex} key={stepLabel}>
-                            <StepButton onClick={() => this.setState({stepIndex})}>
-                                {stepLabel}
-                            </StepButton>
-                        </Step>)
-                    }
+                        <Step {...this.getStepProps(stepIndex)}>
+                            <StepButton {...this.getStepButtonProps(stepIndex)}>{stepLabel}</StepButton>
+                        </Step>)}
                 </Stepper>
-                <ExpandTransition loading={loading} open={true} transitionDuration={300}>
-                    <StepHandler style={contentStyle}/>
+                <ExpandTransition loading={loading} open={true}>
+                    <StepHandler/>
                 </ExpandTransition>
                 <StepNavigation onNextRequested={this.handleNext}
                                 onPreviousRequested={this.handlePrev}
@@ -73,5 +90,9 @@ class HorizontalTransition extends React.PureComponent {
 HorizontalTransition.propTypes = {
     stepLabels: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
     getStepContent: React.PropTypes.func.isRequired,
+    stepErrors: React.PropTypes.arrayOf(React.PropTypes.string)
+};
+HorizontalTransition.defaultProps = {
+    getStepErrors: []
 };
 export default HorizontalTransition;
