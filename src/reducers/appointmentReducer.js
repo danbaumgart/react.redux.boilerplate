@@ -1,4 +1,4 @@
-import ACTIONS from '../actions/types/appointmentActions';
+import ACTIONS from '../actions/types/appointments';
 import initialState from './initialState';
 export default function appointment(state = initialState.appointment, action) {
     const {type, payload} = action;

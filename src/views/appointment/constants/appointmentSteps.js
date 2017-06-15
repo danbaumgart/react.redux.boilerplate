@@ -1,0 +1,5 @@
+export default {
+    SCHEDULING: 'SCHEDULING',
+    CONTACT: 'CONTACT',
+    LOCATION: 'LOCATION'
+};

@@ -1,4 +1,4 @@
-import ACTIONS from './types/universitiesActions';
+import ACTIONS from '../types/universities';
 function _loadUniversities(universities){
     return {type: ACTIONS.LOAD_UNIVERSITIES, payload: universities};
 }

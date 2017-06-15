@@ -1,6 +1,6 @@
 export default {
-    TYPE: 'TYPE',
     NAME: 'NAME',
+    METADATA: 'METADATA',
     REQUIRED: 'REQUIRED',
     RESTRICT: 'RESTRICT',
     MAXIMUM: 'MAXIMUM',

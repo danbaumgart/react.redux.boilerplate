@@ -1,7 +1,7 @@
-import ACTIONS from './types/contactActions';
-import PatternHandler from '../utils/regex/patterns';
-import {TELEPHONE_MASK} from '../utils/constants/regexPatterns';
-import Contacts from '../services/contacts';
+import ACTIONS from '../types/contacts';
+import PatternHandler from '../../utils/regex/patterns';
+import {TELEPHONE_MASK} from '../../utils/constants/regexPatterns';
+import Contacts from '../../services/contacts';
 function _updateContactFirstName(firstName){
     return {type: ACTIONS.UPDATE_CONTACT_FIRST_NAME, payload: firstName};
 }

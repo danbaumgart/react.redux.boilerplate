@@ -1,5 +1,5 @@
-import ACTIONS from './types/universitiesActions';
-import Universities from '../services/universities';
+import ACTIONS from '../types/universities';
+import Universities from '../../services/universities';
 function _loadUniversities(universities){
     return {type: ACTIONS.LOAD_UNIVERSITIES, payload: universities};
 }

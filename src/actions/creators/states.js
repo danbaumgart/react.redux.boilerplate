@@ -1,5 +1,5 @@
-import ACTIONS from './types/statesActions';
-import States from '../services/states';
+import ACTIONS from '../types/states';
+import States from '../../services/states';
 function _loadStates(states){
     return {type: ACTIONS.LOAD_STATES, payload: states};
 }

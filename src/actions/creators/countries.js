@@ -1,5 +1,5 @@
-import ACTIONS from './types/countriesActions';
-import Countries from '../services/countries';
+import ACTIONS from '../types/countries';
+import Countries from '../../services/countries';
 function _loadCountries(countries){
     return {type: ACTIONS.LOAD_COUNTRIES, payload: countries};
 }

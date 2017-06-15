@@ -3,25 +3,25 @@ import {TextField} from 'material-ui';
 import {camelCaseToProperCase} from '../../utils/stringUtils';
 import StaticError from '../../ui/common/staticError';
 class TextFieldInput extends React.PureComponent {
-	constructor(props) {
-		super(props);
-		this.onUpdateText = this.onUpdateText.bind(this);
-	}
-	onUpdateText({target:{value}}){
-	    this.props.onChange(value);
+    constructor(props) {
+        super(props);
+        this.onUpdateText = this.onUpdateText.bind(this);
     }
-	render() {
-	    const {name, label: _label, value: defaultValue, children, errors} = this.props;
-	    const floatingLabelText = _label || camelCaseToProperCase(name);
-	    const props = {
-	        name, defaultValue, floatingLabelText, children,
+    onUpdateText({target:{value}}) {
+        this.props.onChange(value);
+    }
+    render() {
+        const {name, label: _label, value, children, errors} = this.props;
+        const floatingLabelText = _label || camelCaseToProperCase(name);
+        const props = {
+            name, value, floatingLabelText, children,
             fullWidth: true,
             onChange: this.onUpdateText
-	    };
-	    if(Array.isArray(errors) && errors.length > 0)
-	        Object.assign(props, {errorText: <StaticError errors={errors}/>});
-		return <TextField {...props} />;
-	}
+        };
+        if (Array.isArray(errors) && errors.length > 0)
+            Object.assign(props, {errorText: <StaticError errors={errors}/>});
+        return <TextField {...props} />;
+    }
 }
 TextFieldInput.propTypes = {
     name: React.PropTypes.string.isRequired,
@@ -34,7 +34,7 @@ TextFieldInput.propTypes = {
 
 TextFieldInput.defaultProps = {
     label: null,
-	value: '',
+    value: '',
     errors: [],
     children: null
 };

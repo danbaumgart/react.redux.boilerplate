@@ -1,8 +1,7 @@
-import React, {PropTypes} from 'react';
+import React from '../../utils/react';
 import INSTITUTION from './constants/institution';
 import INPUT from '../../ui/constants/inputTypes';
 import FormGroup from '../../ui/formGroup';
-import {constantCaseToProperCase} from '../../utils/stringUtils';
 import {DatePicker, TextField, TimePicker, Checkbox, RadioButton, RadioButtonGroup} from 'material-ui';
 const LocationForm = ({institution, name, address, city, state, zip, details, updateField, updateDate, updateTime, textFieldStyle}) => {
     const schema = [
@@ -13,18 +12,6 @@ const LocationForm = ({institution, name, address, city, state, zip, details, up
         }
     ]
     return (<FormGroup>
-        {/*<RadioButtonGroup name="Institution"*/}
-                          {/*defaultSelected={INSTITUTION[institution] || INSTITUTION.OTHER}>*/}
-            {/*<RadioButton value={INSTITUTION.UNIVERSITY}*/}
-                         {/*label={constantCaseToProperCase(INSTITUTION.UNIVERSITY)}*/}
-                         {/*onCheck={updateField}/>*/}
-            {/*<RadioButton value={INSTITUTION.HIGH_SCHOOL}*/}
-                         {/*label={constantCaseToProperCase(INSTITUTION.HIGH_SCHOOL)}*/}
-                         {/*onCheck={updateField}/>*/}
-            {/*<RadioButton value={INSTITUTION.OTHER}*/}
-                         {/*label={constantCaseToProperCase(INSTITUTION.OTHER)}*/}
-                         {/*onCheck={updateField}/>*/}
-        {/*</RadioButtonGroup>*/}
         <TextField name="streetAddress"
                    defaultValue=""
                    hintText="Street"

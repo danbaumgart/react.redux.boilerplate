@@ -1,52 +1,59 @@
 import React from '../../utils/react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import AppointmentForm from './appointmentForm';
-import {DateTime, DateModel, TimeModel} from '../../utils/model/dateTimeModel';
-import APPOINTMENT from './constants/appointmentProperties';
-import * as actions from '../../actions/appointmentActionCreators';
+import HorizontalStepper from '../../ui/stepper/horizontalTransition';
+import APPOINTMENT from '../../config/properties/appointment';
+import CONTACT from '../../config/properties/contact';
+import StepHandler from './handlers/appointmentStepHandler';
+import * as contactActions from '../../actions/creators/contact';
+import * as appointmentActions from '../../actions/creators/appointment';
+import APPOINTMENT_STEPS from './constants/appointmentSteps';
+const AppointmentStepLabels = Object.keys(APPOINTMENT_STEPS);
 class AppointmentPage extends React.PureComponent {
     constructor(props, context) {
         super(props, context);
     }
+    static GetStepContent(stepIndex) {
+        const key = AppointmentStepLabels[stepIndex];
+        return StepHandler[key];
+    }
     render() {
-        const props = this.props;
-        return (<AppointmentForm {...props} />);
+        return <HorizontalStepper stepLabels={AppointmentStepLabels}
+                                  getStepContent={AppointmentPage.GetStepContent}/>;
     }
 }
-
 AppointmentPage.propTypes = {
-    actions: React.PropTypes.object,
-    date: React.PropTypes.instanceOf(DateModel),
-    time: React.PropTypes.instanceOf(TimeModel),
-    flexible: React.PropTypes.bool,
-    details: React.PropTypes.string
+    actions: React.PropTypes.object.isRequired,
+    appointment: React.PropTypes.object,
+    contact: React.PropTypes.object
 };
-
 AppointmentPage.defaultProps = {
-    actions: null,
-    date: DateTime.ToDateModel(),
-    time: DateTime.ToTimeModel(),
-    flexible: false,
-    details: null
+    appointment: null,
+    contact: null
 };
-
-function mapStateToProps(state) {
-    return state.appointment || {
-        date: '',
-        time: '',
-        flexible: false,
-        details: ''
-    };
+function mapStateToProps(state, ownProps) {
+    const {appointment, contact} = state;
+    return {appointment, contact};
 }
-
 function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators({
-            [APPOINTMENT.DATE]: actions.updateAppointmentDate,
-            [APPOINTMENT.TIME]: actions.updateAppointmentTime,
-            [APPOINTMENT.DETAILS]: actions.updateAppointmentDetails,
-            [APPOINTMENT.FLEXIBLE]: actions.updateAppointmentFlexible}, dispatch)};
+    const appointment = {
+        [APPOINTMENT.DATE]: appointmentActions.updateAppointmentDate,
+        [APPOINTMENT.TIME]: appointmentActions.updateAppointmentTime,
+        [APPOINTMENT.DETAILS]: appointmentActions.updateAppointmentDetails,
+        [APPOINTMENT.FLEXIBLE]: appointmentActions.updateAppointmentFlexible
+    };
+    const contact = {
+        [CONTACT.FIRST_NAME]: contactActions.updateContactFirstName,
+        [CONTACT.LAST_NAME]: contactActions.updateContactLastName,
+        [CONTACT.EMAIL_ADDRESS]: contactActions.updateContactEmailAddress,
+        [CONTACT.PHONE_NUMBER]: contactActions.updateContactPhoneNumber,
+        [CONTACT.EXTENSION]: contactActions.updateContactExtension,
+        saveContact: contactActions.saveContact,
+    };
+    const actions = {
+        contact: bindActionCreators(contact, dispatch),
+        appointment: bindActionCreators(appointment, dispatch)
+    };
+    return {actions};
 }
-
 export default connect(mapStateToProps, mapDispatchToProps)(AppointmentPage);

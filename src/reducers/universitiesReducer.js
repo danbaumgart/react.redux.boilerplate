@@ -1,8 +1,7 @@
-import ACTIONS from '../actions/types/universitiesActions';
+import ACTIONS from '../actions/types/universities';
 import initialState from './initialState';
 export default function universities(state = initialState.universities, action) {
-    console.log("ACTION", action);
-	return action.type === ACTIONS.LOAD_UNIVERSITIES ?
+    return action.type === ACTIONS.LOAD_UNIVERSITIES ?
         [...action.payload] :
         [...state];
 }

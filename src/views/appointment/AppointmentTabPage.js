@@ -3,24 +3,19 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import SwipeableTabs from '../../ui/SwipeableTabs';
 import ContactForm from '../contact/contactForm';
-import APPOINTMENT from './constants/appointmentProperties';
-import LOCATION from './constants/locationProperties';
-import CONTACT from '../contact/constants/contactProperties';
-import INSTITUTION from './constants/institution';
-import AppointmentForm from './appointmentForm';
-import LocationForm from './locationForm';
-import ContactSchema from '../../config/schema/contactSchema';
-import SchemaMapper from '../../config/schema/utils/schemaMappers';
-import * as locationActions from '../../actions/locationActionCreators';
-import * as contactActions from '../../actions/contactActionCreators';
-import * as appointmentActions from '../../actions/appointmentActionCreators';
-import * as universitiesActions from '../../actions/universitiesActionCreators';
+import APPOINTMENT from '../../config/properties/appointment';
+import CONTACT from '../../config/properties/contact';
+import AppointmentForm from './scheduleForm';
+import LocationPage from '../location/locationPage';
+import ContactSchema from '../../config/schema/contact';
+import SchemaMapper from '../../config/schema/mapper';
+import * as contactActions from '../../actions/creators/contact';
+import * as appointmentActions from '../../actions/creators/appointment';
 class AppointmentTabPage extends React.Component {
 	constructor(props, context) {
 		super(props, context);
 		this.getContactProps = this.getContactProps.bind(this);
         this.getAppointmentProps = this.getAppointmentProps.bind(this);
-        this.getLocationProps = this.getLocationProps.bind(this);
 	}
     getAppointmentProps() {
         const {
@@ -37,24 +32,14 @@ class AppointmentTabPage extends React.Component {
         } = this.props;
         return {firstName, lastName, emailAddress, phoneNumber, extension, actions, errorInfo};
     }
-    getLocationProps() {
-        const {institution = INSTITUTION.UNIVERSITY, name, street, city, state, zip, details} = this.props.location;
-        return {
-            name, street, city, state, zip, details,
-            institution: INSTITUTION[institution] || INSTITUTION.OTHER,
-            actions: this.props.actions.location,
-            universities: this.props.universities,
-        };
-    }
 	render() {
         const tabs = ['Contact Info', 'Schedule', 'Location'];
         const appointmentProps = this.getAppointmentProps();
         const contactProps = this.getContactProps();
-        const locationProps = this.getLocationProps();
         const views = [
             <ContactForm {...contactProps} />,
             <AppointmentForm {...appointmentProps} />,
-            <LocationForm {...locationProps} />
+            <LocationPage />
         ];
 	    return <SwipeableTabs views={views} tabs={tabs} />;
 	}
@@ -62,20 +47,16 @@ class AppointmentTabPage extends React.Component {
 AppointmentTabPage.propTypes = {
     actions: React.PropTypes.object.isRequired,
 	appointment: React.PropTypes.object,
-    contact: React.PropTypes.object,
-    location: React.PropTypes.object,
-    universities: React.PropTypes.arrayOf(React.PropTypes.object)
+    contact: React.PropTypes.object
 };
 AppointmentTabPage.defaultProps = {
     appointment: null,
-    contact: null,
-    location: null,
-    universities: []
+    contact: null
 };
 
 function mapStateToProps(state, ownProps) {
-    const {appointment, contact, location, universities} = state;
-    return {appointment, contact, location, universities};
+    const {appointment, contact} = state;
+    return {appointment, contact};
 }
 
 function mapDispatchToProps(dispatch) {
@@ -93,20 +74,9 @@ function mapDispatchToProps(dispatch) {
         [CONTACT.EXTENSION]: contactActions.updateContactExtension,
         saveContact: contactActions.saveContact,
     };
-    const location = {
-        [LOCATION.INSTITUTION]: locationActions.updateLocationInstitution,
-        [LOCATION.NAME]: locationActions.updateLocationName,
-        [LOCATION.STATE]: locationActions.updateLocationState,
-        [LOCATION.STREET]: locationActions.updateLocationStreet,
-        [LOCATION.ZIP]: locationActions.updateLocationZip,
-        [LOCATION.CITY]: locationActions.updateLocationCity,
-        updateLocation: locationActions.updateLocationFromUniversitySearch,
-        universities: universitiesActions.searchUniversities
-    };
     const actions = {
         contact: bindActionCreators(contact, dispatch),
-        appointment: bindActionCreators(appointment, dispatch),
-        location: bindActionCreators(location, dispatch)
+        appointment: bindActionCreators(appointment, dispatch)
     };
 	return {actions};
 }

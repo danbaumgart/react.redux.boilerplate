@@ -36,7 +36,7 @@ export default {
     backgroundColor: colors.fullWhite
   },
   baseTheme: {
-    canvasColor: colors.blueGrey50
+    canvasColor: colors.fullWhite
   },
   zIndex: {
     appBar: 1250,

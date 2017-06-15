@@ -1,4 +1,4 @@
-import ACTIONS from '../actions/types/emailActions'
+import ACTIONS from '../actions/types/email'
 import initialState from './initialState';
 
 export default function email(state = initialState.email, action) {

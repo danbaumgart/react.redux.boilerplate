@@ -3,35 +3,28 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import ContactForm from './contactForm';
 import {RaisedButton} from '../../ui/inputs';
-import CONTACT from './constants/contactProperties';
-import * as actions from '../../actions/contactActionCreators';
+import CONTACT from '../../config/properties/contact';
+import * as actions from '../../actions/creators/contact';
 import {toastError, toastSuccess} from '../../actions/alertsActions';
-import ContactSchema from '../../config/schema/contactSchema';
-import SchemaMapper from '../../config/schema/utils/schemaMappers';
+import ContactSchema from '../../config/schema/contact';
+import SchemaMapper from '../../config/schema/mapper';
 class ContactPage extends React.PureComponent {
     constructor(props, context) {
         super(props, context);
         this.saveContact = this.saveContact.bind(this);
     }
     saveContact(){
-        const {lastName, firstName, emailAddress, phoneNumber, extension, actions} = this.props;
-        const contact = {lastName, firstName, emailAddress, phoneNumber, extension};
-        actions.saveContact(contact).then(result => {
-            console.log("RESULT", result);
-            actions.toastSuccess({contact: ["SUCCESS"]});
-        }).catch(err => {
-            console.log("ERROR", err);
-            actions.toastError({contact: [err.status.type]})
-        });
+        const {actions, ...contact} = this.props;
+        actions.saveContact(contact)
+            .then(result => actions.toastSuccess({contact: ["SUCCESS"]}))
+            .catch(err => actions.toastError({contact: [err.status.type]}));
     }
     render() {
         const {actions, ...fields} = this.props;
         const errorInfo = SchemaMapper.toErrorInfoModel(ContactSchema, fields);
         const {firstName, lastName, emailAddress, phoneNumber, extension} = fields;
         const props = {errorInfo, firstName, lastName, emailAddress, phoneNumber, extension, actions};
-        return (<ContactForm {...props}>
-            <RaisedButton onClick={this.saveContact} label="Submit" />
-        </ContactForm>);
+        return <ContactForm {...props} />;
     }
 }
 ContactPage.propTypes = {

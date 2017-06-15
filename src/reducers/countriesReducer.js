@@ -1,4 +1,4 @@
-import ACTIONS from '../actions/types/countriesActions';
+import ACTIONS from '../actions/types/countries';
 import initialState from './initialState';
 
 export default function countries(state = initialState.countries, action) {

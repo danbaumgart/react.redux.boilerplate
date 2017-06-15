@@ -1,7 +1,7 @@
 import React from '../../utils/react';
 import {TextField, Paper, MaskedField, PhoneNumber} from '../../ui/inputs';
 import MASKS from '../../ui/constants/inputMasks';
-import CONTACT from './constants/contactProperties';
+import CONTACT from '../../config/properties/contact';
 const ContactForm = ({firstName, lastName, emailAddress, phoneNumber, extension, errorInfo, actions, children}) => {
     return (
         <Paper style={{margin: "10px"}}>

@@ -1,4 +1,4 @@
-import ACTIONS from '../actions/types/contactActions';
+import ACTIONS from '../actions/types/contacts';
 import initialState from './initialState';
 
 export default function contact(state = initialState.contact, action) {

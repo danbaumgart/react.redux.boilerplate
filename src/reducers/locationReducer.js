@@ -1,4 +1,4 @@
-import ACTIONS from '../actions/types/locationActions';
+import ACTIONS from '../actions/types/locations';
 import initialState from './initialState';
 
 export default function location(state = initialState.location, action) {
@@ -16,8 +16,7 @@ export default function location(state = initialState.location, action) {
         case ACTIONS.UPDATE_LOCATION_INSTITUTION:
             return Object.assign({}, state, {institution: action.payload});
         case ACTIONS.UPDATE_LOCATION:
-            return Object.assign({}, state, action.payload);
-        case ACTIONS.SAVE_CONTACT:
+        case ACTIONS.SAVE_LOCATION:
             return Object.assign({}, state, action.payload);
         default: return state;
     }

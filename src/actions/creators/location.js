@@ -1,5 +1,5 @@
-import ACTIONS from './types/locationActions';
-import INSTITUTION from '../views/appointment/constants/institution';
+import ACTIONS from '../types/locations';
+import INSTITUTION from '../../views/appointment/constants/institution';
 function _updateLocationName(name){
     return {type: ACTIONS.UPDATE_LOCATION_NAME, payload: name};
 }

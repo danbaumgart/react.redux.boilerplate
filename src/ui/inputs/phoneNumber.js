@@ -1,23 +1,13 @@
 import React from '../../utils/react';
-import MaskedTextField from '../common/maskedTextField';
+import MaskedField from './maskedField';
 import MASKS from '../constants/inputMasks';
-import {camelCaseToProperCase} from '../../utils/stringUtils';
-import StaticError from '../common/staticError';
 class PhoneNumber extends React.PureComponent {
     constructor(props) {
         super(props);
     }
     render() {
-        const {name, label: _label, value: defaultValue, onChange, errors, children} = this.props;
-        const floatingLabelText = _label || camelCaseToProperCase(name);
-        const props = {
-            name, defaultValue, floatingLabelText, children, onChange,
-            mask: MASKS.PHONE_NUMBER,
-            fullWidth: true
-        };
-        if(Array.isArray(errors) && errors.length > 0)
-            Object.assign(props, {errorText: <StaticError errors={errors}/>});
-        return (<MaskedTextField {...props}/>);
+        const props = this.props;
+        return (<MaskedField mask={MASKS.PHONE_NUMBER} {...props}/>);
     }
 }
 PhoneNumber.propTypes = {

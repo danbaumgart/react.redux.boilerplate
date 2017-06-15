@@ -1,4 +1,4 @@
-import ACTIONS from '../actions/types/phoneActions';
+import ACTIONS from '../actions/types/phone';
 import initialState from './initialState';
 
 export default function phone(state = initialState.phone, action) {

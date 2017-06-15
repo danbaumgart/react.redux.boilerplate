@@ -1,5 +1,5 @@
-import ACTIONS from './types/confirmationsActions';
-import Confirmations from '../services/confirmations';
+import ACTIONS from '../types/confirmations';
+import Confirmations from '../../services/confirmations';
 function _loadConfirmations(confirmations){
     return {type: ACTIONS.LOAD_CONFIRMATIONS, payload: confirmations};
 }

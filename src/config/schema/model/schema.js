@@ -1,14 +1,14 @@
-import CONSTRAINTS from '../constants/constraints';
-import TYPES from '../../regexp/constants/metadata';
+import CONSTRAINTS from '../../../validation/constants/constraints';
+import TYPES from '../../../regexp/constants/metadata';
 import Metadata from './metadata';
-import {Restrictions} from '../validation';
-import {Maximum, Minimum} from './limits';
-import {toProperCase} from '../../utils/stringUtils';
-import ErrorMessageHandler from '../handlers/errorMessageHandler';
-import CRITERIA from '../constants/criteria';
-class Schema extends Metadata {
-    constructor({name, type, value, ...constraints}) {
-        super({name, type, value});
+import {Restrictions} from '../../../validation/validation';
+import {Maximum, Minimum} from '../../../validation/models/limits';
+import {toProperCase} from '../../../utils/stringUtils';
+import ErrorMessageHandler from '../../../validation/handlers/errorMessageHandler';
+import CRITERIA from '../../../validation/constants/criteria';
+export class Schema extends Metadata {
+    constructor({name, type, ...constraints}) {
+        super(name, type);
         this.required = constraints.hasOwnProperty(CONSTRAINTS.REQUIRED) && constraints[CONSTRAINTS.REQUIRED] === true;
         this.restrict = constraints.hasOwnProperty(CONSTRAINTS.RESTRICT) ? constraints[CONSTRAINTS.RESTRICT] : null;
         this.maximum = constraints.hasOwnProperty(CONSTRAINTS.MAXIMUM) ? constraints[CONSTRAINTS.MAXIMUM] : null;
@@ -47,30 +47,6 @@ class Schema extends Metadata {
     }
     isInvalid(value) {
         return this.isInvalidRequired(value) ||
-            this.isInvalidRestriction(value) ||
-            this.isInvalidMaximum(value) ||
-            this.isInvalidMinimum(value);
-    }
-}
-export class Validator extends Schema {
-    constructor(schema){
-        super(schema);
-    }
-    isInvalid(value) {
-        const isInvalidRequired = this.isInvalidRequired(value);
-        const isInvalidRestriction = this.isInvalidRestriction(value);
-        const isInvalidMaximum = this.isInvalidMaximum(value);
-        const isInvalidMinimum = this.isInvalidMinimum(value);
-        return isInvalidRequired || isInvalidRestriction || isInvalidMaximum || isInvalidMinimum;
-    }
-}
-export class OptimizedValidator extends Schema {
-    constructor(schema){
-        super(schema);
-    }
-    isInvalid(value) {
-        return this.hasFalseyValue(value) && !this.required ? false :
-            this.isInvalidRequired(value) ||
             this.isInvalidRestriction(value) ||
             this.isInvalidMaximum(value) ||
             this.isInvalidMinimum(value);

@@ -1,8 +1,8 @@
-import React from '../utils/react';
+import React from '../../utils/react';
 import {AutoComplete, MenuItem} from 'material-ui';
-import debounce from '../utils/debounce';
-import {camelCaseToProperCase} from '../utils/stringUtils';
-class Typeahead extends React.PureComponent {
+import debounce from '../../utils/debounce';
+import {camelCaseToProperCase} from '../../utils/stringUtils';
+class _AutoComplete extends React.PureComponent {
     constructor(props) {
         super(props);
         this.onUpdateInput = this.onUpdateInput.bind(this);
@@ -39,13 +39,12 @@ class Typeahead extends React.PureComponent {
                               maxSearchResults={5}
                               dataSource={mappedDataSource}
                               onUpdateInput={this.onUpdateInput}
-                              filter={({searchText, key}) => true}
-                />
+                              filter={({searchText, key}) => true}/>
             </div>
         );
     }
 }
-Typeahead.propTypes = {
+_AutoComplete.propTypes = {
     name: React.PropTypes.string.isRequired,
     promise: React.PropTypes.func.isRequired,
     dataSource: React.PropTypes.array.isRequired,
@@ -54,8 +53,8 @@ Typeahead.propTypes = {
     searchText: React.PropTypes.string,
     debounce: React.PropTypes.number
 };
-Typeahead.defaultProps = {
+_AutoComplete.defaultProps = {
     debounce: 0,
     searchText: ''
 };
-export default Typeahead;
+export default _AutoComplete;

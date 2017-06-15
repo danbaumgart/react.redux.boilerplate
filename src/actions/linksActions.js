@@ -1,4 +1,4 @@
-import ACTIONS from './types/linksActions';
+import ACTIONS from './types/links';
 import Timestamp from '../api/timestampApi';
 
 export function loadUserLinks(links){

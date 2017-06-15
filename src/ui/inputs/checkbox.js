@@ -10,7 +10,7 @@ class CheckboxInput extends React.PureComponent {
         this.props.onChange(value);
     }
 	render() {
-        const {name, label: _label, value, onChange} = this.props;
+        const {name, label: _label, value} = this.props;
         const label = _label || camelCaseToProperCase(name);
 		return (<Checkbox name={name}
                           checked={value}

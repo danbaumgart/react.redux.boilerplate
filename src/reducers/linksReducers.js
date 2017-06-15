@@ -1,4 +1,4 @@
-import ACTIONS from '../actions/types/linksActions';
+import ACTIONS from '../actions/types/links';
 import initialState from './initialState';
 
 export default function ajaxStatusReducer(state = initialState.links, action) {

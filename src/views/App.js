@@ -10,9 +10,9 @@ import NavbarDropdown from '../ui/NavbarDropdown';
 import SnackbarManager from '../ui/SnackbarManager';
 import {TitleHandler} from '../routes';
 import {GREEN_YELLOW} from '../utils/constants/colors';
-import {loadStates} from '../actions/statesActionCreators';
-import {loadCountries} from '../actions/countriesActionCreators';
-import {loadConfirmations} from '../actions/confirmationsActionCreators';
+import {loadStates} from '../actions/creators/states';
+import {loadCountries} from '../actions/creators/countries';
+import {loadConfirmations} from '../actions/creators/confirmations';
 
 const changeRoute = (event) => {
     browserHistory.push(event);
@@ -42,13 +42,13 @@ class App extends React.PureComponent {
             changeRoute('/');
         };
         const style = {
-            container: {backgroundColor: "rgb(215, 215, 215)"},
+            container: {backgroundColor: "rgb(235, 235, 235)"},
             appBar: {position: "fixed", top: "0px"},
             appBarTitle: {cursor: "pointer"},
-            paper: {paddingBottom: "20px", marginTop: "64px", display: "inline-block", width: "100%"}
+            paper: {backgroundColor: "rgb(215, 215, 215)", top: "64px", position: "absolute", bottom: "5px", display: "inline-block", width: "100%"}
         };
         return (
-            <div style={style.container}>
+            <div>
                 <AppBar title={<span style={style.appBarTitle}>{this.props.title}</span>}
                         onTitleTouchTap={goHome}
                         iconElementRight={<NavbarDropdown links={this.props.userLinks}

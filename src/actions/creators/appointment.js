@@ -1,5 +1,5 @@
-import ACTIONS from './types/appointmentActions';
-import {DateTime} from '../utils/model/dateTimeModel';
+import ACTIONS from '../types/appointments';
+import {DateTime} from '../../utils/model/dateTimeModel';
 function _updateAppointmentDate(date){
     return {type: ACTIONS.UPDATE_APPOINTMENT_DATE, payload: date};
 }

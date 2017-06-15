@@ -1,4 +1,4 @@
-import {Validator, OptimizedValidator} from '../../../validation/models/schema';
+import {Validator, OptimizedValidator} from './model/validator';
 export default {
     toValidationSchema(schema) {
         return Object.keys(schema).map(field => ({[field]: schema[field].criteria}));
