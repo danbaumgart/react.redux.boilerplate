@@ -1,6 +1,6 @@
 import React from '../../utils/react';
 import INSTITUTION from './constants/institution';
-import INPUT from '../../ui/constants/inputTypes';
+import INPUT from '../../ui/constants/inputs';
 import FormGroup from '../../ui/formGroup';
 import {DatePicker, TextField, TimePicker, Checkbox, RadioButton, RadioButtonGroup} from 'material-ui';
 const LocationForm = ({institution, name, address, city, state, zip, details, updateField, updateDate, updateTime, textFieldStyle}) => {

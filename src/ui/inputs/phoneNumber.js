@@ -1,6 +1,6 @@
 import React from '../../utils/react';
 import MaskedField from './maskedField';
-import MASKS from '../constants/inputMasks';
+import MASKS from '../constants/masks';
 class PhoneNumber extends React.PureComponent {
     constructor(props) {
         super(props);

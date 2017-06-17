@@ -1,10 +1,11 @@
 import React from '../../utils/react';
-import {TextField, Paper, MaskedField, PhoneNumber} from '../../ui/inputs';
-import MASKS from '../../ui/constants/inputMasks';
+import {TextField, MaskedField, PhoneNumber} from '../../ui/inputs';
+import Paper from '../../ui/common/paper';
+import MASKS from '../../ui/constants/masks';
 import CONTACT from '../../config/properties/contact';
 const ContactForm = ({firstName, lastName, emailAddress, phoneNumber, extension, errorInfo, actions, children}) => {
     return (
-        <Paper style={{margin: "10px"}}>
+        <Paper zDepth={0}>
             <TextField name={CONTACT.FIRST_NAME}
                        value={firstName}
                        errors={errorInfo[CONTACT.FIRST_NAME]}

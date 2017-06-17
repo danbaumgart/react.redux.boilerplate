@@ -7,7 +7,7 @@ const palette = {
   primary1Color: PURPLE,
   primary2Color: GREEN_YELLOW,
   primary3Color: colors.grey400,
-  accent1Color: colors.deepOrange700,
+  accent1Color: GREEN_YELLOW,
   accent2Color: colors.grey100,
   accent3Color: colors.grey500,
   textColor: colors.darkBlack,

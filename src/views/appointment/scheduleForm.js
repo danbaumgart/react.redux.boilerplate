@@ -1,8 +1,10 @@
 import React from '../../utils/react';
-import {DatePicker, TimePicker, Checkbox, TextArea, Paper} from '../../ui/inputs';
+import {DatePicker, TimePicker, Checkbox, TextArea} from '../../ui/inputs';
+import Paper, {POSITION, DISPLAY} from '../../ui/common/paper';
 import {DateTime, DateModel, TimeModel} from '../../utils/model/dateTimeModel';
 import APPOINTMENT from '../../config/properties/appointment';
-const AppointmentForm = ({date, time, flexible, details, actions}) => (<Paper style={{margin: "10px"}}>
+const AppointmentForm = ({date, time, flexible, details, actions}) => (
+    <Paper>
     <DatePicker name={APPOINTMENT.DATE}
                 value={date}
                 onChange={actions[APPOINTMENT.DATE]}/>

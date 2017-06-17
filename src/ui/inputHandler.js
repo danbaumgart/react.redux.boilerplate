@@ -1,5 +1,5 @@
 import * as Component from './inputs';
-import * as INPUT from './constants/inputTypes';
+import * as INPUT from './constants/inputs';
 export default {
     [INPUT.TIME_PICKER]: Component.TimePicker,
     [INPUT.DATE_PICKER]: Component.DatePicker,

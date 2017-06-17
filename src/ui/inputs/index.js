@@ -6,7 +6,7 @@ import _TextField from './textField';
 import _MaskedField from './maskedField';
 import _PhoneNumber from './phoneNumber';
 import _RaisedButton from '../common/raisedButton';
-import _Paper from '../common/paper';
+import _Paper from '../common/formPaper';
 import _AutoComplete from './autoComplete';
 const FormInputs = {
     TimePicker: _TimePicker,

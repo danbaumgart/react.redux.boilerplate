@@ -1,5 +1,5 @@
 import APPOINTMENT from '../properties/appointment';
-import {TEXT_AREA, CHECKBOX, TIME_PICKER, DATE_PICKER} from '../../ui/constants/inputTypes';
+import {TEXT_AREA, CHECKBOX, TIME_PICKER, DATE_PICKER} from '../../ui/constants/inputs';
 const _LabelHandler = {
     [APPOINTMENT.TIME]: 'Time',
     [APPOINTMENT.DATE]: 'Date',

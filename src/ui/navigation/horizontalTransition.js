@@ -1,7 +1,9 @@
 import React from '../../utils/react';
 import {Step, Stepper, StepButton, StepContent} from 'material-ui/Stepper';
 import StepNavigation from './stepNavigation';
-import {AlertWarning} from 'material-ui/svg-icons'
+import Paper, {DISPLAY, POSITION} from '../common/paper';
+import BottomNavigation from './bottomNavigation';
+import {WarningIcon, ErrorIcon, SuccessIcon, InfoIcon} from '../icons/statusIcons';
 import ExpandTransition from 'material-ui/internal/ExpandTransition';
 class HorizontalTransition extends React.PureComponent {
     constructor(props) {
@@ -9,6 +11,7 @@ class HorizontalTransition extends React.PureComponent {
         this.dummyAsync = this.dummyAsync.bind(this);
         this.handleNext = this.handleNext.bind(this);
         this.handlePrev = this.handlePrev.bind(this);
+        this.getStepButtonProps = this.getStepButtonProps.bind(this);
         this.state = {
             loading: false,
             finished: false,
@@ -53,36 +56,38 @@ class HorizontalTransition extends React.PureComponent {
     hasErrors() {
         return Array.isArray(this.props.stepErrors) && this.props.stepErrors.length > 0;
     }
-
     getStepButtonProps(stepIndex) {
-        const isActive = stepIndex === this.state.stepIndex;
         const onClick = () => this.setState({stepIndex});
-        return isActive && this.hasErrors() ? {onClick, icon: <AlertWarning/>} : {onClick};
+        return stepIndex === this.state.stepIndex && this.hasErrors() ?
+            {onClick, icon: <ErrorIcon/>}  :
+            {onClick};
     }
-
     render() {
         const {loading, stepIndex: _stepIndex} = this.state;
-        const {stepLabels, getStepContent, stepErrors} = this.props;
-        const hasErrors = Array.isArray(stepErrors) && stepErrors.length > 0;
+        const {stepLabels, getStepContent} = this.props;
         const StepHandler = getStepContent(_stepIndex);
-        const contentStyle = {paddingBottom: "50px"};
-        const previousDisabled = _stepIndex === 0;
-        const nextDisabled = stepLabels.length <= _stepIndex + 1;
+        const isInitialStep = _stepIndex === 0;
+        const isFinalStep = stepLabels.length <= _stepIndex + 1;
         return (
-            <div style={{width: '100%', margin: 'auto'}}>
-                <Stepper linear={false}>
-                    {stepLabels.map((stepLabel, stepIndex) =>
-                        <Step {...this.getStepProps(stepIndex)}>
-                            <StepButton {...this.getStepButtonProps(stepIndex)}>{stepLabel}</StepButton>
-                        </Step>)}
-                </Stepper>
-                <ExpandTransition loading={loading} open={true}>
-                    <StepHandler/>
-                </ExpandTransition>
+            <div>
+
+                <Paper span={12} position={POSITION.FIXED} zDepth={2}>
+                    <Stepper linear={false}>
+                        {stepLabels.map((stepLabel, stepIndex) =>
+                            <Step {...this.getStepProps(stepIndex)}>
+                                <StepButton iconContainerStyle={{color: "red"}} {...this.getStepButtonProps(stepIndex)}>{stepLabel}</StepButton>
+                            </Step>)}
+                    </Stepper>
+                </Paper>
+                <Paper top={92} position={POSITION.ABSOLUTE} bottom={72} scroll span={12} >
+                    <ExpandTransition loading={loading} open={true}>
+                        <StepHandler/>
+                    </ExpandTransition>
+                </Paper>
                 <StepNavigation onNextRequested={this.handleNext}
                                 onPreviousRequested={this.handlePrev}
-                                previousDisabled={previousDisabled}
-                                nextDisabled={nextDisabled}/>
+                                previousDisabled={isInitialStep}
+                                nextDisabled={isFinalStep} />
             </div>
         );
     }
