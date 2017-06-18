@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Boilerplate initially created with pluralsight React Redux with ES6 tutorial by Cory House",
   "scripts": {
-    "prestart": "babel-node tools/startMessage.js",
     "start": "npm-run-all --parallel open:src lint:watch test:watch",
     "open:src": "babel-node tools/srcServer.js",
     "lint": "node_modules/.bin/esw webpack.config.* src tools",
