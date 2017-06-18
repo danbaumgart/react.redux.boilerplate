@@ -1,9 +1,7 @@
 import React, {PropTypes} from 'react';
 import InputField from '../../ui/InputField';
 import SubmitButton from '../../ui/common/SubmitButton';
-import CheckboxInput from '../../ui/CheckboxInput';
-import Checkbox from 'material-ui/Checkbox';
-import {toastError, toastSuccess} from '../../actions/alertsActions';
+import {Checkbox} from '../../ui/inputs';
 
 const LoginForm = ({user, update, save, errors, saving}) => {
   console.log(user.rememberMe);

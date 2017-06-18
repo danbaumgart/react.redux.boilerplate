@@ -8,7 +8,7 @@ import ErrorMessageHandler from '../../../validation/handlers/errorMessageHandle
 import CRITERIA from '../../../validation/constants/criteria';
 class Schema extends Metadata {
     constructor({name, type, ...constraints}) {
-        super({name, type});
+        super(name, type);
         this.required = constraints.hasOwnProperty(CONSTRAINTS.REQUIRED) && constraints[CONSTRAINTS.REQUIRED] === true;
         this.restrict = constraints.hasOwnProperty(CONSTRAINTS.RESTRICT) ? constraints[CONSTRAINTS.RESTRICT] : null;
         this.maximum = constraints.hasOwnProperty(CONSTRAINTS.MAXIMUM) ? constraints[CONSTRAINTS.MAXIMUM] : null;

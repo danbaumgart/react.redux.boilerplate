@@ -2,7 +2,6 @@ import React from '../../utils/react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import ContactForm from './contactForm';
-import {RaisedButton} from '../../ui/inputs';
 import CONTACT from '../../config/properties/contact';
 import * as actions from '../../actions/creators/contact';
 import {toastError, toastSuccess} from '../../actions/alertsActions';
@@ -22,6 +21,7 @@ class ContactPage extends React.PureComponent {
     render() {
         const {actions, ...fields} = this.props;
         const errorInfo = SchemaMapper.toErrorInfoModel(ContactSchema, fields);
+        console.log("ERROR INFO", errorInfo);
         const {firstName, lastName, emailAddress, phoneNumber, extension} = fields;
         const props = {errorInfo, firstName, lastName, emailAddress, phoneNumber, extension, actions};
         return <ContactForm {...props} />;

@@ -15,6 +15,7 @@ export default {
     toErrorInfoModel(schema, fields) {
         const schemaModelList = this.toSchemaModelList(schema);
         const schemaModel = this.toSchemaModel(schemaModelList);
+        console.log("SCHEMA MODEL", schemaModelList);
         const errors = Object.keys(fields).map(field => ({
             [field]: schemaModel[field] && schemaModel[field].isInvalid(fields[field]) ? schemaModel[field].errors : []
         }));

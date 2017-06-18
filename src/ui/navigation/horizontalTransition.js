@@ -2,7 +2,6 @@ import React from '../../utils/react';
 import {Step, Stepper, StepButton, StepContent} from 'material-ui/Stepper';
 import StepNavigation from './stepNavigation';
 import Paper, {DISPLAY, POSITION} from '../common/paper';
-import BottomNavigation from './bottomNavigation';
 import {WarningIcon, ErrorIcon, SuccessIcon, InfoIcon} from '../icons/statusIcons';
 import ExpandTransition from 'material-ui/internal/ExpandTransition';
 class HorizontalTransition extends React.PureComponent {

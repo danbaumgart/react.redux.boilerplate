@@ -1,9 +1,9 @@
-import React from '../../utils/react';
-import MASKS from '../constants/masks';
+import React from '../../../utils/react';
+import MASKS from '../../constants/masks';
 import VMasker from 'vanilla-masker';
-import StaticError from '../common/staticError';
+import StaticError from '../../common/staticError';
 import {TextField} from 'material-ui';
-import {camelCaseToProperCase} from '../../utils/stringUtils';
+import {camelCaseToProperCase} from '../../../utils/stringUtils';
 class MaskedField extends React.PureComponent {
     constructor(props) {
         super(props);

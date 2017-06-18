@@ -1,13 +1,13 @@
-import React from '../../utils/react';
+import React from '../../../utils/react';
 import MaskedField from './maskedField';
-import MASKS from '../constants/masks';
+import MASKS from '../../constants/masks';
 class PhoneNumber extends React.PureComponent {
     constructor(props) {
         super(props);
     }
     render() {
-        const props = this.props;
-        return (<MaskedField mask={MASKS.PHONE_NUMBER} {...props}/>);
+        const props = Object.assign({mask: MASKS.PHONE_NUMBER}, this.props);
+        return (<MaskedField {...props}/>);
     }
 }
 PhoneNumber.propTypes = {

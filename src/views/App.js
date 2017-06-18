@@ -3,13 +3,11 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {closeNavbar, toggleNavbar} from '../actions/navbarActions';
 import AppBar from 'material-ui/AppBar';
-import Drawer from '../ui/Drawer';
+import Drawer from '../ui/navigation/drawer';
 import {browserHistory} from 'react-router';
-//import Paper from 'material-ui/Paper';
 import NavbarDropdown from '../ui/NavbarDropdown';
 import SnackbarManager from '../ui/SnackbarManager';
 import {TitleHandler} from '../routes';
-import {GREEN_YELLOW} from '../utils/constants/colors';
 import {loadStates} from '../actions/creators/states';
 import {loadCountries} from '../actions/creators/countries';
 import {loadConfirmations} from '../actions/creators/confirmations';
@@ -21,9 +19,6 @@ class App extends React.PureComponent {
         super(props, context);
         this.closeNavbar = this.closeNavbar.bind(this);
         this.toggleNavbar = this.toggleNavbar.bind(this);
-    }
-    componentWillMount() {
-
     }
     toggleNavbar() {
         this.props.actions.toggleNavbar();

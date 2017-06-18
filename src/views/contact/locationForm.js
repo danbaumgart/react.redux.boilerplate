@@ -10,7 +10,7 @@ const LocationForm = ({institution, name, address, city, state, zip, details, up
             type: INPUT.TEXT_FIELD,
             placeholder: null
         }
-    ]
+    ];
     return (<FormGroup>
         <TextField name="streetAddress"
                    defaultValue=""
