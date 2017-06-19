@@ -30,7 +30,7 @@ class TimePickerTool extends React.PureComponent {
         };
         if (Array.isArray(errors) && errors.length > 0)
             Object.assign(props, {errorText: <StaticError errors={errors}/>});
-        if (props.value) Object.assign(props, {defaultTime: props.value});
+        if (_value) Object.assign(props, {defaultTime: props.value});
         return <TimePicker {...props} />;
 	}
 }

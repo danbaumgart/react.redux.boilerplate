@@ -6,6 +6,8 @@ import {Provider} from 'react-redux';
 import {Router, browserHistory} from 'react-router';
 import routes from './routes';
 import {getHomeLinks, getUserLinks} from './actions/linksActions';
+import {loadStates} from './actions/creators/states';
+import {loadCountries} from './actions/creators/countries';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/toastr/build/toastr.min.css';
 import './styles/styles.css';
@@ -49,7 +51,8 @@ function runReducerExample() {
 runReducerExample();
 Promise.all([
     store.dispatch(getHomeLinks()),
-    store.dispatch(getUserLinks())
+    store.dispatch(getUserLinks()),
+    store.dispatch(loadStates()),
 ]);
 render(
     <Provider store={store}>

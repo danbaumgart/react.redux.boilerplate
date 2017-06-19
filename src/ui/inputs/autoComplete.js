@@ -1,5 +1,6 @@
 import React from '../../utils/react';
-import {AutoComplete, MenuItem} from 'material-ui';
+import AutoComplete from 'material-ui/AutoComplete';
+import MenuItem from 'material-ui/MenuItem';
 import debounce from '../../utils/debounce';
 import {camelCaseToProperCase} from '../../utils/stringUtils';
 class _AutoComplete extends React.PureComponent {
@@ -10,7 +11,7 @@ class _AutoComplete extends React.PureComponent {
     }
 
     onUpdateInput(searchText) {
-        this.props.onUpdateInput(searchText);
+        this.props.onUpdateInput(this.props.name, searchText);
         this.performSearch(searchText);
     }
 
@@ -39,7 +40,7 @@ class _AutoComplete extends React.PureComponent {
                               maxSearchResults={5}
                               dataSource={mappedDataSource}
                               onUpdateInput={this.onUpdateInput}
-                              filter={({searchText, key}) => true}/>
+                              filter={AutoComplete.caseInsensitiveFilter}/>
             </div>
         );
     }

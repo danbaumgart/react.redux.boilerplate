@@ -19,17 +19,12 @@ const reducer = combineReducers({
     errorInfo,
     appointment,
     contact,
-    email,
-    phone,
     universities,
     location,
-    confirmations,
     states,
     countries,
     ajaxCallsInProgress,
     navbarCollapsed,
-    registration,
-    login,
     links,
     alerts
 });

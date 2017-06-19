@@ -17,16 +17,16 @@ class ContactPage extends React.PureComponent {
         const errorInfo = SchemaMapper.toFormErrors(form, ContactSchema);
         this.props.actions.updateContactErrorInfo(errorInfo);
     }
+    onChange(name, value) {
+        const errorInfo = SchemaMapper.toFieldErrors(name, value, ContactSchema[name]);
+        this.props.actions[name](value);
+        this.props.actions.updateContactErrorInfo(errorInfo);
+    }
     saveContact(){
         const {actions, errorInfo, ...contact} = this.props;
         actions.saveContact(contact)
             .then(result => actions.toastSuccess({contact: ["SUCCESS"]}))
             .catch(err => actions.toastError({contact: [err.status.type]}));
-    }
-    onChange(name, value) {
-        const errorInfo = SchemaMapper.toFieldErrors(name, value, ContactSchema[name]);
-        this.props.actions[name](value);
-        this.props.actions.updateContactErrorInfo(errorInfo);
     }
     render() {
         const {firstName, lastName, emailAddress, phoneNumber, extension, errorInfo} = this.props;

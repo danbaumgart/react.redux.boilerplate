@@ -5,7 +5,7 @@ import _Checkbox from './checkbox';
 import _TextField from './textField';
 import _MaskedField from './masks/maskedField';
 import _PhoneNumber from './masks/phoneNumber';
-import _SelectField from 'material-ui/SelectField';
+import _SelectField from './selectField';
 import _Paper from '../common/formPaper';
 import _AutoComplete from './autoComplete';
 const FormInputs = {

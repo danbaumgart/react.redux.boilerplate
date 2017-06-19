@@ -1,7 +1,7 @@
 import React from '../../utils/react';
 import {connect} from 'react-redux';
 import INSTITUTION from '../appointment/constants/institution';
-import {AutoComplete, Paper, TextField, Checkbox} from '../../ui/inputs';
+import {AutoComplete, Paper, TextField, Checkbox, SelectField} from '../../ui/inputs';
 import LOCATION from '../../config/properties/location';
 import {bindActionCreators} from 'redux';
 import {camelCaseToProperCase} from '../../utils/stringUtils';
@@ -12,57 +12,65 @@ class LocationForm extends React.PureComponent {
     }
 
     render() {
-        console.log("RENDERING LOCATION FORM PROPS", this.props);
-        const {institution, name, street, city, state, zip, universities, onUpdate, actions} = this.props;
+        const {institution, name, street, city, state, zip, universities, states, onChange, actions, onUpdateLocation, errorInfo} = this.props;
         return (
             <Paper>
                 <Checkbox name={LOCATION.INSTITUTION}
                           label="University"
                           value={institution === INSTITUTION.UNIVERSITY}
-                          onChange={onUpdate[LOCATION.INSTITUTION]}/>
+                          onChange={onChange}/>
                 {institution === INSTITUTION.UNIVERSITY ?
-                    <AutoComplete name="universitySearch"
+                    <AutoComplete name={LOCATION.NAME}
                                   promise={actions.searchUniversities}
-                                  onSelect={onUpdate.updateLocation}
+                                  onSelect={onUpdateLocation}
                                   searchText={name}
-                                  onUpdateInput={onUpdate[LOCATION.NAME]}
+                                  errors={errorInfo && errorInfo[LOCATION.NAME]}
+                                  onUpdateInput={onChange}
                                   dataSource={universities}
                                   debounce={200}/> :
                     <TextField name={LOCATION.NAME}
                                label={camelCaseToProperCase(LOCATION.NAME)}
                                value={name}
-                               onChange={onUpdate[LOCATION.NAME]}/>
+                               errors={errorInfo && errorInfo[LOCATION.NAME]}
+                               onChange={onChange}/>
                 }
                 <TextField name={LOCATION.STREET}
                            label={camelCaseToProperCase(LOCATION.STREET)}
                            value={street}
-                           onChange={onUpdate[LOCATION.STREET]}/>
+                           errors={errorInfo && errorInfo[LOCATION.STREET]}
+                           onChange={onChange}/>
                 <TextField name={LOCATION.CITY}
                            label={camelCaseToProperCase(LOCATION.CITY)}
                            value={city}
-                           onChange={onUpdate[LOCATION.CITY]}/>
-                <TextField name={LOCATION.STATE}
-                           label={camelCaseToProperCase(LOCATION.STATE)}
-                           value={state}
-                           onChange={onUpdate[LOCATION.STATE]}/>
+                           errors={errorInfo && errorInfo[LOCATION.CITY]}
+                           onChange={onChange}/>
+                <SelectField name={LOCATION.STATE}
+                             label={camelCaseToProperCase(LOCATION.STATE)}
+                             value={state}
+                             errors={errorInfo && errorInfo[LOCATION.STATE]}
+                             dataSource={states}
+                             onChange={onChange}/>
                 <TextField name={LOCATION.ZIP}
                            label={camelCaseToProperCase(LOCATION.ZIP)}
                            value={zip}
-                           onChange={onUpdate[LOCATION.ZIP]}/>
+                           errors={errorInfo && errorInfo[LOCATION.ZIP]}
+                           onChange={onChange}/>
             </Paper>);
     }
 }
 
 LocationForm.propTypes = {
-    onUpdate: React.PropTypes.object.isRequired,
-    actions: React.PropTypes.object.isRequired,
+    onChange: React.PropTypes.func.isRequired,
+    onUpdateLocation: React.PropTypes.func.isRequired,
+    states: React.PropTypes.arrayOf(React.PropTypes.object),
     institution: React.PropTypes.oneOf([INSTITUTION.HIGH_SCHOOL, INSTITUTION.UNIVERSITY, INSTITUTION.OTHER]),
     name: React.PropTypes.string,
     street: React.PropTypes.string,
     city: React.PropTypes.string,
     state: React.PropTypes.string,
     postalCode: React.PropTypes.string,
-    universities: React.PropTypes.arrayOf(React.PropTypes.object)
+    universities: React.PropTypes.arrayOf(React.PropTypes.object),
+    errorInfo: React.PropTypes.object,
 };
 LocationForm.defaultProps = {
     institution: INSTITUTION.OTHER,
@@ -72,12 +80,13 @@ LocationForm.defaultProps = {
     state: '',
     zip: '',
     details: '',
-    universities: []
+    universities: [],
+    errorInfo: null
 };
 function mapStateToProps(state, ownProps) {
-    const {universities: _universities} = state;
+    const {universities: _universities, states} = state;
     const universities = Array.isArray(_universities) && _universities.length > 0 ? _universities.slice() : [];
-    return {universities};
+    return {universities, states};
 }
 function mapDispatchToProps(dispatch) {
     return {actions: bindActionCreators({searchUniversities}, dispatch)};

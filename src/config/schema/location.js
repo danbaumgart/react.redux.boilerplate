@@ -2,6 +2,9 @@ import LOCATION from '../properties/location';
 import SCHEMA from '../properties/schema';
 import INPUTS from '../../ui/constants/inputs';
 export default {
+    [LOCATION.INSTITUTION]: {
+        [SCHEMA.INPUT]: INPUTS.CHECKBOX
+    },
     [LOCATION.NAME]: {
         [SCHEMA.INPUT]: INPUTS.TEXT_FIELD,
         [SCHEMA.REQUIRED]: true,
