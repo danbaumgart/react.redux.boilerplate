@@ -11,10 +11,11 @@ class MaskedField extends React.PureComponent {
         this.state = {value};
     }
     onChange(mask, event) {
-        const value = VMasker.toPattern(event.target.value, mask);
+        const {value: _value} = event.target;
+        const value = VMasker.toPattern(_value, mask);
         this.setState({value});
-        if (this.props.onChange)
-            this.props.onChange(value, event);
+        if(this.props.onChange)
+            this.props.onChange(this.props.name, value, event);
     }
     render() {
         const {mask, label, errors, ...other} = this.props;

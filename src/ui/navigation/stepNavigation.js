@@ -1,5 +1,5 @@
 import React from '../../utils/react';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
+import {RaisedButton as FloatingActionButton} from 'material-ui';
 import {ImageNavigateBefore, ImageNavigateNext} from 'material-ui/svg-icons'
 import {GREEN_YELLOW, PURPLE} from '../../utils/constants/colors';
 import Paper from 'material-ui/Paper';

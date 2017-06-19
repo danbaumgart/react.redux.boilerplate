@@ -1,13 +1,14 @@
 import CONDITIONS from '../constants/conditions';
 import {patternMatches} from '../../utils/stringUtils';
+import {DateTime} from '../../utils/model/dateTimeModel';
 import EXPRESSIONS from '../constants/expressions';
 export default {
     [CONDITIONS.REQUIRED]: (input) => input && input !== '',
     [CONDITIONS.EMAIL]: (input) => EXPRESSIONS[CONDITIONS.EMAIL].test(input),
     [CONDITIONS.NUMBER]: (input) => !Number.isNaN(Number(input)),
     [CONDITIONS.INTEGER]: (input) => input % 1 === 0,
-    [CONDITIONS.DATE]: (input) => EXPRESSIONS[CONDITIONS.DATE].test(input),
-    [CONDITIONS.TIME]: (input) => EXPRESSIONS[CONDITIONS.TIME].test(input),
+    [CONDITIONS.DATE]: (input) => DateTime.isDateModel(input) || DateTime.isStandardDate(input) || EXPRESSIONS[CONDITIONS.DATE].test(input),
+    [CONDITIONS.TIME]: (input) => DateTime.isTimeModel(input) || DateTime.isStandardDate(input) || EXPRESSIONS[CONDITIONS.TIME].test(input),
     [CONDITIONS.ALPHA]: (input) => EXPRESSIONS[CONDITIONS.ALPHA].test(input),
     [CONDITIONS.NUMERIC]: (input) => EXPRESSIONS[CONDITIONS.NUMERIC].test(input),
     [CONDITIONS.SPECIAL]: (input) => EXPRESSIONS[CONDITIONS.SPECIAL].test(input),

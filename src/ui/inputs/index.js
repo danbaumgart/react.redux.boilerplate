@@ -5,7 +5,7 @@ import _Checkbox from './checkbox';
 import _TextField from './textField';
 import _MaskedField from './masks/maskedField';
 import _PhoneNumber from './masks/phoneNumber';
-import _RaisedButton from '../common/raisedButton';
+import _SelectField from 'material-ui/SelectField';
 import _Paper from '../common/formPaper';
 import _AutoComplete from './autoComplete';
 const FormInputs = {
@@ -17,8 +17,8 @@ const FormInputs = {
     PhoneNumber: _PhoneNumber,
     Paper: _Paper,
     TextArea: _TextArea,
-    RaisedButton: _RaisedButton,
-    AutoComplete: _AutoComplete
+    AutoComplete: _AutoComplete,
+    SelectField: _SelectField
 };
 export const {
     TimePicker,
@@ -29,6 +29,6 @@ export const {
     TextArea,
     MaskedField,
     PhoneNumber,
-    RaisedButton,
-    AutoComplete
+    AutoComplete,
+    SelectField
 } = FormInputs;

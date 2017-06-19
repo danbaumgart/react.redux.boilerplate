@@ -15,6 +15,7 @@ class HorizontalTransition extends React.PureComponent {
             loading: false,
             finished: false,
             stepIndex: 0,
+            dirty: [false]
         }
     };
 
@@ -25,10 +26,13 @@ class HorizontalTransition extends React.PureComponent {
     }
 
     handleNext() {
-        const {stepIndex} = this.state;
+        const {dirty: _dirty, stepIndex} = this.state;
+        const dirty = _dirty.slice();
+        dirty[stepIndex] = true;
         if (!this.state.loading) {
             this.dummyAsync(() => this.setState({
                 loading: false,
+                dirty,
                 stepIndex: stepIndex + 1,
                 finished: stepIndex >= this.props.stepLabels.length,
             }));
@@ -52,19 +56,23 @@ class HorizontalTransition extends React.PureComponent {
         };
     }
 
-    hasErrors() {
-        return Array.isArray(this.props.stepErrors) && this.props.stepErrors.length > 0;
+    hasErrors(stepIndex) {
+        return Array.isArray(this.props.stepErrors) && this.props.stepErrors[stepIndex] === true;
     }
     getStepButtonProps(stepIndex) {
-        const onClick = () => this.setState({stepIndex});
-        return stepIndex === this.state.stepIndex && this.hasErrors() ?
-            {onClick, icon: <ErrorIcon/>}  :
-            {onClick};
+        const dirty = this.state.dirty.slice();
+        dirty[this.state.stepIndex] = true;
+        const onClick = () => this.setState({stepIndex, dirty});
+        return this.hasErrors(stepIndex) ?
+            {onClick, icon: this.props.submitted ? <ErrorIcon/> : <WarningIcon/>}  :
+            this.state.dirty[stepIndex] === true ?
+                {onClick, icon: <SuccessIcon/>} :
+                {onClick};
     }
     render() {
         const {loading, stepIndex: _stepIndex} = this.state;
-        const {stepLabels, getStepContent} = this.props;
-        const StepHandler = getStepContent(_stepIndex);
+        const {stepLabels, stepViews} = this.props;
+        const StepHandler = stepViews[_stepIndex];
         const isInitialStep = _stepIndex === 0;
         const isFinalStep = stepLabels.length <= _stepIndex + 1;
         return (
@@ -80,7 +88,7 @@ class HorizontalTransition extends React.PureComponent {
                 </Paper>
                 <Paper top={92} position={POSITION.ABSOLUTE} bottom={72} scroll span={12} >
                     <ExpandTransition loading={loading} open={true}>
-                        <StepHandler/>
+                        <StepHandler />
                     </ExpandTransition>
                 </Paper>
                 <StepNavigation onNextRequested={this.handleNext}
@@ -93,10 +101,12 @@ class HorizontalTransition extends React.PureComponent {
 }
 HorizontalTransition.propTypes = {
     stepLabels: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
-    getStepContent: React.PropTypes.func.isRequired,
-    stepErrors: React.PropTypes.arrayOf(React.PropTypes.string)
+    stepViews: React.PropTypes.array.isRequired,
+    stepErrors: React.PropTypes.arrayOf(React.PropTypes.bool),
+    submitted: React.PropTypes.bool
 };
 HorizontalTransition.defaultProps = {
-    getStepErrors: []
+    stepErrors: null,
+    submitted: false
 };
 export default HorizontalTransition;

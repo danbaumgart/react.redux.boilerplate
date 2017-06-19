@@ -13,6 +13,8 @@ export default function contact(state = initialState.contact, action) {
             return Object.assign({}, state, {phoneNumber: action.payload});
         case ACTIONS.UPDATE_CONTACT_EXTENSION:
             return Object.assign({}, state, {extension: action.payload});
+        case ACTIONS.UPDATE_CONTACT_ERROR_INFO:
+            return Object.assign({}, state, {errorInfo: Object.assign({}, state.errorInfo, action.payload)})
         case ACTIONS.SAVE_CONTACT:
             return Object.assign({}, state, action.payload);
         default: return state;

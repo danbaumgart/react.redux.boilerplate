@@ -7,7 +7,7 @@ class TextArea extends React.PureComponent {
         this.onUpdateText = this.onUpdateText.bind(this);
     }
     onUpdateText({target:{value}}){
-        this.props.onChange(value);
+        this.props.onChange(this.props.name, value);
     }
 	render() {
 	    const {name, label, value} = this.props;

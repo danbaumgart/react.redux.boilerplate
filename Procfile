@@ -1,1 +1,1 @@
-web: node tools/srcServer.js
+web: ./node_modules/.bin/babel-node tools/srcServer.js

@@ -3,35 +3,36 @@ import {TextField, MaskedField, PhoneNumber} from '../../ui/inputs';
 import Paper from '../../ui/common/paper';
 import MASKS from '../../ui/constants/masks';
 import CONTACT from '../../config/properties/contact';
-const ContactForm = ({firstName, lastName, emailAddress, phoneNumber, extension, errorInfo, actions, children}) => {
+const ContactForm = ({firstName, lastName, emailAddress, phoneNumber, extension, errorInfo, onChange, children}) => {
     return (
         <Paper zDepth={0}>
             <TextField name={CONTACT.FIRST_NAME}
                        value={firstName}
-                       errors={errorInfo[CONTACT.FIRST_NAME]}
-                       onChange={actions[CONTACT.FIRST_NAME]}/>
+                       errors={errorInfo && errorInfo[CONTACT.FIRST_NAME]}
+                       onChange={onChange}/>
             <TextField name={CONTACT.LAST_NAME}
                        value={lastName}
-                       errors={errorInfo[CONTACT.LAST_NAME]}
-                       onChange={actions[CONTACT.LAST_NAME]}/>
+                       errors={errorInfo && errorInfo[CONTACT.LAST_NAME]}
+                       onChange={onChange}/>
             <TextField name={CONTACT.EMAIL_ADDRESS}
                        value={emailAddress}
-                       errors={errorInfo[CONTACT.EMAIL_ADDRESS]}
-                       onChange={actions[CONTACT.EMAIL_ADDRESS]}/>
+                       errors={errorInfo && errorInfo[CONTACT.EMAIL_ADDRESS]}
+                       onChange={onChange}/>
             <PhoneNumber name={CONTACT.PHONE_NUMBER}
                          value={phoneNumber}
-                         errors={errorInfo[CONTACT.PHONE_NUMBER]}
-                         onChange={actions[CONTACT.PHONE_NUMBER]}/>
+                         errors={errorInfo && errorInfo[CONTACT.PHONE_NUMBER]}
+                         onChange={onChange}/>
             <MaskedField name={CONTACT.EXTENSION}
                          value={extension}
-                         onChange={actions[CONTACT.EXTENSION]}
+                         onChange={onChange}
+                         errors={errorInfo && errorInfo[CONTACT.EXTENSION]}
                          mask={MASKS.EXTENSION}/>
             {children}
         </Paper>);
 };
 
 ContactForm.propTypes = {
-    actions: React.PropTypes.object.isRequired,
+    onChange: React.PropTypes.func.isRequired,
     firstName: React.PropTypes.string,
     lastName: React.PropTypes.string,
     emailAddress: React.PropTypes.string,

@@ -17,6 +17,9 @@ function _updateContactPhoneNumber(phoneNumber){
 function _updateContactExtension(extension){
     return {type: ACTIONS.UPDATE_CONTACT_EXTENSION, payload: extension};
 }
+function _updateContactErrorInfo(errorInfo){
+    return {type: ACTIONS.UPDATE_CONTACT_ERROR_INFO, payload: errorInfo};
+}
 function _saveContact(contact){
     return {type: ACTIONS.SAVE_CONTACT, payload: contact};
 }
@@ -30,11 +33,14 @@ export const updateContactEmailAddress = emailAddress => function(dispatch){
     dispatch(_updateContactEmailAddress(emailAddress));
 };
 export const updateContactPhoneNumber = phoneNumber => function(dispatch){
-    const unmaskedPhoneInput = phoneNumber.replace(PatternHandler[TELEPHONE_MASK], '');
-    dispatch(_updateContactPhoneNumber(unmaskedPhoneInput));
+    //const unmaskedPhoneInput = phoneNumber.replace(PatternHandler[TELEPHONE_MASK], '');
+    dispatch(_updateContactPhoneNumber(phoneNumber));
 };
 export const updateContactExtension = extension => function(dispatch){
     dispatch(_updateContactExtension(extension));
+};
+export const updateContactErrorInfo = errorInfo => function(dispatch){
+    dispatch(_updateContactErrorInfo(errorInfo));
 };
 export const saveContact = contact => function(dispatch){
     return Contacts.Post(contact)

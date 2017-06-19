@@ -1,12 +1,12 @@
 import CRITERIA from './constants/criteria';
 import ValidationMapper from '../regexp/mappers/validationCallbackMappers';
-
+import ValidationHandler from '../validation/handlers/validationHandler';
 export const Restrictions = {
     [CRITERIA.INTEGER]: ValidationMapper.toIntegerValidator(),
     [CRITERIA.NUMBER]: ValidationMapper.toNumberValidator(),
     [CRITERIA.EMAIL]: ValidationMapper.toFormattingValidator(CRITERIA.EMAIL),
-    [CRITERIA.DATE]: ValidationMapper.toFormattingValidator(CRITERIA.DATE),
-    [CRITERIA.TIME]: ValidationMapper.toFormattingValidator(CRITERIA.TIME),
+    [CRITERIA.DATE]: ValidationHandler[CRITERIA.DATE],
+    [CRITERIA.TIME]: ValidationHandler[CRITERIA.TIME],
     [CRITERIA.ALPHA]: ValidationMapper.toPatternValidator(CRITERIA.ALPHA),
     [CRITERIA.NUMERIC]: ValidationMapper.toPatternValidator(CRITERIA.NUMERIC),
     [CRITERIA.ALPHANUMERIC]: ValidationMapper.toPatternValidator(CRITERIA.ALPHANUMERIC),

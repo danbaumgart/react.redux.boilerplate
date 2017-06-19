@@ -7,7 +7,7 @@ class CheckboxInput extends React.PureComponent {
         this.onUpdate = this.onUpdate.bind(this);
     }
     onUpdate(event, value){
-        this.props.onChange(value);
+        this.props.onChange(this.props.name, value);
     }
 	render() {
         const {name, label: _label, value} = this.props;

@@ -1,22 +1,23 @@
 import APPOINTMENT from '../properties/appointment';
-import {TEXT_AREA, CHECKBOX, TIME_PICKER, DATE_PICKER} from '../../ui/constants/inputs';
-const _LabelHandler = {
-    [APPOINTMENT.TIME]: 'Time',
-    [APPOINTMENT.DATE]: 'Date',
-    [APPOINTMENT.DETAILS]: 'Details',
-    [APPOINTMENT.FLEXIBLE]: 'Flexible'
-};
-const _TypeHandler = {
-    [APPOINTMENT.TIME]: TIME_PICKER,
-    [APPOINTMENT.DATE]: DATE_PICKER,
-    [APPOINTMENT.DETAILS]: TEXT_AREA,
-    [APPOINTMENT.FLEXIBLE]: CHECKBOX
-};
-export default {...Object.keys(APPOINTMENT)
-    .map(property => ({
-        [property]:{
-            label: _LabelHandler[property],
-            type: _TypeHandler[property]
-        }
-    }))
+import CRITERIA from '../../validation/constants/criteria';
+import SCHEMA from '../properties/schema';
+import INPUTS from '../../ui/constants/inputs';
+export default {
+    [APPOINTMENT.TIME]: {
+        [SCHEMA.INPUT]: INPUTS.TIME_PICKER,
+        [SCHEMA.REQUIRED]: true,
+        [SCHEMA.RESTRICT]: CRITERIA.TIME
+    },
+    [APPOINTMENT.DATE]: {
+        [SCHEMA.INPUT]: INPUTS.DATE_PICKER,
+        [SCHEMA.REQUIRED]: true,
+        [SCHEMA.RESTRICT]: CRITERIA.DATE
+    },
+    [APPOINTMENT.DETAILS]: {
+        [SCHEMA.INPUT]: INPUTS.TEXT_AREA,
+        [SCHEMA.MAXIMUM]: {[CRITERIA.LENGTH]: 25}
+    },
+    [APPOINTMENT.FLEXIBLE]: {
+        [SCHEMA.INPUT]: INPUTS.CHECKBOX
+    }
 };

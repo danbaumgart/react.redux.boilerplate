@@ -1,14 +1,13 @@
 import CONSTRAINTS from '../../../validation/constants/constraints';
-import TYPES from '../../../regexp/constants/metadata';
-import Metadata from './metadata';
+import INPUTS from '../../../ui/constants/inputs';
 import {Restrictions} from '../../../validation/validation';
 import {Maximum, Minimum} from '../../../validation/models/limits';
 import {toProperCase} from '../../../utils/stringUtils';
 import ErrorMessageHandler from '../../../validation/handlers/errorMessageHandler';
 import CRITERIA from '../../../validation/constants/criteria';
-export class Schema extends Metadata {
-    constructor({name, type, ...constraints}) {
-        super(name, type);
+class Schema {
+    constructor({input, ...constraints}) {
+        this.input = input;
         this.required = constraints.hasOwnProperty(CONSTRAINTS.REQUIRED) && constraints[CONSTRAINTS.REQUIRED] === true;
         this.restrict = constraints.hasOwnProperty(CONSTRAINTS.RESTRICT) ? constraints[CONSTRAINTS.RESTRICT] : null;
         this.maximum = constraints.hasOwnProperty(CONSTRAINTS.MAXIMUM) ? constraints[CONSTRAINTS.MAXIMUM] : null;
@@ -16,7 +15,7 @@ export class Schema extends Metadata {
         this.errors = [];
     }
     hasFalseyValue(value) {
-        return TYPES.MULTISELECT[this.type] ? !Array.isArray(value) || value.length < 1 : !Boolean(value);
+        return this.input === INPUTS.MULTISELECT_FIELD ? !Array.isArray(value) || value.length < 1 : !Boolean(value);
     }
     isInvalidRequired(value) {
         const isInvalid = this.required && this.hasFalseyValue(value);
@@ -24,7 +23,6 @@ export class Schema extends Metadata {
         return isInvalid;
     }
     isInvalidRestriction(value) {
-
         const isInvalid = this.restrict && !Restrictions[CRITERIA[this.restrict]](value);
         if(isInvalid) this.errors.push(ErrorMessageHandler[this.restrict] || toProperCase(CONSTRAINTS.RESTRICT, this.restrict));
         return isInvalid;
@@ -45,10 +43,5 @@ export class Schema extends Metadata {
             return isInvalid;
         });
     }
-    isInvalid(value) {
-        return this.isInvalidRequired(value) ||
-            this.isInvalidRestriction(value) ||
-            this.isInvalidMaximum(value) ||
-            this.isInvalidMinimum(value);
-    }
 }
+export default Schema

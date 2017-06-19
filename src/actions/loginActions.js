@@ -1,6 +1,5 @@
 import * as types from './actionTypes';
 import accountApi from '../api/mockAccountApi';
-import {ajaxCallError} from './ajaxStatusActions';
 import Timestamp from '../api/timestampApi';
 
 function loginSuccess(account) {

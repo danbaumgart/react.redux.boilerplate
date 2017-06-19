@@ -65,7 +65,9 @@ export class DateTime {
         this.time = timeModel;
     }
     static isStandardDate(date) {
-        return date instanceof Date;
+        const _isDate = date instanceof Date;
+        console.log("IS DATE", date, _isDate);
+        return _isDate;
     }
     static isDateTimeModel(model) {
         return model instanceof DateTime;
@@ -74,7 +76,9 @@ export class DateTime {
         return model instanceof TimeModel;
     }
     static isDateModel(model) {
-        return model instanceof DateModel;
+        const _isDateModel = model instanceof DateModel;
+        console.log("IS DATE MODEL", model, _isDateModel);
+        return _isDateModel;
     }
     static hasTimeModelProperty(data) {
         return data.hasOwnProperty(TIME) && DateTime.isTimeModel(data[TIME]);

@@ -1,6 +1,7 @@
 import STATUS from '../services/constants/emailStatus';
-import {appointment, email, contact, location, phone} from './state';
+import {appointment, email, contact, location, phone, errorInfo} from './state';
 export default {
+    errorInfo,
     contact,
     location,
     email,

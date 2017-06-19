@@ -23,9 +23,9 @@ LocationPage.defaultProps = {
     location: null
 };
 function mapStateToProps(state, ownProps) {
-    const {location: _location} = state;
-    const {institution, name, street, city, state: _state, zip} = _location;
-    const location = {institution, name, street, city, state: _state, zip};
+    const {institution, name, street, city, state: _state, zip} = state.location;
+    const {location: errorInfo} = state.errorInfo;
+    const location = {institution, name, street, city, state: _state, zip, errorInfo};
     return {location};
 }
 function mapDispatchToProps(dispatch) {
@@ -37,7 +37,8 @@ function mapDispatchToProps(dispatch) {
             [LOCATION.STREET]: locationActions.updateLocationStreet,
             [LOCATION.ZIP]: locationActions.updateLocationZip,
             [LOCATION.CITY]: locationActions.updateLocationCity,
-            updateLocation: locationActions.updateLocationFromUniversitySearch
+            updateLocation: locationActions.updateLocationFromUniversitySearch,
+            updateLocationErrorInfo: locationActions.updateLocationErrorInfo
         }, dispatch)
     }
 }

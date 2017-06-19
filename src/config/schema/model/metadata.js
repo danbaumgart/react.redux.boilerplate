@@ -1,6 +1,6 @@
 export default class Metadata {
-    constructor(name, type) {
+    constructor(name, input) {
         this.name = name;
-        this.type = type;
+        this.input = input;
     }
 }

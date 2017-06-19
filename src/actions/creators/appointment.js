@@ -6,6 +6,9 @@ function _updateAppointmentDate(date){
 function _updateAppointmentTime(time){
     return {type: ACTIONS.UPDATE_APPOINTMENT_TIME, payload: time};
 }
+function _updateAppointmentErrorInfo(errorInfo){
+    return {type: ACTIONS.UPDATE_APPOINTMENT_ERROR_INFO, payload: errorInfo};
+}
 function _updateAppointmentFlexible(flexible){
     return {type: ACTIONS.UPDATE_APPOINTMENT_FLEXIBLE, payload: flexible};
 }
@@ -19,10 +22,10 @@ function _updateAppointmentConfirmation(confirmation){
     return {type: ACTIONS.UPDATE_APPOINTMENT_CONFIRMATION, payload: confirmation};
 }
 export const updateAppointmentDate = date => function(dispatch){
-    dispatch(_updateAppointmentDate(DateTime.ToDateModel(date)));
+    dispatch(_updateAppointmentDate(date ? DateTime.ToDateModel(date) : null));
 };
 export const updateAppointmentTime = time => function(dispatch){
-    dispatch(_updateAppointmentTime(DateTime.ToTimeModel(time)));
+    dispatch(_updateAppointmentTime(time ? DateTime.ToTimeModel(time) : null));
 };
 export const updateAppointmentDetails = details => function(dispatch){
     dispatch(_updateAppointmentDetails(details));
@@ -35,4 +38,7 @@ export const updateAppointmentLocation = location => function(dispatch){
 };
 export const updateAppointmentConfirmation = confirmation => function(dispatch){
     dispatch(_updateAppointmentConfirmation(confirmation));
+};
+export const updateAppointmentErrorInfo = errorInfo => function(dispatch){
+    dispatch(_updateAppointmentErrorInfo(errorInfo));
 };

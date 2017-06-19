@@ -1,7 +1,7 @@
 const selectTypes = {
     CHECKBOX: 'CHECKBOX',
     RADIO_GROUP: 'RADIO_GROUP',
-    DROPDOWN: 'DROPDOWN'
+    SELECT_FIELD: 'SELECT_FIELD'
 };
 const pickerTypes = {
     DATE_PICKER: 'DATE_PICKER',

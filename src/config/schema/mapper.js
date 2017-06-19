@@ -1,24 +1,15 @@
-import {Validator, OptimizedValidator} from './model/validator';
+import {ValidationSchema, OptimizedValidationSchema} from './model/validationSchema';
 export default {
-    toValidationSchema(schema) {
-        return Object.keys(schema).map(field => ({[field]: schema[field].criteria}));
+    toFieldErrors(name, value, schema, optimized = true) {
+        const validation = optimized ?
+            new OptimizedValidationSchema(schema) :
+            new ValidationSchema(schema);
+        return {[name]: validation.isInvalid(value) && validation.errors || []};
     },
-    toSchemaModelList(rawSchema) {
-        return Object.keys(rawSchema).map(name => new OptimizedValidator({name, ...rawSchema[name]}));
-    },
-    toSchemaModel(schemaModelList) {
-        return Object.assign(...schemaModelList.map(validator => ({[validator.name]: validator})));
-    },
-    toErrorInfo(fieldErrors) {
-        return Object.assign(...fieldErrors);
-    },
-    toErrorInfoModel(schema, fields) {
-        const schemaModelList = this.toSchemaModelList(schema);
-        const schemaModel = this.toSchemaModel(schemaModelList);
-        console.log("SCHEMA MODEL", schemaModelList);
-        const errors = Object.keys(fields).map(field => ({
-            [field]: schemaModel[field] && schemaModel[field].isInvalid(fields[field]) ? schemaModel[field].errors : []
-        }));
-        return this.toErrorInfo(errors);
+    toFormErrors(form, schema, optimized = true) {
+        const formErrors = Object.keys(form).map(name =>
+            this.toFieldErrors(name, form[name], schema[name], optimized));
+        console.log("Form errors", formErrors);
+        return Object.assign(...formErrors);
     }
 };

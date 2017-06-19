@@ -1,12 +1,20 @@
 import React from '../../../utils/react';
 import MaskedField from './maskedField';
 import MASKS from '../../constants/masks';
+import PatternHandler from '../../../utils/regex/patterns';
+import {TELEPHONE_MASK} from '../../../utils/constants/regexPatterns';
 class PhoneNumber extends React.PureComponent {
     constructor(props) {
         super(props);
+        this.onChange = this.onChange.bind(this);
+    }
+    onChange(name, maskedValue) {
+        const value = maskedValue.replace(PatternHandler[TELEPHONE_MASK], '');
+        this.props.onChange(name, value);
     }
     render() {
-        const props = Object.assign({mask: MASKS.PHONE_NUMBER}, this.props);
+        const {name, label, value, errors} = this.props;
+        const props = {name, label, value, errors, mask: MASKS.PHONE_NUMBER, onChange: this.onChange};
         return (<MaskedField {...props}/>);
     }
 }

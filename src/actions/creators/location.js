@@ -21,6 +21,9 @@ function _updateLocationStreet(street) {
 function _updateLocationZip(zip) {
     return {type: ACTIONS.UPDATE_LOCATION_ZIP, payload: zip};
 }
+function _updateLocationErrorInfo(errorInfo) {
+    return {type: ACTIONS.UPDATE_LOCATION_ERROR_INFO, payload: errorInfo};
+}
 export const updateLocationName = name => function(dispatch){
     dispatch(_updateLocationName(name));
 };
@@ -43,4 +46,7 @@ export const updateLocationFromUniversitySearch = university => function(dispatc
 };
 export const updateLocationInstitution = institution => function(dispatch){
     dispatch(_updateLocationInstitution(institution ? INSTITUTION.UNIVERSITY : INSTITUTION.OTHER));
+};
+export const updateLocationErrorInfo = errorInfo => function(dispatch){
+    dispatch(_updateLocationErrorInfo(errorInfo));
 };

@@ -1,7 +1,6 @@
-import {DateTime} from '../../utils/model/dateTimeModel';
 export default {
-    date: DateTime.ToDateModel(),
-    time: DateTime.ToTimeModel(),
+    date: null,
+    time: null,
     flexible: false,
     details: '',
     location: {},
