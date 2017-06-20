@@ -27,8 +27,7 @@ class _SelectField extends React.PureComponent {
             dataSource.map((data, index) => <MenuItem key={data.id}
                                                       primaryText={data.name}
                                                       secondaryText={data.id}
-                                                      value={data.id}/>) : null;
-        console.log("DATA", dataSource, mappedDataSource);
+                                                      value={data.id} />) : [];
         return (
                 <SelectField floatingLabelText={floatingLabelText}
                              name={name}

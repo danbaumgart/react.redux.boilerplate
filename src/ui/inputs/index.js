@@ -8,6 +8,7 @@ import _PhoneNumber from './masks/phoneNumber';
 import _SelectField from './selectField';
 import _Paper from '../common/formPaper';
 import _AutoComplete from './autoComplete';
+import _UniversityAutoComplete from './universityAutoComplete';
 const FormInputs = {
     TimePicker: _TimePicker,
     DatePicker: _DatePicker,
@@ -18,7 +19,8 @@ const FormInputs = {
     Paper: _Paper,
     TextArea: _TextArea,
     AutoComplete: _AutoComplete,
-    SelectField: _SelectField
+    SelectField: _SelectField,
+    UniversityAutoComplete: _UniversityAutoComplete
 };
 export const {
     TimePicker,
@@ -30,5 +32,6 @@ export const {
     MaskedField,
     PhoneNumber,
     AutoComplete,
-    SelectField
+    SelectField,
+    UniversityAutoComplete
 } = FormInputs;

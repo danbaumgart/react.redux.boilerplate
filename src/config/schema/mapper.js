@@ -1,7 +1,6 @@
 import {ValidationSchema, OptimizedValidationSchema} from './model/validationSchema';
 export default {
     toFieldErrors(name, value, schema, optimized = true) {
-        console.log("SCHEMA", schema, name, value);
         const validation = optimized ?
             new OptimizedValidationSchema(schema) :
             new ValidationSchema(schema);
